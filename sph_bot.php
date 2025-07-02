@@ -99,9 +99,9 @@ $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
 $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
 $sent = $redis->get('sent');
-$sent = json_decode($sent ?? "{}", true);
+$sent = json_decode($sent, true) ?? [];
 $lower_price = $redis->get('lower_price');
-$lower_price = json_decode($lower_price ?? "{}", true);
+$lower_price = json_decode($lower_price, true) ?? [];
 
 echo print_r($sent, 1);
 echo print_r($lower_price, 1);
