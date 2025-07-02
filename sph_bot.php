@@ -170,7 +170,6 @@ if (empty($lower_price)) {
           $result[$listingId]['url'] = $url_listings.rawurlencode($s['name'])."?filter=".$result[$listingId]['template'];
           $result[$listingId]['price_diff1'] = $price_diff;
           $result[$listingId]['price_diff2'] = $price-$lower_price[$s['name']];
-          $sent[] = $listingId;
         } else {
           echo "{$s['name']} Template: ".$result[$listingId]['template']." Price: $price MinPrice: {$lower_price[$s['name']]} Diff: $price_diff%".PHP_EOL;
           unset($result[$listingId]);
