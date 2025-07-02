@@ -103,9 +103,6 @@ $sent = json_decode($sent, true) ?? [];
 $lower_price = $redis->get('lower_price');
 $lower_price = json_decode($lower_price, true) ?? [];
 
-echo print_r($sent, 1);
-echo print_r($lower_price, 1);
-
 if (empty($lower_price)) {
   foreach ($set as $s) {
     $r = call("https://steamcommunity.com/market/priceoverview/?market_hash_name=".rawurlencode($s['name'])."&appid=730&currency=5");
