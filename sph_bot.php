@@ -95,7 +95,7 @@ $set = [
 ];
 
 $url_listings = "https://steamcommunity.com/market/listings/730/";
-$url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
+$url_render = "/render/?query=&start=0&country=RU&count=2&currency=5";
 $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
 $lower_price = $sent = [];
