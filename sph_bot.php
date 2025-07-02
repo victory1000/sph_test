@@ -115,7 +115,7 @@ while (true) {
     $r = call($url_listings.rawurlencode($s['name']).$url_render);
     $html = json_decode($r, true)['results_html'] ?? null;
     //  error_log("\$html = {$html} ");
-    // echo $html.PHP_EOL;
+    echo $html.PHP_EOL;
 
     if (empty($html)) continue;
     if (!str_contains($html, 'Charm Template')) {
