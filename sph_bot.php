@@ -36,9 +36,6 @@ function isRarePattern($seed) {
   // 1. Повторяющиеся цифры (11, 2222, 55555 и т.п.)
   if (preg_match('/^(\d)\1{1,}$/', $s)) return true;
 
-  // 2. Палиндром (12321, 44444, 35553)
-//  if ($s === strrev($s)) return true;
-
   // 3. Заканчивается на много нулей (например, 1000, 90000)
   if (preg_match('/000$/', $s) || preg_match('/0000$/', $s)) return true;
 
@@ -60,42 +57,42 @@ $set = [
       return $t <= 5_000 || $t >= 99_000;
     },
   ],
-  // [
-  //   'name' => "Charm | Die-cast AK",
-  //   'price_diff' => 30,
-  //   'price_def' => 560,
-  //   'check' => function($t) {
-  //     return $t <= 24_000 || $t >= 87_000;
-  //   },
-  // ],
-  // [
-  //   'name' => "Charm | Titeenium AWP",
-  //   'price_diff' => 30,
-  //   'price_def' => 640,
-  //   'check' => function($t) {
-  //     return $t <= 13_000;
-  //   },
-  // ],
-  // [
-  //   'name' => "Charm | Disco MAC",
-  //   'price_diff' => 30,
-  //   'price_def' => 100,
-  //   'check' => function($t) {
-  //     return $t <= 28_000 || $t >= 89001;
-  //   },
-  // ],
-  // [
-  //   'name' => "Charm | Glamour Shot",
-  //   'price_diff' => 30,
-  //   'price_def' => 170,
-  //   'check' => function($t) {
-  //     return $t <= 4000;
-  //   },
-  // ],
+  [
+    'name' => "Charm | Die-cast AK",
+    'price_diff' => 30,
+    'price_def' => 560,
+    'check' => function($t) {
+      return $t <= 24_000 || $t >= 87_000;
+    },
+  ],
+  [
+    'name' => "Charm | Titeenium AWP",
+    'price_diff' => 30,
+    'price_def' => 640,
+    'check' => function($t) {
+      return $t <= 13_000;
+    },
+  ],
+  [
+    'name' => "Charm | Disco MAC",
+    'price_diff' => 30,
+    'price_def' => 100,
+    'check' => function($t) {
+      return $t <= 28_000 || $t >= 89001;
+    },
+  ],
+  [
+    'name' => "Charm | Glamour Shot",
+    'price_diff' => 30,
+    'price_def' => 170,
+    'check' => function($t) {
+      return $t <= 4000;
+    },
+  ],
 ];
 
 $url_listings = "https://steamcommunity.com/market/listings/730/";
-$url_render = "/render/?query=&start=0&country=RU&count=10&currency=5";
+$url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
 $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
 $lower_price = $sent = [];
@@ -105,8 +102,6 @@ foreach ($set as $s) {
   $priceoverview = json_decode($r, true);
   $lower_price[$s['name']] = toPrice($priceoverview['lowest_price'] ?? $priceoverview['median_price'] ?? $s['price_def']);
 }
-
-echo print_r($lower_price, 1);
 
 while (true) {
   foreach ($set as $s) {
@@ -126,14 +121,12 @@ while (true) {
     $dom->loadHTML($html);
     $xpath = new DomXPath($dom);
     $listings = $xpath->query("//div[contains(@id, 'listing_')]");
-    echo print_r($listings, true);
 
     $result = [];
     foreach ($listings as $node) {
       if ($node->getAttribute('class') != 'market_listing_row_details') {
         if (preg_match('/Charm Template:\s*(\d+)/', $node->nodeValue, $matches)) {
           $t = $matches[1];
-          echo "t: $t".PHP_EOL;
 
           $_listing_id = str_replace("listing_", "", $node->getAttribute('id'));
 
