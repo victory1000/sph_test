@@ -159,6 +159,7 @@ if (empty($lower_price)) {
       if ($container) {
         $priceSpan = $xpath->query(".//span[contains(@class, 'market_listing_price_with_fee')]", $container)->item(0);
         $price = toPrice($priceSpan?->textContent);
+        echo "price = ".$price.PHP_EOL;
 
         $price_diff = round(($price * 100) / $lower_price[$s['name']] - 100, 2);
 
