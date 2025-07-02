@@ -57,7 +57,7 @@ $set = [
     'price_diff' => 30,
     'price_def' => 54,
     'check' => function($t) {
-      return $t <= 5_000 || $t >= 99_000;
+      return $t <= 10_000 || $t >= 99_000;
     },
   ],
   [
@@ -173,6 +173,9 @@ if (empty($lower_price)) {
           unset($result[$listingId]);
         }
       }
+       else {
+        echo "Empty container";
+       }
     }
 
     if (!empty($result)) {
