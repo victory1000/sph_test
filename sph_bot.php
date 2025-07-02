@@ -130,16 +130,12 @@ while (true) {
 
     $result = [];
     foreach ($listings as $node) {
-echo print_r($node->getAttribute('class'),1);
-      if (empty($node->className)) {
-        continue;
-      }
-      if ($node->className != 'market_listing_row_details') {
+      if ($node->getAttribute('class') != 'market_listing_row_details') {
         if (preg_match('/Charm Template:\s*(\d+)/', $node->nodeValue, $matches)) {
           $t = $matches[1];
           echo "t: $t".PHP_EOL;
 
-          $_listing_id = str_replace("listing_", "", $node->id);
+          $_listing_id = str_replace("listing_", "", $node->getAttribute('id'));
 
           if (in_array($_listing_id, $sent)) {
             continue;
