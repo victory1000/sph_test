@@ -130,7 +130,7 @@ while (true) {
 
     $result = [];
     foreach ($listings as $node) {
-print_r($node,1);
+echo print_r($node,1);
       if (empty($node->className)) {
         continue;
       }
