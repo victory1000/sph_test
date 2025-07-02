@@ -57,7 +57,7 @@ $set = [
     'price_diff' => 30,
     'price_def' => 54,
     'check' => function($t) {
-      return $t <= 10_000 || $t >= 99_000;
+      return $t <= 5_000 || $t >= 99_000;
     },
   ],
   [
@@ -159,7 +159,7 @@ if (empty($lower_price)) {
       if ($container) {
         $priceSpan = $xpath->query(".//span[contains(@class, 'market_listing_price_with_fee')]", $container)->item(0);
         $price = toPrice($priceSpan?->textContent);
-        echo "price = ".$price.PHP_EOL;
+        // echo "price = ".$price.PHP_EOL;
 
         $price_diff = round(($price * 100) / $lower_price[$s['name']] - 100, 2);
 
