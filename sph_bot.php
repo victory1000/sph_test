@@ -131,7 +131,6 @@ while (true) {
     $result = [];
     foreach ($listings as $node) {
 print_r($node,1);
-      exit();
       if (empty($node->className)) {
         continue;
       }
