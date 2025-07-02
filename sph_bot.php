@@ -52,46 +52,46 @@ function isRarePattern($seed) {
 }
 
 $set = [
-  [
-    'name' => "Charm | Baby's AK",
-    'price_diff' => 30,
-    'price_def' => 54,
-    'check' => function($t) {
-      return $t <= 5_000 || $t >= 99_000;
-    },
-  ],
-  [
-    'name' => "Charm | Die-cast AK",
-    'price_diff' => 30,
-    'price_def' => 560,
-    'check' => function($t) {
-      return $t <= 24_000 || $t >= 87_000;
-    },
-  ],
-  [
-    'name' => "Charm | Titeenium AWP",
-    'price_diff' => 30,
-    'price_def' => 640,
-    'check' => function($t) {
-      return $t <= 13_000;
-    },
-  ],
-  [
-    'name' => "Charm | Disco MAC",
-    'price_diff' => 30,
-    'price_def' => 100,
-    'check' => function($t) {
-      return $t <= 28_000 || $t >= 89001;
-    },
-  ],
-  [
-    'name' => "Charm | Glamour Shot",
-    'price_diff' => 30,
-    'price_def' => 170,
-    'check' => function($t) {
-      return $t <= 4000;
-    },
-  ],
+  // [
+  //   'name' => "Charm | Baby's AK",
+  //   'price_diff' => 30,
+  //   'price_def' => 54,
+  //   'check' => function($t) {
+  //     return $t <= 5_000 || $t >= 99_000;
+  //   },
+  // ],
+  // [
+  //   'name' => "Charm | Die-cast AK",
+  //   'price_diff' => 30,
+  //   'price_def' => 560,
+  //   'check' => function($t) {
+  //     return $t <= 24_000 || $t >= 87_000;
+  //   },
+  // ],
+  // [
+  //   'name' => "Charm | Titeenium AWP",
+  //   'price_diff' => 30,
+  //   'price_def' => 640,
+  //   'check' => function($t) {
+  //     return $t <= 13_000;
+  //   },
+  // ],
+  // [
+  //   'name' => "Charm | Disco MAC",
+  //   'price_diff' => 30,
+  //   'price_def' => 100,
+  //   'check' => function($t) {
+  //     return $t <= 28_000 || $t >= 89001;
+  //   },
+  // ],
+  // [
+  //   'name' => "Charm | Glamour Shot",
+  //   'price_diff' => 30,
+  //   'price_def' => 170,
+  //   'check' => function($t) {
+  //     return $t <= 4000;
+  //   },
+  // ],
 ];
 
 $url_listings = "https://steamcommunity.com/market/listings/730/";
@@ -115,7 +115,7 @@ while (true) {
     $r = call($url_listings.rawurlencode($s['name']).$url_render);
     $html = json_decode($r, true)['results_html'] ?? null;
     //  error_log("\$html = {$html} ");
-    echo $html.PHP_EOL;
+    // echo $html.PHP_EOL;
 
     if (empty($html)) continue;
     if (!str_contains($html, 'Charm Template')) {
@@ -129,6 +129,8 @@ while (true) {
 
     $result = [];
     foreach ($listings as $node) {
+print_r($node,1);
+      exit();
       if (empty($node->className)) {
         continue;
       }
