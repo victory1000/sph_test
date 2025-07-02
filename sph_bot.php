@@ -2,11 +2,6 @@
 
 $redis = new Redis();
 $redis->connect('127.0.0.1', 6379);
-$redis->set('test_key', 'hello from cron', 10);
-echo "1 = " . $redis->get('test_key');
-sleep(11);
-echo "2 = " . $redis->get('test_key');
-exit();
 
 function toPrice($price) {
   $price = preg_replace('/[^0-9,]/', '', $price);
@@ -103,15 +98,24 @@ $url_listings = "https://steamcommunity.com/market/listings/730/";
 $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
 $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
-$lower_price = $sent = [];
+$sent = $redis->get('sent');
+$sent = json_decode($sent ?? "{}", true);
+$lower_price = $redis->get('lower_price');
+$lower_price = json_decode($lower_price ?? "{}", true);
 
-foreach ($set as $s) {
-  $r = call("https://steamcommunity.com/market/priceoverview/?market_hash_name=".rawurlencode($s['name'])."&appid=730&currency=5");
-  $priceoverview = json_decode($r, true);
-  $lower_price[$s['name']] = toPrice($priceoverview['lowest_price'] ?? $priceoverview['median_price'] ?? $s['price_def']);
+echo print_r($sent, 1);
+echo print_r($lower_price, 1);
+
+if (empty($lower_price)) {
+  foreach ($set as $s) {
+    $r = call("https://steamcommunity.com/market/priceoverview/?market_hash_name=".rawurlencode($s['name'])."&appid=730&currency=5");
+    $priceoverview = json_decode($r, true);
+    $lower_price[$s['name']] = toPrice($priceoverview['lowest_price'] ?? $priceoverview['median_price'] ?? $s['price_def']);
+  }
+  $redis->set('lower_price', json_encode($lower_price), 3600);
 }
 
-while (true) {
+
   foreach ($set as $s) {
     echo "Process ".$s['name'].PHP_EOL;
 
@@ -176,6 +180,7 @@ while (true) {
 
     if (!empty($result)) {
       foreach ($result as $listingId => $el) {
+        $sent[] = $listingId;
         $text = "$el[name] Template: <b>$el[template]</b>\nPrice: $el[price] руб. ({$lower_price[$el['name']]} руб.) Diff: <b>$el[price_diff1]%</b> ($el[price_diff2] руб.) \n$el[url]";
         $url = "https://api.telegram.org/bot$token/sendMessage?" . http_build_query([
             'chat_id' => 513209606,
@@ -188,6 +193,6 @@ while (true) {
     }
   }
 
+  $redis->set('sent', json_encode($sent), 3600);
+
   echo "Sleep ".date('d-m-Y-H-i-s').PHP_EOL.PHP_EOL;
-  sleep(120);
-}
