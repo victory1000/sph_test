@@ -106,6 +106,8 @@ foreach ($set as $s) {
   $lower_price[$s['name']] = toPrice($priceoverview['lowest_price'] ?? $priceoverview['median_price'] ?? $s['price_def']);
 }
 
+print_r($lower_price, 1);
+
 while (true) {
   foreach ($set as $s) {
     echo "Process ".$s['name'].PHP_EOL;
@@ -113,6 +115,7 @@ while (true) {
     $r = call($url_listings.rawurlencode($s['name']).$url_render);
     $html = json_decode($r, true)['results_html'] ?? null;
     //  error_log("\$html = {$html} ");
+    echo $html.PHP_EOL;
 
     if (empty($html)) continue;
     if (!str_contains($html, 'Charm Template')) {
