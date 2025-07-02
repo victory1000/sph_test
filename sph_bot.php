@@ -126,6 +126,9 @@ while (true) {
 
     $result = [];
     foreach ($listings as $node) {
+      if (empty($node->className)) {
+        continue;
+      }
       if ($node->className != 'market_listing_row_details') {
         if (preg_match('/Charm Template:\s*(\d+)/', $node->nodeValue, $matches)) {
           $t = $matches[1];
