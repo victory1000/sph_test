@@ -126,7 +126,7 @@ while (true) {
     $dom->loadHTML($html);
     $xpath = new DomXPath($dom);
     $listings = $xpath->query("//div[contains(@id, 'listing_')]");
-    print_r(listings, true);
+    print_r($listings, true);
 
     $result = [];
     foreach ($listings as $node) {
