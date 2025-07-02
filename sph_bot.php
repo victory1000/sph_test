@@ -1,7 +1,7 @@
 <?php
 
 $redis = new Redis();
-// $redis->connect('127.0.0.1', 6379);
+$redis->connect('127.0.0.1', 6379);
 $redis->set('test_key', 'hello from cron', 10);
 echo "1 = " . $redis->get('test_key');
 sleep(11);
