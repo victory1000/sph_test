@@ -52,14 +52,14 @@ function isRarePattern($seed) {
 }
 
 $set = [
-  // [
-  //   'name' => "Charm | Baby's AK",
-  //   'price_diff' => 30,
-  //   'price_def' => 54,
-  //   'check' => function($t) {
-  //     return $t <= 5_000 || $t >= 99_000;
-  //   },
-  // ],
+  [
+    'name' => "Charm | Baby's AK",
+    'price_diff' => 30,
+    'price_def' => 54,
+    'check' => function($t) {
+      return $t <= 5_000 || $t >= 99_000;
+    },
+  ],
   // [
   //   'name' => "Charm | Die-cast AK",
   //   'price_diff' => 30,
