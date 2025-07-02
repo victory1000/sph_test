@@ -132,6 +132,7 @@ while (true) {
       if ($node->className != 'market_listing_row_details') {
         if (preg_match('/Charm Template:\s*(\d+)/', $node->nodeValue, $matches)) {
           $t = $matches[1];
+          echo "t: $t".PHP_EOL;
 
           $_listing_id = str_replace("listing_", "", $node->id);
 
