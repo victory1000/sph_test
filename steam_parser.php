@@ -46,9 +46,9 @@ class SteamParser {
       }
     }
 
-    echo error_log("\$to_check = ".print_r($to_check, true));
-    echo error_log("\$to_send = ".print_r($to_send, true));
-    echo error_log("\$sent = ".print_r($sent, true));
+    error_log("\$to_check = ".print_r($to_check, true));
+    error_log("\$to_send = ".print_r($to_send, true));
+    error_log("\$sent = ".print_r($sent, true));
 
     $this->_redis->set('sent', json_encode(array_merge($this->sent, $sent)), 3600);
     echo "Completed ".date('d-m-Y-H-i-s').PHP_EOL.PHP_EOL;
@@ -144,7 +144,8 @@ class SteamParser {
     return [
       513209606 => [
         "Charm | Baby's AK" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+//          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+          ['pattern_m' => 70000, 'pattern_l' => 80000, 'price_percent' => 30],
           ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 30],
         ],
 //        "Charm | Die-cast AK" => [
