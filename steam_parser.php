@@ -160,8 +160,7 @@ class SteamParser {
   }
 
   private function getSkinsToParse(): array {
-//    return ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
-    return ["Charm | Baby's AK"];
+    return ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
   }
   
 }
