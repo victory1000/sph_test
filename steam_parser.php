@@ -139,7 +139,7 @@ class SteamParser {
       513209606 => [
         "Charm | Baby's AK" => [
 //          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-          ['pattern_m' => 70000, 'pattern_l' => 80000, 'price_percent' => 30],
+          ['pattern_m' => 40000, 'pattern_l' => 80000, 'price_percent' => 30],
           ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 30],
         ],
 //        "Charm | Die-cast AK" => [
