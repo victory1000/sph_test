@@ -5,13 +5,15 @@ class SteamParser {
   private Redis $_redis;
   private array $sent, $price = [];
   private string $url_listings = "https://steamcommunity.com/market/listings/730/";
-  private string $url_render = "/render/?query=&start=0&country=RU&count=10&currency=5";
+  private string $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
   private string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
   
   public function __construct() {
     $this->_redis = Cache::get_instance();
     $this->init();
+    error_log("\$this->price = ".print_r($this->price, true));
+    error_log("\$this->sent = ".print_r($this->sent, true));
   }
 
   private function init(): void {
@@ -45,10 +47,6 @@ class SteamParser {
         file_get_contents($url);
       }
     }
-
-    error_log("\$to_check = ".print_r($to_check, true));
-    error_log("\$to_send = ".print_r($to_send, true));
-    error_log("\$sent = ".print_r($sent, true));
 
     $this->_redis->set('sent', json_encode(array_merge($this->sent, $sent)), 3600);
     echo "Completed ".date('d-m-Y-H-i-s').PHP_EOL.PHP_EOL;
@@ -138,26 +136,25 @@ class SteamParser {
     return [
       513209606 => [
         "Charm | Baby's AK" => [
-//          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-          ['pattern_m' => 40000, 'pattern_l' => 80000, 'price_percent' => 30],
+          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
           ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 30],
         ],
-//        "Charm | Die-cast AK" => [
-//          ['pattern_m' => 87_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-//          ['pattern_m' => 1, 'pattern_l' => 24_000, 'price_percent' => 30],
-//        ],
-//        "Charm | Titeenium AWP" => [
-////          ['pattern_m' => 99_000, 'pattern_l' => 1000, 'price_percent' => 30],
-//          ['pattern_m' => 1, 'pattern_l' => 13_000, 'price_percent' => 30],
-//        ],
-//        "Charm | Disco MAC" => [
+        "Charm | Die-cast AK" => [
+          ['pattern_m' => 87_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 24_000, 'price_percent' => 30],
+        ],
+        "Charm | Titeenium AWP" => [
+//          ['pattern_m' => 99_000, 'pattern_l' => 1000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 13_000, 'price_percent' => 30],
+        ],
+        "Charm | Disco MAC" => [
+          ['pattern_m' => 89_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 28_000, 'price_percent' => 30],
+        ],
+        "Charm | Glamour Shot" => [
 //          ['pattern_m' => 89_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-//          ['pattern_m' => 1, 'pattern_l' => 28_000, 'price_percent' => 30],
-//        ],
-//        "Charm | Glamour Shot" => [
-////          ['pattern_m' => 89_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-//          ['pattern_m' => 1, 'pattern_l' => 4000, 'price_percent' => 30],
-//        ],
+          ['pattern_m' => 1, 'pattern_l' => 4000, 'price_percent' => 30],
+        ],
       ]
     ];
   }
