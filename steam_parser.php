@@ -54,7 +54,6 @@ class SteamParser {
     $to_check = [];
     foreach ($this->getSkinsToParse() as $skin_name) {
 //      echo "Process $skin_name".PHP_EOL;
-
       $r = Parser::curl_exec($this->url_listings.rawurlencode($skin_name).$this->url_render);
       $html = json_decode($r, true)['results_html'] ?? null;
 
@@ -76,7 +75,6 @@ class SteamParser {
             if ($container) {
               $priceSpan = $xpath->query(".//span[contains(@class, 'market_listing_price_with_fee')]", $container)->item(0);
               $price = Parser::toPrice($priceSpan?->textContent);
-              // echo "price = ".$price.PHP_EOL;
               $to_check[$skin_name][] = [
                 'listing_id' => $_listing_id,
                 'pattern' => $matches[1],
