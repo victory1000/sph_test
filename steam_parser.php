@@ -5,7 +5,7 @@ class SteamParser {
   private Redis $_redis;
   private array $sent, $price = [];
   private string $url_listings = "https://steamcommunity.com/market/listings/730/";
-  private string $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
+  private string $url_render = "/render/?query=&start=0&country=RU&count=10&currency=5";
   private string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
   
