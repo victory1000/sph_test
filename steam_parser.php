@@ -105,6 +105,7 @@ class SteamParser {
           if (!$this->checkPattern($skin_name, $p_p['pattern'])) continue;
 
           $price_diff = round(($p_p['price'] * 100) / $this->price[$skin_name] - 100, 2);
+          error_log("\$skin = ".print_r($skin, true));
 
           if ($price_diff <= $skin['price_percent']) {
             $to_send[$chat_id][] = [
@@ -132,8 +133,6 @@ class SteamParser {
     }
     foreach ($this->getChats() as $skins) {
       foreach ($skins[$skin_name] as $data) {
-        error_log("\$data = ".print_r($data, true));
-        error_log("\$pattern = {$pattern} ");
         if ($pattern >= $data['pattern_m'] && $pattern <= $data['pattern_l']) {
           return true;
         }
