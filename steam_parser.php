@@ -12,8 +12,6 @@ class SteamParser {
   public function __construct() {
     $this->_redis = Cache::get_instance();
     $this->init();
-    error_log("\$this->price = ".print_r($this->price, true));
-    error_log("\$this->sent = ".print_r($this->sent, true));
   }
 
   private function init(): void {
