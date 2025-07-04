@@ -132,6 +132,8 @@ class SteamParser {
     }
     foreach ($this->getChats() as $skins) {
       foreach ($skins[$skin_name] as $data) {
+        error_log("\$data = ".print_r($data, true));
+        error_log("\$pattern = {$pattern} ");
         if ($pattern >= $data['pattern_m'] && $pattern <= $data['pattern_l']) {
           return true;
         }
@@ -169,7 +171,8 @@ class SteamParser {
   }
 
   private function getSkinsToParse(): array {
-    return ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
+//    return ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
+    return ["Charm | Baby's AK"];
   }
   
 }
