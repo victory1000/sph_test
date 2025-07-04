@@ -102,24 +102,17 @@ class SteamParser {
     foreach ($this->getChats() as $chat_id => $skins) {
       foreach ($skins as $skin_name => $skin) {
         foreach ($to_check[$skin_name] as $p_p) {
-          if (!$this->checkPattern($skin_name, $p_p['pattern'])) continue;
-
           $price_diff = round(($p_p['price'] * 100) / $this->price[$skin_name] - 100, 2);
-          error_log("\$skin = ".print_r($skin, true));
-
-          if ($price_diff <= $skin['price_percent']) {
-            $to_send[$chat_id][] = [
-              'name' => $skin_name,
-              'listing_id' => $p_p['listing_id'],
-              'pattern' => $p_p['pattern'],
-              'price' => $p_p['price'],
-              'url' => $this->url_listings . rawurlencode($skin_name) . "?filter=" . $p_p['pattern'],
-              'price_diff1' => $price_diff,
-              'price_diff2' => $p_p['price'] - $this->price[$skin_name],
-            ];
-          } else {
-            echo "$skin_name Template: " . $p_p['pattern'] . " Price: {$p_p['price']} MinPrice: {$this->price[$skin_name]} Diff: $price_diff%" . PHP_EOL;
-          }
+          if (!$this->checkPatternPrice($skin_name, $p_p['pattern'], $price_diff)) continue;
+          $to_send[$chat_id][] = [
+            'name' => $skin_name,
+            'listing_id' => $p_p['listing_id'],
+            'pattern' => $p_p['pattern'],
+            'price' => $p_p['price'],
+            'url' => $this->url_listings . rawurlencode($skin_name) . "?filter=" . $p_p['pattern'],
+            'price_diff1' => $price_diff,
+            'price_diff2' => $p_p['price'] - $this->price[$skin_name],
+          ];
         }
       }
     }
@@ -127,13 +120,13 @@ class SteamParser {
     return $to_send;
   }
 
-  private function checkPattern($skin_name, $pattern): bool {
+  private function checkPatternPrice($skin_name, $pattern, $price): bool {
     if (Parser::isRarePattern($pattern)) {
       return true;
     }
     foreach ($this->getChats() as $skins) {
       foreach ($skins[$skin_name] as $data) {
-        if ($pattern >= $data['pattern_m'] && $pattern <= $data['pattern_l']) {
+        if ($pattern >= $data['pattern_m'] && $pattern <= $data['pattern_l'] && $price <= $data['price_percent']) {
           return true;
         }
       }
