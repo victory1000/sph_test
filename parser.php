@@ -17,7 +17,6 @@ class Parser {
     ]);
 
     $response = curl_exec($ch);
-    error_log("\$response = ".print_r($response, true));
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
