@@ -1,4 +1,6 @@
 <?php
+include_once "redis.php";
+include_once "steam_parser.php";
 
 class Parser {
 
@@ -48,6 +50,10 @@ class Parser {
     $price = preg_replace('/[^0-9,]/', '', $price);
     $price = str_replace(',', '.', $price);
     return (float) $price;
+  }
+
+  static function getSkinsToParse(): array {
+    return ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
   }
 
 }

@@ -19,7 +19,7 @@ class SteamParser {
     $this->price = json_decode($this->_redis->get('price'), true) ?? [];
 
     if (empty($this->price)) {
-      foreach ($this->getSkinsToParse() as $skin) {
+      foreach (Parser::getSkinsToParse() as $skin) {
         $r = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=".rawurlencode($skin)."&appid=730&currency=5");
         $priceoverview = json_decode($r, true);
         $this->price[$skin] = Parser::toPrice($priceoverview['lowest_price'] ?? $priceoverview['median_price'] ?? 999);
@@ -52,7 +52,7 @@ class SteamParser {
 
   private function ParseSkins(): array {
     $to_check = [];
-    foreach ($this->getSkinsToParse() as $skin_name) {
+    foreach (Parser::getSkinsToParse() as $skin_name) {
 //      echo "Process $skin_name".PHP_EOL;
       $r = Parser::curl_exec($this->url_listings.rawurlencode($skin_name).$this->url_render);
       $html = json_decode($r, true)['results_html'] ?? null;
@@ -155,10 +155,6 @@ class SteamParser {
     ];
   }
 
-  private function getSkinsToParse(): array {
-    return ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
-  }
-  
 }
 
 //skins
