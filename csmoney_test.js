@@ -27,7 +27,7 @@ puppeteer.use(StealthPlugin());
     // const data = JSON.parse(preText);
     // data.items.forEach(el => console.log(el.asset))
     // console.log('✅ Заголовок страницы:', data);
-    console.log('✅ Заголовок страницы:', content);
+    console.log('✅ Заголовок страницы: ', content.includes('57577'));
     await browser.close();
   } catch (err) {
     console.error('❌ Ошибка при запуске Puppeteer:', err);
