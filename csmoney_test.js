@@ -26,9 +26,9 @@ const puppeteer = require('puppeteer');
       args: ['--no-sandbox']
     });
     const page = await browser.newPage();
-    await page.goto('https://example.com');
-    const title = await page.title();
-    console.log('✅ Заголовок страницы:', title);
+    await page.goto('https://cs.money/2.0/market/sell-orders?limit=60&offset=0&type=21&name=die&order=asc&sort=price');
+    const content = await page.content();
+    console.log('✅ Заголовок страницы:', content);
     await browser.close();
   } catch (err) {
     console.error('❌ Ошибка при запуске Puppeteer:', err);
