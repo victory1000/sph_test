@@ -14,7 +14,8 @@ const puppeteer = require('puppeteer');
     });
     // const content = await page.content();
     const preText = await page.$eval('pre', el => el.innerText);
-    console.log('✅ Заголовок страницы:', preText);
+    const data = JSON.parse(preText);
+    console.log('✅ Заголовок страницы:', data);
     await browser.close();
   } catch (err) {
     console.error('❌ Ошибка при запуске Puppeteer:', err);
