@@ -15,7 +15,7 @@ const puppeteer = require('puppeteer');
     // const content = await page.content();
     const preText = await page.$eval('pre', el => el.innerText);
     const data = JSON.parse(preText);
-    data.forEach(el => console.log(el.asset))
+    data.items.forEach(el => console.log(el.asset))
     // console.log('✅ Заголовок страницы:', data);
     await browser.close();
   } catch (err) {
