@@ -6,7 +6,8 @@ puppeteer.use(StealthPlugin());
 (async () => {
   try {
     // const url = "https://lis-skins.com/ru/market/csgo/fracture-case/?sort_by=price_asc";
-    const url = 'https://cs.money/2.0/market/sell-orders?limit=60&offset=0&type=21&name=die&order=asc&sort=price';
+    // const url = 'https://cs.money/2.0/market/sell-orders?limit=60&offset=0&type=21&name=die&order=asc&sort=price';
+    const url = 'https://market.csgo.com/ru/Charm/Charm%20%7C%20Die-cast%20AK';
 
     const browser = await puppeteer.launch({
       headless: true,
