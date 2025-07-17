@@ -14,7 +14,7 @@ process.stdin.on('data', async chunk => {
 
     (async () => {
       try {
-        const url = 'https://steamcommunity.com/market/listings/730/'+encodeURIComponent(skin_name)+'/render/?query=&start=0&country=RU&count=100&currency=5';
+        const url = 'https://steamcommunity.com/market/listings/730/'+encodeURIComponent(skin_name)+'/render/?query=&start=0&country=RU&count=10&currency=5';
 
         const browser = await puppeteer.launch({
           headless: true,
