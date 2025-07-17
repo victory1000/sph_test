@@ -36,7 +36,7 @@ process.stdin.on('data', async chunk => {
         let listings = {}
         Object.values(data.listinginfo).forEach(function (el) {
           console.log(el.listingid, el.asset.id)
-          // listings[skin_name][el.listingid]['assetid'] = el.asset.id
+          listings[skin_name][el.listingid] = {'assetid': el.asset.id}
         });
         console.log(listings)
         // console.log('✅ Заголовок страницы:', data);
