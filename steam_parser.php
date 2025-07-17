@@ -7,6 +7,7 @@ class SteamParser {
   private string $url_listings = "https://steamcommunity.com/market/listings/730/";
   private string $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
   private string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
+  private string $sent_key;
 
   
   public function __construct() {
@@ -15,7 +16,8 @@ class SteamParser {
   }
 
   private function init(): void {
-    $this->sent = json_decode($this->_redis->get('sent'), true) ?? [];
+    $this->sent_key = date('H');
+    $this->sent = json_decode($this->_redis->get($this->sent_key), true) ?? [];
     $this->price = json_decode($this->_redis->get('price'), true) ?? [];
 
     if (empty($this->price)) {
@@ -46,7 +48,7 @@ class SteamParser {
       }
     }
 
-    $this->_redis->set('sent', json_encode(array_merge($this->sent, $sent)), 3600);
+    $this->_redis->set($this->sent_key, json_encode(array_merge($this->sent, $sent)), 3600);
     echo "Completed ".date('d-m-Y-H-i-s').PHP_EOL.PHP_EOL;
   }
 
