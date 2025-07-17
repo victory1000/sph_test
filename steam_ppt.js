@@ -32,8 +32,10 @@ process.stdin.on('data', async chunk => {
         const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
-        console.log(data.listinginfo)
-        Object.values(data.listinginfo).forEach(el => console.log(el.asset))
+        // console.log(data.listinginfo)
+        let listings = {}
+        Object.values(data.listinginfo).forEach(el => listings[skin_name][el.listingid]['assetid'] = el.asset.id)
+        console.log(listings)
         // console.log('✅ Заголовок страницы:', data);
         // console.log('✅ Заголовок страницы: ', data);
         await browser.close();
