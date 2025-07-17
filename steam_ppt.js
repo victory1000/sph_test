@@ -6,9 +6,14 @@ process.stdin.on('data', chunk => {
   input += chunk;
 });
 
+const data = JSON.parse(input);
+
+data.forEach(function (el) {
+  console.log({el});
+})
+
 process.stdin.on('end', () => {
-  const data = JSON.parse(input);
-  console.log(data); // вернёт в stdout
+  const data1 = JSON.parse(input);
 });
 
 
