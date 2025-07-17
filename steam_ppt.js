@@ -4,7 +4,7 @@ process.stdin.setEncoding('utf8');
 process.stdin.on('data', async chunk => {
   const input = chunk.toString();
   const data = JSON.parse(input);
-  console.log({el});
+  console.log({data});
   // data.forEach(function (el) {
   //
   // })
