@@ -8,7 +8,7 @@ process.stdin.on('data', chunk => {
 
 process.stdin.on('end', () => {
   const data = JSON.parse(input);
-  console.log(JSON.stringify(data)); // вернёт в stdout
+  console.log(data); // вернёт в stdout
 });
 
 
