@@ -1,21 +1,13 @@
 
 process.stdin.setEncoding('utf8');
 
-let input = '';
-process.stdin.on('data', chunk => {
-  input += chunk;
+process.stdin.on('data', async chunk => {
+  const input = chunk.toString();
+  const data = JSON.parse(input);
+  data.forEach(function (el) {
+    console.log({el});
+  })
 });
-
-const data = JSON.parse(input);
-
-data.forEach(function (el) {
-  console.log({el});
-})
-
-process.stdin.on('end', () => {
-  const data1 = JSON.parse(input);
-});
-
 
 
 // const puppeteer = require('puppeteer-extra');
