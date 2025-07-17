@@ -20,6 +20,8 @@ class SteamParser {
     $this->sent = json_decode($this->_redis->get($this->sent_key), true) ?? [];
     $this->price = json_decode($this->_redis->get('price'), true) ?? [];
 
+    error_log("\$this->sent = ".print_r($this->sent, true));
+
     if (empty($this->price)) {
       foreach (Parser::getSkinsToParse() as $skin) {
         $r = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=".rawurlencode($skin)."&appid=730&currency=5");
@@ -47,6 +49,8 @@ class SteamParser {
         file_get_contents($url);
       }
     }
+
+    error_log("\$sent = ".print_r($sent, true));
 
     $this->_redis->set($this->sent_key, json_encode(array_merge($this->sent, $sent)), 3600);
     echo "Completed ".date('d-m-Y-H-i-s').PHP_EOL.PHP_EOL;
