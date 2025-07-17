@@ -4,9 +4,10 @@ process.stdin.setEncoding('utf8');
 process.stdin.on('data', async chunk => {
   const input = chunk.toString();
   const data = JSON.parse(input);
-  data.forEach(function (el) {
-    console.log({el});
-  })
+  console.log({el});
+  // data.forEach(function (el) {
+  //
+  // })
 });
 
 
