@@ -30,11 +30,11 @@ process.stdin.on('data', async chunk => {
           timeout: 60000
         });
         const content = await page.content();
-        // const preText = await page.$eval('pre', el => el.innerText);
-        // const data = JSON.parse(preText);
+        const preText = await page.$eval('pre', el => el.innerText);
+        const data = JSON.parse(preText);
         // data.items.forEach(el => console.log(el.asset))
         // console.log('✅ Заголовок страницы:', data);
-        console.log('✅ Заголовок страницы: ', content);
+        console.log('✅ Заголовок страницы: ', data);
         await browser.close();
       } catch (err) {
         console.error('❌ Ошибка при запуске Puppeteer:', err);
