@@ -48,7 +48,7 @@ class SteamParserPuppeteer extends SteamParser {
 
       proc_close($process);
 
-//      echo "Ответ JS: $output\n";
+      echo "Ответ JS: $output\n";
       if ($error) echo "Ошибки: $error\n";
 
       $listings = json_decode($output, true);
