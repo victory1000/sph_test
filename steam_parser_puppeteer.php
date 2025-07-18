@@ -53,12 +53,14 @@ class SteamParserPuppeteer extends SteamParser {
 
       $listings = json_decode($output, true);
       unset($output, $error);
+      error_log(__CLASS__."\$listings = ".print_r($listings, true));
     }
 
     return $listings;
   }
 
   protected function CheckSkins(array $listings): array {
+    error_log(__CLASS__.__METHOD__);
     $to_send = [];
     if (empty($listings)) return $to_send;
 
