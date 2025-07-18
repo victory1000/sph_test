@@ -32,14 +32,17 @@ process.stdin.on('data', async chunk => {
         const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
-        console.log(data.listinginfo)
+        // console.log(data.listinginfo)
         let listings = {};
         let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
 
         Object.values(data.listinginfo).forEach(function (el) {
           listing_id = el.listingid;
-          listings[skin_name][`${listing_id}`] = { 'assetid': el.asset.id };
+          listings[skin_name][`${listing_id}`] = {
+            'assetid': el.asset.id,
+            'price': (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100
+          };
         });
         console.log(listings)
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
@@ -50,7 +53,7 @@ process.stdin.on('data', async chunk => {
           data.assets[730][2][asset_id].descriptions.forEach(function(el) {
             if (el.value.includes('Charm Template')) {
               pattern = el.value.split(':')[1].trim();
-              listings[skin_name][_listing_id]['pattern'] = pattern;
+              listings[skin_name][_listing_id]['pattern'] = parseInt(pattern);
             }
           });
         }
