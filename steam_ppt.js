@@ -1,4 +1,3 @@
-console.log('HIIII  1');
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(StealthPlugin());
@@ -14,7 +13,6 @@ process.stdin.on('data', async chunk => {
 
   await (async () => {
     try {
-      console.log('HIIII  2');
       const browser = await puppeteer.launch({
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
@@ -26,6 +24,7 @@ process.stdin.on('data', async chunk => {
       });
 
       for (const skin_name of skins) {
+        console.error('Process '+skin_name);
         url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&count=10&currency=5';
         await page.goto(url, {
           waitUntil: 'networkidle2',
@@ -35,7 +34,6 @@ process.stdin.on('data', async chunk => {
         // const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
-        console.log('HERE 11111111')
 
         let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
