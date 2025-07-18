@@ -7,7 +7,7 @@ process.stdin.on('data', async chunk => {
   // const input = chunk.toString();
   // const data = JSON.parse(input);
 
-  const skins = ["Charm | Baby's AK"]//, "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
+  const skins = ["Charm | Baby's AK", "Charm | Die-cast AK"]//, "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
 
   skins.forEach(skin_name => {
 
@@ -29,10 +29,10 @@ process.stdin.on('data', async chunk => {
           waitUntil: 'networkidle2',
           timeout: 60000
         });
-        const content = await page.content();
+        // const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
-        // console.log(data.listinginfo)
+
         let listings = {};
         let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
@@ -44,22 +44,17 @@ process.stdin.on('data', async chunk => {
             'price': (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100
           };
         });
-        console.log(listings)
+
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
-          // console.log(_listing_id)
-          // console.log(_data)
           asset_id = _data.assetid;
-          // console.log(data.assets[730][2][asset_id].descriptions);
           data.assets[730][2][asset_id].descriptions.forEach(function(el) {
             if (el.value.includes('Charm Template')) {
-              pattern = el.value.split(':')[1].trim();
-              listings[skin_name][_listing_id]['pattern'] = parseInt(pattern);
+              pattern = parseInt(el.value.split(':')[1].trim());
+              listings[skin_name][_listing_id]['pattern'] = pattern;
             }
           });
         }
         console.log(listings)
-        // console.log('✅ Заголовок страницы:', data);
-        // console.log('✅ Заголовок страницы: ', data);
         await browser.close();
       } catch (err) {
         console.log('❌ Ошибка при запуске Puppeteer:', err);
