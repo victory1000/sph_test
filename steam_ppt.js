@@ -7,14 +7,13 @@ process.stdin.on('data', async chunk => {
   // const input = chunk.toString();
   // const data = JSON.parse(input);
 
-  const skins = ["Charm | Baby's AK", "Charm | Die-cast AK"]//, "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
+  const skins = ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
 
   skins.forEach(skin_name => {
 
-
     (async () => {
       try {
-        const url = 'https://steamcommunity.com/market/listings/730/'+encodeURIComponent(skin_name)+'/render/?query=&start=0&country=RU&count=10&currency=5';
+        const url = 'https://steamcommunity.com/market/listings/730/'+encodeURIComponent(skin_name)+'/render/?query=&start=0&country=RU&count=100&currency=5';
 
         const browser = await puppeteer.launch({
           headless: true,
@@ -29,6 +28,7 @@ process.stdin.on('data', async chunk => {
           waitUntil: 'networkidle2',
           timeout: 60000
         });
+
         // const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
@@ -60,7 +60,6 @@ process.stdin.on('data', async chunk => {
         console.log('❌ Ошибка при запуске Puppeteer:', err);
       }
     })();
-
 
   })
 });
