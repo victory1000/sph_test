@@ -9,21 +9,22 @@ process.stdin.on('data', async chunk => {
 
   const skins = ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
 
-  skins.forEach(skin_name => {
+  await (async () => {
+    try {
+      const url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&count=10&currency=5';
 
-    (async () => {
-      try {
-        const url = 'https://steamcommunity.com/market/listings/730/'+encodeURIComponent(skin_name)+'/render/?query=&start=0&country=RU&count=100&currency=5';
+      const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
+      const page = await browser.newPage();
+      await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
+      await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9'
+      });
 
-        const browser = await puppeteer.launch({
-          headless: true,
-          args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
-        const page = await browser.newPage();
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
-        await page.setExtraHTTPHeaders({
-          'Accept-Language': 'en-US,en;q=0.9'
-        });
+      for (const skin_name of skins) {
+        console.log('Process '+skin_name)
         await page.goto(url, {
           waitUntil: 'networkidle2',
           timeout: 60000
@@ -47,19 +48,19 @@ process.stdin.on('data', async chunk => {
 
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
           asset_id = _data.assetid;
-          data.assets[730][2][asset_id].descriptions.forEach(function(el) {
+          data.assets[730][2][asset_id].descriptions.forEach(function (el) {
             if (el.value.includes('Charm Template')) {
               pattern = parseInt(el.value.split(':')[1].trim());
               listings[skin_name][_listing_id]['pattern'] = pattern;
             }
           });
         }
-        console.log(listings)
-        await browser.close();
-      } catch (err) {
-        console.log('❌ Ошибка при запуске Puppeteer:', err);
       }
-    })();
+      console.log(listings)
+      await browser.close();
+    } catch (err) {
+      console.log('❌ Ошибка при запуске Puppeteer:', err);
+    }
+  })();
 
-  })
 });
