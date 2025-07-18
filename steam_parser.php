@@ -14,7 +14,7 @@ class SteamParser {
     $this->init();
   }
 
-  private function init(): void {
+  protected function init(): void {
     $this->sent_key = date('H');
     $this->sent = json_decode($this->_redis->get($this->sent_key), true) ?? [];
     $this->price = json_decode($this->_redis->get('price'), true) ?? [];
@@ -51,7 +51,7 @@ class SteamParser {
     echo "Completed ".date('d-m-Y-H-i-s').PHP_EOL.PHP_EOL;
   }
 
-  private function ParseSkins(): array {
+  protected function ParseSkins(): array {
     $to_check = [];
     foreach (Parser::getSkinsToParse() as $skin_name) {
 //      echo "Process $skin_name".PHP_EOL;
@@ -90,7 +90,7 @@ class SteamParser {
     return $to_check;
   }
 
-  private function CheckSkins(array $to_check): array {
+  protected function CheckSkins(array $to_check): array {
     $to_send = [];
     if (empty($to_check)) return $to_send;
 
