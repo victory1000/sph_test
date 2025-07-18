@@ -8,11 +8,11 @@ process.stdin.on('data', async chunk => {
   // const data = JSON.parse(input);
 
   const skins = ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
+  let url;
+  let listings = {};
 
   await (async () => {
     try {
-      const url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&count=10&currency=5';
-
       const browser = await puppeteer.launch({
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
@@ -24,6 +24,7 @@ process.stdin.on('data', async chunk => {
       });
 
       for (const skin_name of skins) {
+        url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&count=10&currency=5';
         console.log('Process '+skin_name)
         await page.goto(url, {
           waitUntil: 'networkidle2',
@@ -34,7 +35,6 @@ process.stdin.on('data', async chunk => {
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
 
-        let listings = {};
         let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
 
