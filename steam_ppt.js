@@ -7,7 +7,7 @@ process.stdin.on('data', async chunk => {
   // const input = chunk.toString();
   // const data = JSON.parse(input);
 
-  const skins = ["Charm | Baby's AK"]//, "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
+  const skins = ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
   let url;
   let listings = {};
 
