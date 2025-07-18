@@ -55,7 +55,9 @@ process.stdin.on('data', async chunk => {
           });
         }
       }
+
       console.log(JSON.stringify(listings))
+
       await browser.close();
     } catch (err) {
       console.log('❌ Ошибка при запуске Puppeteer:', err);
