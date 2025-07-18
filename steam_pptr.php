@@ -55,3 +55,5 @@ if (is_resource($process)) {
   $listings = json_decode($output, true);
   error_log("\$listings = ".print_r($listings, true));
 }
+
+exit();
