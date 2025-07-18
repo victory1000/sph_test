@@ -32,9 +32,9 @@ process.stdin.on('data', async chunk => {
         const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
-        console.log(data.assets)
+        // console.log(data.assets)
         let listings = {};
-        let listing_id = 0;
+        let listing_id, asset_id = 0;
         listings[`${skin_name}`] = {};
 
         Object.values(data.listinginfo).forEach(function (el) {
@@ -42,6 +42,12 @@ process.stdin.on('data', async chunk => {
           listings[skin_name][`${listing_id}`] = { 'assetid': el.asset.id };
         });
         console.log(listings)
+        for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
+          console.log(_listing_id)
+          console.log(_data)
+          asset_id = _data.assetid;
+          console.log(data.assets[730][2][asset_id])
+        }
         // console.log('✅ Заголовок страницы:', data);
         // console.log('✅ Заголовок страницы: ', data);
         await browser.close();
