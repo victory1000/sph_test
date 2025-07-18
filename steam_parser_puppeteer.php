@@ -46,7 +46,8 @@ class SteamParserPuppeteer extends SteamParser {
       $error = stream_get_contents($pipes[2]);
       fclose($pipes[2]);
 
-      proc_close($process);
+      $exitCode = proc_close($process);
+      echo "Exit code: $exitCode";
 
       echo "Ответ JS: $output\n";
       if ($error) echo "Ошибки: $error\n";
