@@ -53,6 +53,6 @@ if (is_resource($process)) {
   if ($error) echo "Ошибки: $error\n";
 
   $listings = json_decode($output, true);
-  echo "valid = " . json_validate($output);
+  echo 'error = '. json_last_error();
   error_log("\$listings = ".print_r($listings, true));
 }
