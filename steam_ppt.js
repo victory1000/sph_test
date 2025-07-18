@@ -46,7 +46,12 @@ process.stdin.on('data', async chunk => {
           console.log(_listing_id)
           console.log(_data)
           asset_id = _data.assetid;
-          console.log(data.assets[730][2][asset_id])
+          console.log(data.assets[730][2][asset_id].descriptions);
+          data.assets[730][2][asset_id].descriptions.forEach(function(el) {
+            if (el.value.includes('Charm Template')) {
+              console.log(el.value);
+            }
+          });
         }
         // console.log('✅ Заголовок страницы:', data);
         // console.log('✅ Заголовок страницы: ', data);
