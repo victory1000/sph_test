@@ -40,9 +40,9 @@ process.stdin.on('data', async chunk => {
 
         Object.values(data.listinginfo).forEach(function (el) {
           listing_id = el.listingid;
-          listings[skin_name][`${listing_id}`] = {
-            'assetid': el.asset.id,
-            'price': (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100
+          listings[skin_name][""+listing_id+""] = {
+            "assetid": el.asset.id,
+            "price": (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100
           };
         });
 
