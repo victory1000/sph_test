@@ -25,7 +25,6 @@ process.stdin.on('data', async chunk => {
 
       for (const skin_name of skins) {
         url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&count=10&currency=5';
-        console.log('Process '+skin_name)
         await page.goto(url, {
           waitUntil: 'networkidle2',
           timeout: 60000
