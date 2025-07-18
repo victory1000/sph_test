@@ -1,3 +1,7 @@
+console.log("hello from JS");
+console.error("this is stderr");
+
+/*
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(StealthPlugin());
@@ -66,3 +70,4 @@ process.stdin.on('data', async chunk => {
   })();
 
 });
+*/
