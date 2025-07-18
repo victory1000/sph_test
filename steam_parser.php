@@ -1,15 +1,14 @@
 <?php
 
 class SteamParser {
-  
-  private Redis $_redis;
-  private array $sent, $price = [];
-  private string $url_listings = "https://steamcommunity.com/market/listings/730/";
-  private string $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
-  private string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
-  private string $sent_key;
 
-  
+  protected Redis $_redis;
+  protected array $sent, $price = [];
+  protected string $url_listings = "https://steamcommunity.com/market/listings/730/";
+  protected string $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
+  protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
+  protected string $sent_key;
+
   public function __construct() {
     $this->_redis = Cache::get_instance();
     $this->init();
@@ -116,7 +115,7 @@ class SteamParser {
     return $to_send;
   }
 
-  private function checkPatternPrice($skin_name, $pattern, $price): bool {
+  protected function checkPatternPrice($skin_name, $pattern, $price): bool {
     if (Parser::isRarePattern($pattern)) {
       return true;
     }
@@ -130,7 +129,7 @@ class SteamParser {
     return false;
   }
 
-  private function getChats(): array {
+  protected function getChats(): array {
     return [
       513209606 => [
         "Charm | Baby's AK" => [
