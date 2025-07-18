@@ -66,6 +66,7 @@ class SteamParserPuppeteer extends SteamParser {
     if (empty($to_check)) return $to_send;
 
     foreach (Parser::getSkinsToParse() as $skin) {
+      echo "COUNT: ". count($to_check[$skin]).PHP_EOL;
       foreach ($to_check[$skin] as $listing_id => $data) {
         if (in_array($listing_id, $this->sent)) {
           unset($to_check[$skin][$listing_id]);
