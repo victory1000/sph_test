@@ -32,9 +32,9 @@ process.stdin.on('data', async chunk => {
         const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
-        // console.log(data.assets)
+        console.log(data.listinginfo)
         let listings = {};
-        let listing_id, asset_id = 0;
+        let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
 
         Object.values(data.listinginfo).forEach(function (el) {
@@ -43,16 +43,18 @@ process.stdin.on('data', async chunk => {
         });
         console.log(listings)
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
-          console.log(_listing_id)
-          console.log(_data)
+          // console.log(_listing_id)
+          // console.log(_data)
           asset_id = _data.assetid;
-          console.log(data.assets[730][2][asset_id].descriptions);
+          // console.log(data.assets[730][2][asset_id].descriptions);
           data.assets[730][2][asset_id].descriptions.forEach(function(el) {
             if (el.value.includes('Charm Template')) {
-              console.log(el.value);
+              pattern = el.value.split(':')[1].trim();
+              listings[skin_name][_listing_id]['pattern'] = pattern;
             }
           });
         }
+        console.log(listings)
         // console.log('✅ Заголовок страницы:', data);
         // console.log('✅ Заголовок страницы: ', data);
         await browser.close();
