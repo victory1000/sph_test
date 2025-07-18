@@ -33,17 +33,20 @@ process.stdin.on('data', async chunk => {
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
         // console.log(data.listinginfo)
-        let listings = {}
+        let listings = {};
+        let listing_id = 0;
+        listings[`${skin_name}`] = {};
+
         Object.values(data.listinginfo).forEach(function (el) {
-          console.log(el.listingid, el.asset.id)
-          listings[skin_name][el.listingid] = {'assetid': el.asset.id}
+          listing_id = el.listingid;
+          listings[skin_name][`${listing_id}`] = { 'assetid': el.asset.id };
         });
         console.log(listings)
         // console.log('✅ Заголовок страницы:', data);
         // console.log('✅ Заголовок страницы: ', data);
         await browser.close();
       } catch (err) {
-        console.error('❌ Ошибка при запуске Puppeteer:', err);
+        console.log('❌ Ошибка при запуске Puppeteer:', err);
       }
     })();
 
