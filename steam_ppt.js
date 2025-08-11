@@ -37,7 +37,7 @@ process.stdin.on('data', async chunk => {
         const data = JSON.parse(preText);
         // console.log({data});
 
-        let listing_id, asset_id, pattern = 0;
+        let listing_id, asset_id, rungame, pattern = 0;
         listings[`${skin_name}`] = {};
 
         Object.values(data.listinginfo).forEach(function (el) {
@@ -50,13 +50,19 @@ process.stdin.on('data', async chunk => {
 
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
           asset_id = _data.assetid;
-          console.log(data.assets[730][2][asset_id]['actions'][0]['link']);
-          data.assets[730][2][asset_id].descriptions.forEach(function (el) {
-            if (el.value.includes('Charm Template')) {
-              pattern = parseInt(el.value.split(':')[1].trim());
-              listings[skin_name][_listing_id]['pattern'] = pattern;
-            }
+          rungame = data.assets[730][2][asset_id]['actions'][0]['link'];
+          await page.goto("https://api.csfloat.com/?url="+rungame, {
+            waitUntil: 'networkidle2',
+            timeout: 5000
           });
+          const content = await page.content();
+          console.log({content})
+          // data.assets[730][2][asset_id].descriptions.forEach(function (el) {
+          //   if (el.value.includes('Charm Template')) {
+          //     pattern = parseInt(el.value.split(':')[1].trim());
+          //     listings[skin_name][_listing_id]['pattern'] = pattern;
+          //   }
+          // });
         }
       }
 
