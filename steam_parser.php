@@ -8,6 +8,7 @@ class SteamParser {
   protected string $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
   protected string $sent_key;
+  protected bool $debug_enabled = true;
 
   public function __construct() {
     $this->_redis = Cache::get_instance();
@@ -154,6 +155,16 @@ class SteamParser {
         ],
       ]
     ];
+  }
+
+  protected function Debug(mixed $value): void {
+    if ($this->debug_enabled) {
+      if (is_string($value)) {
+        error_log("Debug: $value");
+      } else {
+        error_log("Debug: " . print_r($value, true));
+      }
+    }
   }
 
 }

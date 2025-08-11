@@ -7,7 +7,8 @@ process.stdin.on('data', async chunk => {
   // const input = chunk.toString();
   // const data = JSON.parse(input);
 
-  const skins = ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
+  const skins = ["Charm | Disco MAC"];//, "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Glamour Shot"];
+  const items = 10;
   let url;
   let listings = {};
 
@@ -20,18 +21,19 @@ process.stdin.on('data', async chunk => {
       const page = await browser.newPage();
       await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
       await page.setExtraHTTPHeaders({
-        'Accept-Language': 'en-US,en;q=0.9'
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Origin': "chrome-extension://jjicbefpemnphinccgikpdaagjebbnhg"
       });
 
       for (const skin_name of skins) {
-        console.error('Process '+skin_name);
-        url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&count=10&currency=5';
+        url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&currency=5&count='+items;
         await page.goto(url, {
           waitUntil: 'networkidle2',
-          timeout: 60000
+          timeout: 5000
         });
 
-        // const content = await page.content();
+        const content = await page.content();
+        console.log({content});
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
 
