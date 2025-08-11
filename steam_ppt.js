@@ -35,7 +35,7 @@ process.stdin.on('data', async chunk => {
         // const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
-        console.log({preText});
+        console.log({data});
 
         let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
