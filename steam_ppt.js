@@ -41,7 +41,6 @@ process.stdin.on('data', async chunk => {
         listings[`${skin_name}`] = {};
 
         Object.values(data.listinginfo).forEach(function (el) {
-          console.log({el});
           listing_id = el.listingid;
           listings[skin_name][""+listing_id+""] = {
             "assetid": el.asset.id,
@@ -51,6 +50,7 @@ process.stdin.on('data', async chunk => {
 
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
           asset_id = _data.assetid;
+          console.log(data.assets[730][2][asset_id]);
           data.assets[730][2][asset_id].descriptions.forEach(function (el) {
             if (el.value.includes('Charm Template')) {
               pattern = parseInt(el.value.split(':')[1].trim());
