@@ -35,12 +35,13 @@ process.stdin.on('data', async chunk => {
         // const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
-        console.log({data});
+        // console.log({data});
 
         let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
 
         Object.values(data.listinginfo).forEach(function (el) {
+          console.log({el});
           listing_id = el.listingid;
           listings[skin_name][""+listing_id+""] = {
             "assetid": el.asset.id,
