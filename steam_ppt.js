@@ -51,14 +51,17 @@ process.stdin.on('data', async chunk => {
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
           asset_id = _data.assetid;
           rungame = data.assets[730][2][asset_id]['actions'][0]['link'];
-          setTimeout(async () => {
-            await page.goto("https://api.csfloat.com/?url="+rungame, {
-              waitUntil: 'networkidle2',
-              timeout: 5000
-            });
-            const content = await page.content();
-            console.log({content})
+          console.log({rungame});
+          setTimeout( () => {
+
           }, 1000);
+          await page.goto("https://api.csfloat.com/?url="+rungame, {
+            waitUntil: 'networkidle2',
+            timeout: 5000
+          });
+          const content = await page.content();
+          console.log({content})
+          break;
 
           // data.assets[730][2][asset_id].descriptions.forEach(function (el) {
           //   if (el.value.includes('Charm Template')) {
