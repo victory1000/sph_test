@@ -42,15 +42,13 @@ process.stdin.on('data', async chunk => {
         const data = JSON.parse(preText);
 
         listings[`${skin_name}`] = {};
-        const processed_skins = php_input[skin_name] || [];
         let count_listings = 0;
-        // console.error({processed_skins});
 
         const $ = cheerio.load(data.results_html);
 
         $('.market_listing_row').each((i, el) => {
           const listing_id = $(el).attr('id').replace('listing_', '');
-          if (processed_skins.includes(listing_id)) {
+          if (php_input.includes(listing_id)) {
             all_listings.push(listing_id);
           } else if (count_listings < 3) {
             all_listings.push(listing_id);
