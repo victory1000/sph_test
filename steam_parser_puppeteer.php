@@ -71,9 +71,10 @@ class SteamParserPuppeteer extends SteamParser {
 
       $this->Debug("output", $output);
 
-      $listings = json_decode($output, true, flags: JSON_BIGINT_AS_STRING);
+      $output_listings = json_decode($output, true, flags: JSON_BIGINT_AS_STRING);
       unset($output, $error);
-      $this->Debug("OUTPUT (parsed skins)", $listings);
+      $this->Debug("OUTPUT (output_listings)", $output_listings);
+      $listings = $output_listings['new_listings'];
 
       foreach ($processed_listings as $skin => $ls_arr) {
         $processed_listings[$skin] = array_merge($ls_arr, empty($listings[$skin]) ? [] : array_keys($listings[$skin]));
