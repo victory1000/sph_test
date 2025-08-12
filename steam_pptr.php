@@ -8,7 +8,9 @@ try {
   $_steam = new SteamParserPuppeteer();
   $_steam->Process();
 } catch (Throwable $e) {
-  Parser::ErrorTG($e->getMessage());
+  $message = "Exception: " . $e->getMessage() . " in file " . $e->getFile() . " on line " . $e->getLine() . PHP_EOL;
+  $message .= "Backtrace:" . PHP_EOL . $e->getTraceAsString();
+  Parser::ErrorTG($message);
 }
 
 $_steam->Debug("Execution", [
