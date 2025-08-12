@@ -47,10 +47,10 @@ class SteamParserPuppeteer extends SteamParser {
       fclose($pipes[2]);
 
       $exitCode = proc_close($process);
-      echo "Exit code: $exitCode".PHP_EOL;
 
-      echo "Ответ JS: $output".PHP_EOL;
-      if ($error) echo "Ошибки: $error".PHP_EOL;
+      $this->Debug("Exit code: $exitCode".PHP_EOL."JS output: $output".PHP_EOL);
+
+      if ($error) $this->Debug("ERRORS: $error".PHP_EOL);
 
       $listings = json_decode($output, true);
       unset($output, $error);

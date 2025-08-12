@@ -84,7 +84,7 @@ process.stdin.on('data', async chunk => {
             console.error("Ошибка при переходе:", err.message);
           }
 
-          break;
+          // old logic
           // data.assets[730][2][asset_id].descriptions.forEach(function (el) {
           //   if (el.value.includes('Charm Template')) {
           //     pattern = parseInt(el.value.split(':')[1].trim());

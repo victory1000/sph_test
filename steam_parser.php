@@ -160,9 +160,9 @@ class SteamParser {
   protected function Debug(mixed $value): void {
     if ($this->debug_enabled) {
       if (is_string($value)) {
-        error_log("Debug: $value");
+        error_log("\nDebug: $value");
       } else {
-        error_log("Debug: " . print_r($value, true));
+        error_log("\nDebug: " . print_r($value, true));
       }
     }
   }
