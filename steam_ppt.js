@@ -1,5 +1,6 @@
 global.File = class {};
 const cheerio = require('cheerio');
+const fetch = require('node-fetch');
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(StealthPlugin());
@@ -47,7 +48,7 @@ process.stdin.on('data', async chunk => {
 
         $('.market_listing_row').each((i, el) => {
           const listing_id = $(el).attr('id').replace('listing_', '');
-          if (count_listings < 5 && !processed_skins.includes(listing_id)) {
+          if (count_listings < 3 && !processed_skins.includes(listing_id)) {
             count_listings++;
             listings[skin_name][""+listing_id+""] = {
               "inspect": $(el).find('.market_listing_row_action a').attr('href') || null
