@@ -157,7 +157,7 @@ class SteamParser {
     ];
   }
 
-  protected function Debug(string $caption, mixed $value): void {
+  public function Debug(string $caption, mixed $value): void {
     if ($this->debug_enabled) {
       if (is_string($value)) {
         error_log("Debug ::$caption:: $value".PHP_EOL);

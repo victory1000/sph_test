@@ -5,6 +5,7 @@ $start_mem = memory_get_usage();
 $start_time = microtime(true);
 
 $_steam = new SteamParserPuppeteer();
+$_steam->Debug("Im here", $start_mem);
 $_steam->Process();
 
 error_log("Execution: ".print_r([
