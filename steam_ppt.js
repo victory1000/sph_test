@@ -42,8 +42,7 @@ process.stdin.on('data', async chunk => {
         const processed_skins = php_input[skin_name] || [];
         let count_listings = 0;
         // console.error({processed_skins});
-// посчитать время за которое он открывает страницу и открывает браузер
-//         от этого изменять время задежки
+
         const $ = cheerio.load(data.results_html);
 
         $('.market_listing_row').each((i, el) => {
@@ -66,7 +65,7 @@ process.stdin.on('data', async chunk => {
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
           try {
             // Задержка перед запросом (чтобы не попасть на лимиты)
-            await new Promise(res => setTimeout(res, 500));
+            await new Promise(res => setTimeout(res, 100));
 
             if (page.isClosed()) {
               const startTime = performance.now();
