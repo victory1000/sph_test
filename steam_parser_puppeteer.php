@@ -23,8 +23,10 @@ class SteamParserPuppeteer extends SteamParser {
   }
 
   protected function ParseSkins(): array {
+    $processed_skins = $this->_redis->get('processed_skins');
+    $this->Debug("processed_skins", $processed_skins);
     $listings = [];
-    $input = "test";
+    $input = "$processed_skins";
 
     $process = proc_open(
       'node /opt/sph_test/steam_ppt.js',
@@ -48,13 +50,21 @@ class SteamParserPuppeteer extends SteamParser {
 
       $exitCode = proc_close($process);
 
-      $this->Debug("Exit code: $exitCode".PHP_EOL."JS output: $output".PHP_EOL);
+      $this->Debug("Exit code", "$exitCode".PHP_EOL."JS output: $output".PHP_EOL);
 
-      if ($error) $this->Debug("ERRORS: $error".PHP_EOL);
+      if ($error) $this->Debug("ERRORS", "$error".PHP_EOL);
 
       $listings = json_decode($output, true);
       unset($output, $error);
-      $this->Debug($listings);
+      $this->Debug("listings", $listings);
+
+      $listings_redis = [];
+      foreach (Parser::getSkinsToParse() as $skin) {
+        $listings_redis[$skin] = empty($listings[$skin]) ? [] : array_keys($listings_redis[$skin]);
+      }
+      $this->Debug("redis", $listings_redis);
+      exit();
+//      $this->_redis->set('price', json_encode($this->price), 3600);
     }
 
     return $listings;
@@ -66,7 +76,7 @@ class SteamParserPuppeteer extends SteamParser {
 
     foreach (Parser::getSkinsToParse() as $skin) {
       if (count($to_check[$skin]) != 100) {
-        $this->Debug("!!!!! WARNING !!!!! count = ".count($to_check[$skin]));
+        $this->Debug("!!!!! WARNING !!!!!", "count = ".count($to_check[$skin]));
       }
       foreach ($to_check[$skin] as $listing_id => $data) {
         if (in_array($listing_id, $this->sent)) {

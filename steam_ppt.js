@@ -6,11 +6,11 @@ puppeteer.use(StealthPlugin());
 
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', async chunk => {
-  // const input = chunk.toString();
-  // const data = JSON.parse(input);
+  const input = chunk.toString();
+  const php_input = JSON.parse(input);
 
   const skins = ["Charm | Disco MAC"];//, "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Glamour Shot"];
-  const items = 10;
+  const items = 20;
   let url;
   let listings = {};
 
@@ -39,21 +39,27 @@ process.stdin.on('data', async chunk => {
         const data = JSON.parse(preText);
         // console.log({data});
 
-        let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
+        let count_listings = 0;
 
         const $ = cheerio.load(data.results_html);
+
         $('.market_listing_row').each((i, el) => {
-          listing_id = $(el).attr('id').replace('listing_', '');
-          listings[skin_name][""+listing_id+""] = {
-            "inspect": $(el).find('.market_listing_row_action a').attr('href') || null
-          };
+          const listing_id = $(el).attr('id').replace('listing_', '');
+          const processed_skins = php_input[skin_name] || [];
+          if (!processed_skins.includes(listing_id) && count_listings <= 10) {
+            count_listings++;
+            listings[skin_name][""+listing_id+""] = {
+              "inspect": $(el).find('.market_listing_row_action a').attr('href') || null
+            };
+          }
         });
 
         Object.values(data.listinginfo).forEach(function (el) {
-          listing_id = el.listingid;
-          listings[skin_name][listing_id]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
-          // "assetid": el.asset.id,
+          if (listings[skin_name].hasOwnProperty(el.listingid)) {
+            listings[skin_name][el.listingid]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
+            // "assetid": el.asset.id,
+          }
         });
 
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
