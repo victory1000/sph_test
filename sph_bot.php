@@ -17,9 +17,29 @@ while ($time < 60) {
       'memory' => round((memory_get_usage() - $start_mem) / 1048576.00, 2),
       'max memory' => memory_get_peak_usage() / 1048576.00
     ]);
+    if ($time < 60) {
+      sleep(30-$processing_time);
+      error_log("sleep = ".(30-$processing_time));
+    }
   } catch (Throwable $e) {
     $message = "Exception: " . $e->getMessage() . " in file " . $e->getFile() . " on line " . $e->getLine() . PHP_EOL;
     $message .= "Backtrace:" . PHP_EOL . $e->getTraceAsString();
     Parser::ErrorTG($message);
   }
 }
+
+//$lockFile = fopen(__DIR__ . '/script.lock', 'c');
+//
+//// Если не удалось получить блокировку — значит, скрипт уже запущен
+//if (!flock($lockFile, LOCK_EX | LOCK_NB)) {
+//  echo "Скрипт уже запущен, выходим..." . PHP_EOL;
+//  exit;
+//}
+//
+//// Твой код
+//echo date('Y-m-d H:i:s') . " — Начало работы" . PHP_EOL;
+//sleep(40); // имитация работы
+//
+//// Снимаем блокировку
+//flock($lockFile, LOCK_UN);
+//fclose($lockFile);
