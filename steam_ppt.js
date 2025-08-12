@@ -41,7 +41,7 @@ process.stdin.on('data', async chunk => {
         listings[`${skin_name}`] = {};
         const processed_skins = php_input[skin_name] || [];
         let count_listings = 0;
-        console.error({processed_skins});
+        // console.error({processed_skins});
 
         const $ = cheerio.load(data.results_html);
 
