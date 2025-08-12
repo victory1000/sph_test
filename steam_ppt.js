@@ -9,7 +9,7 @@ process.stdin.on('data', async chunk => {
   console.error({chunk});
   const input = chunk.toString();
   console.error({input});
-  const php_input = JSON.parse(input);
+  const php_input = input;// JSON.parse(input);
   console.error({php_input});
 
   const skins = ["Charm | Disco MAC"];//, "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Glamour Shot"];
