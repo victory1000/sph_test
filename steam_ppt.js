@@ -48,7 +48,7 @@ process.stdin.on('data', async chunk => {
         $('.market_listing_row').each((i, el) => {
           const listing_id = $(el).attr('id').replace('listing_', '');
           all_listings.push(listing_id);
-          if (count_listings < 3 && !processed_skins.includes(listing_id)) {
+          if (count_listings < 1 && !processed_skins.includes(listing_id)) {
             count_listings++;
             listings[skin_name][""+listing_id+""] = {
               "inspect": $(el).find('.market_listing_row_action a').attr('href') || null
