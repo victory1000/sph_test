@@ -64,28 +64,25 @@ process.stdin.on('data', async chunk => {
 
           console.log(_data.inspect);
 
-          setTimeout(async () => {
-            try {
-              if (!page.isClosed()) {
-                await page.goto("https://api.csfloat.com/?url=" + _data.inspect, {
-                  waitUntil: 'networkidle2',
-                  timeout: 5000
-                });
-              } else {
-                page = await browser.newPage();
-                await page.goto("https://api.csfloat.com/?url=" + _data.inspect, {
-                  waitUntil: 'networkidle2',
-                  timeout: 5000
-                });
-              }
+          try {
+            // Задержка перед запросом (чтобы не попасть на лимиты)
+            await new Promise(res => setTimeout(res, 1000));
 
-              const content = await page.content();
-              console.log({ content });
-
-            } catch (err) {
-              console.error("Ошибка при переходе:", err.message);
+            if (page.isClosed()) {
+              page = await browser.newPage();
             }
-          }, 1000);
+
+            await page.goto("https://api.csfloat.com/?url=" + _data.inspect, {
+              waitUntil: 'networkidle2',
+              timeout: 5000
+            });
+
+            const content = await page.content();
+            console.log({ content });
+
+          } catch (err) {
+            console.error("Ошибка при переходе:", err.message);
+          }
 
           break;
           // data.assets[730][2][asset_id].descriptions.forEach(function (el) {
