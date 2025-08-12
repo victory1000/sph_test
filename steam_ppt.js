@@ -68,29 +68,46 @@ process.stdin.on('data', async chunk => {
             // Задержка перед запросом (чтобы не попасть на лимиты)
             // await new Promise(res => setTimeout(res, 100));
 
-            if (page.isClosed()) {
-              const startTime = performance.now();
-              page = await browser.newPage();
-              await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
-              await page.setExtraHTTPHeaders({
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Origin': "chrome-extension://jjicbefpemnphinccgikpdaagjebbnhg"
-              });
-              const endTime = performance.now();
-              console.error(`New browser page ${endTime - startTime} ms`);
-            }
+            // if (page.isClosed()) {
+            //   const startTime = performance.now();
+            //   page = await browser.newPage();
+            //   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
+            //   await page.setExtraHTTPHeaders({
+            //     'Accept-Language': 'en-US,en;q=0.9',
+            //     'Origin': "chrome-extension://jjicbefpemnphinccgikpdaagjebbnhg"
+            //   });
+            //   const endTime = performance.now();
+            //   console.error(`New browser page ${endTime - startTime} ms`);
+            // }
+            //
+            // const startTime = performance.now();
+            // await page.goto("https://api.csfloat.com/?url=" + _data.inspect, {
+            //   waitUntil: 'networkidle2',
+            //   timeout: 5000
+            // });
+            // const endTime = performance.now();
+            // console.error(`Goto csfloat page ${endTime - startTime} ms`);
+            //
+            // // const content = await page.content();
+            // const preText = await page.$eval('pre', el => el.innerText);
+            // const data2 = JSON.parse(preText);
 
             const startTime = performance.now();
-            await page.goto("https://api.csfloat.com/?url=" + _data.inspect, {
-              waitUntil: 'networkidle2',
+            const res = await fetch("https://api.csfloat.com/?url=" + _data.inspect, {
+              headers: {
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Origin': 'chrome-extension://jjicbefpemnphinccgikpdaagjebbnhg',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
+              },
               timeout: 5000
             });
-            const endTime = performance.now();
-            console.error(`Goto csfloat page ${endTime - startTime} ms`);
 
-            // const content = await page.content();
-            const preText = await page.$eval('pre', el => el.innerText);
-            const data2 = JSON.parse(preText);
+            const json = await res.json();
+            const endTime = performance.now();
+            console.error(`Fetch csfloat API ${endTime - startTime} ms`);
+            console.error({json});
+            break;
+
             listings[skin_name][_listing_id]["pattern"] = data2.iteminfo.keychains[0].pattern;
 
             if (listings[skin_name][_listing_id]["pattern"].length === 0) {
