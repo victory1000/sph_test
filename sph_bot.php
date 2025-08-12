@@ -19,8 +19,8 @@ while ($time < 60) {
       'max memory' => memory_get_peak_usage() / 1048576.00
     ]);
     if ($time < 60) {
-      sleep(30-$processing_time);
       error_log("sleep = ".(30-$processing_time));
+      sleep(30-$processing_time);
     }
   } catch (Throwable $e) {
     $message = "Exception: " . $e->getMessage() . " in file " . $e->getFile() . " on line " . $e->getLine() . PHP_EOL;
