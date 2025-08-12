@@ -165,7 +165,7 @@ process.stdin.on('data', async chunk => {
 
       console.log(JSON.stringify({"new_listings": listings, "all_listings": all_listings})); // output for php
 
-      await browser.close();
+      // await browser.close();
     } catch (err) {
       console.error('❌ Ошибка при запуске Puppeteer:', err);
     }
