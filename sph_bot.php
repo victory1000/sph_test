@@ -3,7 +3,7 @@ include_once "parser.php";
 error_log('start');
 
 $time = 30;
-while ($time < 60) {
+//while ($time < 60) {
   $start_mem = memory_get_usage();
   $start_time = microtime(true);
   try {
@@ -20,14 +20,14 @@ while ($time < 60) {
     ]);
     if ($time < 60) {
       error_log("sleep = ".(30-$processing_time));
-      sleep(30-$processing_time);
+//      sleep(30-$processing_time);
     }
   } catch (Throwable $e) {
     $message = "Exception: " . $e->getMessage() . " in file " . $e->getFile() . " on line " . $e->getLine() . PHP_EOL;
     $message .= "Backtrace:" . PHP_EOL . $e->getTraceAsString();
     Parser::ErrorTG($message);
   }
-}
+//}
 error_log('end');
 
 //$lockFile = fopen(__DIR__ . '/script.lock', 'c');
