@@ -6,9 +6,9 @@ puppeteer.use(StealthPlugin());
 
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', async chunk => {
-  const input = chunk.toString();
+  // const input = chunk.toString();
   // const php_input = JSON.parse(input);
-  console.log({input});
+  // console.log({input});
 
   const skins = ["Charm | Disco MAC"];//, "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Glamour Shot"];
   const items = 20;
