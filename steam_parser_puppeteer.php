@@ -58,6 +58,7 @@ class SteamParserPuppeteer extends SteamParser {
         $this->Debug("ERRORS", "$error".PHP_EOL);
         if (!$this->debug_enabled) {
           Parser::ErrorTG($error);
+          exit();
         }
       }
       exit();
