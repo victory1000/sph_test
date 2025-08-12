@@ -1,6 +1,13 @@
 <?php
 include_once "parser.php";
-// exit(); // TODO сделать остановку сервера через бота
+// TODO сделать остановку сервера через бота
+$lockFile = fopen(__DIR__ . '/script_bot.lock', 'c');
+
+if (!flock($lockFile, LOCK_EX | LOCK_NB)) {
+  Parser::ErrorTG("Script already running, exiting");
+  fclose($lockFile);
+  exit;
+}
 //error_log('start');
 
 $time = 30;
@@ -27,22 +34,11 @@ $time = 30;
     $message = "Exception: " . $e->getMessage() . " in file " . $e->getFile() . " on line " . $e->getLine() . PHP_EOL;
     $message .= "Backtrace:" . PHP_EOL . $e->getTraceAsString();
     Parser::ErrorTG($message);
+    fclose($lockFile);
+    exit;
   }
 //}
 //error_log('end');
 
-//$lockFile = fopen(__DIR__ . '/script.lock', 'c');
-//
-//// Если не удалось получить блокировку — значит, скрипт уже запущен
-//if (!flock($lockFile, LOCK_EX | LOCK_NB)) {
-//  echo "Скрипт уже запущен, выходим..." . PHP_EOL;
-//  exit;
-//}
-//
-//// Твой код
-//echo date('Y-m-d H:i:s') . " — Начало работы" . PHP_EOL;
-//sleep(40); // имитация работы
-//
-//// Снимаем блокировку
-//flock($lockFile, LOCK_UN);
-//fclose($lockFile);
+flock($lockFile, LOCK_UN);
+fclose($lockFile);
