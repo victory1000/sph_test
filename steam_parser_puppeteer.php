@@ -61,7 +61,6 @@ class SteamParserPuppeteer extends SteamParser {
           exit();
         }
       }
-      exit();
 
       $output_listings = json_decode($output, true, flags: JSON_BIGINT_AS_STRING);
       unset($output, $error);
