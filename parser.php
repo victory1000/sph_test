@@ -54,7 +54,13 @@ class Parser {
   }
 
   static function getSkinsToParse(): array {
-    return ["Charm | Disco MAC", "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP"];//, , "Charm | Glamour Shot"];
+    return [
+      "Charm | Disco MAC",
+      "Charm | Baby's AK",
+      "Charm | Die-cast AK",
+      "Charm | Titeenium AWP",
+      "Charm | Glamour Shot"
+    ];
   }
 
   static function ErrorTG(mixed $message): void {

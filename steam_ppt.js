@@ -6,12 +6,22 @@ puppeteer.use(StealthPlugin());
 
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', async chunk => {
+
   const input = chunk.toString();
   const php_input = JSON.parse(input);
 
-  const skins = ["Charm | Disco MAC", "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP"];//, "Charm | Glamour Shot"];
-  const items = 100;
-  let url; let all_listings = [];
+  const skins = [
+    "Charm | Disco MAC",
+    "Charm | Baby's AK",
+    "Charm | Die-cast AK",
+    "Charm | Titeenium AWP",
+    "Charm | Glamour Shot"
+  ];
+
+  const render_items = 100;
+  const processing_items = 10;
+
+  let all_listings = [];
   let listings = {};
 
   await (async () => {
@@ -29,7 +39,7 @@ process.stdin.on('data', async chunk => {
 
       for (const skin_name of skins) {
         const startTime = performance.now();
-        url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&currency=5&count='+items;
+        const url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&currency=5&count='+render_items;
         await page.goto(url, {
           waitUntil: 'networkidle2',
           timeout: 5000
@@ -50,7 +60,7 @@ process.stdin.on('data', async chunk => {
           const listing_id = $(el).attr('id').replace('listing_', '');
           if (php_input.includes(listing_id)) {
             all_listings.push(listing_id);
-          } else if (count_listings < 3) {
+          } else if (count_listings < processing_items) {
             all_listings.push(listing_id);
             count_listings++;
             listings[skin_name][""+listing_id+""] = {
@@ -124,7 +134,7 @@ process.stdin.on('data', async chunk => {
             console.error("Какая-то ошибка: ", err.message);
           }
 
-          // old logic
+          // old logic parsing steam pattern
           // data.assets[730][2][asset_id].descriptions.forEach(function (el) {
           //   if (el.value.includes('Charm Template')) {
           //     pattern = parseInt(el.value.split(':')[1].trim());
