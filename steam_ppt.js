@@ -1,6 +1,5 @@
 global.File = class {};
 const cheerio = require('cheerio');
-const fetch = require('node-fetch');
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(StealthPlugin());
@@ -98,9 +97,12 @@ process.stdin.on('data', async chunk => {
                 'Accept-Language': 'en-US,en;q=0.9',
                 'Origin': 'chrome-extension://jjicbefpemnphinccgikpdaagjebbnhg',
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
-              },
-              timeout: 5000
+              }
             });
+
+            if (!res.ok) {
+              console.error(`HTTP error! status: ${res.status}`);
+            }
 
             const json = await res.json();
             const endTime = performance.now();

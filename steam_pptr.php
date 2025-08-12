@@ -4,8 +4,12 @@ include_once "parser.php";
 $start_mem = memory_get_usage();
 $start_time = microtime(true);
 
-$_steam = new SteamParserPuppeteer();
-$_steam->Process();
+try {
+  $_steam = new SteamParserPuppeteer();
+  $_steam->Process();
+} catch (Throwable $e) {
+  Parser::ErrorTG($e->getMessage());
+}
 
 $_steam->Debug("Execution", [
   'time' => microtime(true) - $start_time,

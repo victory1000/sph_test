@@ -57,5 +57,14 @@ class Parser {
     return ["Charm | Disco MAC", "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP"];//, , "Charm | Glamour Shot"];
   }
 
+  static function ErrorTG(mixed $message): void {
+    $url = "https://api.telegram.org/bot7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4/sendMessage?" . http_build_query([
+        'chat_id' => 513209606,
+        'text' => urlencode($message),
+        'parse_mode' => 'html'
+      ]);
+    file_get_contents($url);
+  }
+
 }
 
