@@ -1,5 +1,6 @@
 <?php
 include_once "parser.php";
+error_log('start');
 
 $start_mem = memory_get_usage();
 $start_time = microtime(true);
@@ -10,6 +11,7 @@ while ($time < 60) {
     $_steam = new SteamParserPuppeteer();
     $_steam->Process();
     $processing_time = microtime(true) - $start_time;
+    error_log("\$processing_time = ".$processing_time);
     $time += max($processing_time, 25);
     error_log("time = $time");
     $_steam->Debug("Execution", [
