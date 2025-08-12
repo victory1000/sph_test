@@ -66,6 +66,8 @@ class SteamParserPuppeteer extends SteamParser {
       unset($output, $error);
       $this->_redis->set('processed_listings', json_encode($output_listings['all_listings']), 43200);
 
+      error_log("new_listings = ".print_r($output_listings['new_listings'], true)); // todo delete
+
       $this->Debug("OUTPUT (output_listings)", $output_listings);
       $this->Debug("INSERT REDIS", json_encode($output_listings['all_listings']));
     }
