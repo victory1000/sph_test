@@ -20,7 +20,7 @@ process.stdin.on('data', async chunk => {
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
       });
-      const page = await browser.newPage();
+      let page = await browser.newPage();
       await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
       await page.setExtraHTTPHeaders({
         'Accept-Language': 'en-US,en;q=0.9',
@@ -50,7 +50,7 @@ process.stdin.on('data', async chunk => {
           };
         });
 
-        console.log(JSON.stringify(listings))
+        // console.log(JSON.stringify(listings))
 
         Object.values(data.listinginfo).forEach(function (el) {
           listing_id = el.listingid;
@@ -58,18 +58,35 @@ process.stdin.on('data', async chunk => {
           // "assetid": el.asset.id,
         });
 
-        console.log(JSON.stringify(listings))
+        // console.log(JSON.stringify(listings))
 
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
+
           console.log(_data.inspect);
+
           setTimeout(async () => {
-            await page.goto("https://api.csfloat.com/?url="+_data.inspect, {
-              waitUntil: 'networkidle2',
-              timeout: 5000
-            });
-            const content = await page.content();
-            console.log({content})
+            try {
+              if (!page.isClosed()) {
+                await page.goto("https://api.csfloat.com/?url=" + _data.inspect, {
+                  waitUntil: 'networkidle2',
+                  timeout: 5000
+                });
+              } else {
+                page = await browser.newPage();
+                await page.goto("https://api.csfloat.com/?url=" + _data.inspect, {
+                  waitUntil: 'networkidle2',
+                  timeout: 5000
+                });
+              }
+
+              const content = await page.content();
+              console.log({ content });
+
+            } catch (err) {
+              console.error("Ошибка при переходе:", err.message);
+            }
           }, 1000);
+
           break;
           // data.assets[730][2][asset_id].descriptions.forEach(function (el) {
           //   if (el.value.includes('Charm Template')) {
@@ -80,7 +97,7 @@ process.stdin.on('data', async chunk => {
         }
       }
 
-      // console.log(JSON.stringify(listings))
+      console.log(JSON.stringify(listings))
 
       await browser.close();
     } catch (err) {
