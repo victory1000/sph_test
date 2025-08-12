@@ -50,20 +50,13 @@ process.stdin.on('data', async chunk => {
           };
         });
 
-        // console.log(JSON.stringify(listings))
-
         Object.values(data.listinginfo).forEach(function (el) {
           listing_id = el.listingid;
           listings[skin_name][listing_id]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
           // "assetid": el.asset.id,
         });
 
-        // console.log(JSON.stringify(listings))
-
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
-
-          console.log(_data.inspect);
-
           try {
             // Задержка перед запросом (чтобы не попасть на лимиты)
             await new Promise(res => setTimeout(res, 1000));
@@ -82,8 +75,10 @@ process.stdin.on('data', async chunk => {
               timeout: 5000
             });
 
-            const content = await page.content();
-            console.log({ content });
+            // const content = await page.content();
+            const preText = await page.$eval('pre', el => el.innerText);
+            const data2 = JSON.parse(preText);
+            listings[skin_name][_listing_id]["pattern"] = data2.iteminfo.keychains[0].pattern;
 
           } catch (err) {
             console.error("Ошибка при переходе:", err.message);
@@ -99,7 +94,7 @@ process.stdin.on('data', async chunk => {
         }
       }
 
-      console.log(JSON.stringify(listings))
+      // console.log(JSON.stringify(listings))
 
       await browser.close();
     } catch (err) {

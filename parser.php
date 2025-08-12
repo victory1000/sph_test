@@ -54,7 +54,7 @@ class Parser {
   }
 
   static function getSkinsToParse(): array {
-    return ["Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Disco MAC", "Charm | Glamour Shot"];
+    return ["Charm | Disco MAC"];//"Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", , "Charm | Glamour Shot"];
   }
 
 }
