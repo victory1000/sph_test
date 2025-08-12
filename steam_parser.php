@@ -38,7 +38,7 @@ class SteamParser {
     foreach ($to_send as $chat_id => $skins) {
       foreach ($skins as $skin) {
 //        $sent[] = $skin['listing_id'];
-        $text = "$skin[name] Template: <b>$skin[pattern]</b>\nPrice: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> ($skin[price_diff2] руб.) \n$skin[url]";
+        $text = "$skin[name] Template: <b>$skin[pattern]</b>\nPrice: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> ($skin[price_diff2] руб.) \nListingID $skin[listing_id] \nAssetID $skin[asset_id]  \n$skin[url]";
         $url = "https://api.telegram.org/bot$this->token/sendMessage?" . http_build_query([
             'chat_id' => $chat_id,
             'text' => $text,
@@ -147,7 +147,7 @@ class SteamParser {
         ],
         "Charm | Titeenium AWP" => [
           ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-          ['pattern_m' => 1, 'pattern_l' => 13_000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 1_000, 'price_percent' => 30],
         ],
         "Charm | Disco MAC" => [
           ['pattern_m' => 89_000, 'pattern_l' => 100_000, 'price_percent' => 30],

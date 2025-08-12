@@ -93,7 +93,7 @@ process.stdin.on('data', async chunk => {
         Object.values(data.listinginfo).forEach(function (el) {
           if (listings[skin_name].hasOwnProperty(el.listingid)) {
             listings[skin_name][el.listingid]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
-            // "assetid": el.asset.id,
+            listings[skin_name][el.listingid]["asset_id"] = el.asset.id;
           }
         });
 

@@ -96,9 +96,10 @@ class SteamParserPuppeteer extends SteamParser {
             'listing_id' => $listing_id,
             'pattern' => $p_p['pattern'],
             'price' => $p_p['price'],
-            'url' => $this->url_listings . rawurlencode($skin_name) . "?filter=" . $p_p['pattern'],
+            'url' => $this->url_listings . rawurlencode($skin_name), // . "?filter=" . $p_p['pattern'],
             'price_diff1' => $price_diff,
             'price_diff2' => $p_p['price'] - $this->price[$skin_name],
+            'asset_id' => $p_p['asset_id'],
           ];
         }
       }
