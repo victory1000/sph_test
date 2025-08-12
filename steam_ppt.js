@@ -48,15 +48,15 @@ process.stdin.on('data', async chunk => {
         // console.log({data});
 
         listings[`${skin_name}`] = {};
+        const processed_skins = php_input[skin_name] || [];
         let count_listings = 0;
+        console.error({processed_skins});
 
         const $ = cheerio.load(data.results_html);
 
         $('.market_listing_row').each((i, el) => {
           const listing_id = $(el).attr('id').replace('listing_', '');
-          const processed_skins = php_input[skin_name] || [];
-          console.error({processed_skins});
-          console.error("!processed_skins.includes(listing_id) === "+!processed_skins.includes(listing_id) );
+          console.error("includes "+listing_id+" === "+!processed_skins.includes(listing_id) );
           if (count_listings <= 2 && !processed_skins.includes(listing_id)) {
             count_listings++;
             listings[skin_name][""+listing_id+""] = {
