@@ -23,10 +23,10 @@ class SteamParserPuppeteer extends SteamParser {
   }
 
   protected function ParseSkins(): array {
-    $processed_skins = $this->_redis->get('processed_skins');
+    $processed_skins = json_decode($this->_redis->get('processed_skins'), true) ?? [];
     $this->Debug("processed_skins", $processed_skins);
     $listings = [];
-    $input = "$processed_skins";
+    $input = json_encode($processed_skins);
 
     $process = proc_open(
       'node /opt/sph_test/steam_ppt.js',
