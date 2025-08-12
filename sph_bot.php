@@ -2,11 +2,10 @@
 include_once "parser.php";
 error_log('start');
 
-$start_mem = memory_get_usage();
-$start_time = microtime(true);
-
 $time = 30;
 while ($time < 60) {
+  $start_mem = memory_get_usage();
+  $start_time = microtime(true);
   try {
     $_steam = new SteamParserPuppeteer();
     $_steam->Process();
