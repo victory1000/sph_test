@@ -107,10 +107,8 @@ process.stdin.on('data', async chunk => {
             const json = await res.json();
             const endTime = performance.now();
             console.error(`Fetch csfloat API ${endTime - startTime} ms`);
-            console.error({json});
-            break;
 
-            listings[skin_name][_listing_id]["pattern"] = data2.iteminfo.keychains[0].pattern;
+            listings[skin_name][_listing_id]["pattern"] = json.iteminfo.keychains[0].pattern;
 
             if (listings[skin_name][_listing_id]["pattern"].length === 0) {
               console.error("Empty pattern "+skin_name+" "+_listing_id+" ", listings[skin_name][_listing_id]);
