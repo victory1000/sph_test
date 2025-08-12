@@ -38,14 +38,40 @@ process.stdin.on('data', async chunk => {
       });
 
       for (const skin_name of skins) {
+        // const startTime = performance.now();
+        // const url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&currency=5&count='+render_items;
+        // await page.goto(url, {
+        //   waitUntil: 'networkidle2',
+        //   timeout: 5000
+        // });
+        // const endTime = performance.now();
+        // console.error(`Goto steamcommunity market ${endTime - startTime} ms`);
+
+
+
+        // test
         const startTime = performance.now();
-        const url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&currency=5&count='+render_items;
-        await page.goto(url, {
-          waitUntil: 'networkidle2',
-          timeout: 5000
+        const res = await fetch('https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&currency=5&count='+render_items, {
+          headers: {
+            'Accept-Language': 'en-US,en;q=0.9',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
+          }
         });
+
+        if (!res.ok) {
+          console.error(`steamcommunity HTTP error! status: ${res.status}`);
+        }
+
+        const json = await res.json();
         const endTime = performance.now();
-        console.error(`Goto steamcommunity market ${endTime - startTime} ms`);
+        console.error(`Fetch csfloat API ${endTime - startTime} ms`);
+        console.error({json});
+        process.exit();
+        return;
+        // test
+
+
+
 
         // const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
