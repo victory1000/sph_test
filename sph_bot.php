@@ -28,6 +28,7 @@ while ($time < 60) {
     Parser::ErrorTG($message);
   }
 }
+error_log('end');
 
 //$lockFile = fopen(__DIR__ . '/script.lock', 'c');
 //
