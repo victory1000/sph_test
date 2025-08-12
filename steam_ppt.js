@@ -9,7 +9,7 @@ process.stdin.on('data', async chunk => {
   const input = chunk.toString();
   const php_input = JSON.parse(input);
 
-  const skins = ["Charm | Disco MAC", "Charm | Baby's AK", "Charm | Die-cast AK"];//, "Charm | Titeenium AWP", "Charm | Glamour Shot"];
+  const skins = ["Charm | Disco MAC", "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP"];//, "Charm | Glamour Shot"];
   const items = 100;
   let url;
   let listings = {};
