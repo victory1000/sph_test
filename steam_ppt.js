@@ -11,7 +11,7 @@ process.stdin.on('data', async chunk => {
 
   const skins = ["Charm | Disco MAC", "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP"];//, "Charm | Glamour Shot"];
   const items = 100;
-  let url; let all_listings;
+  let url; let all_listings = [];
   let listings = {};
 
   await (async () => {
