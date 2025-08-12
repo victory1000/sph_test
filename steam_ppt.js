@@ -11,7 +11,7 @@ process.stdin.on('data', async chunk => {
 
   const skins = ["Charm | Disco MAC", "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP"];//, "Charm | Glamour Shot"];
   const items = 100;
-  let url;
+  let url; let all_listings;
   let listings = {};
 
   await (async () => {
@@ -28,11 +28,14 @@ process.stdin.on('data', async chunk => {
       });
 
       for (const skin_name of skins) {
+        const startTime = performance.now();
         url = 'https://steamcommunity.com/market/listings/730/' + encodeURIComponent(skin_name) + '/render/?query=&start=0&country=RU&currency=5&count='+items;
         await page.goto(url, {
           waitUntil: 'networkidle2',
           timeout: 5000
         });
+        const endTime = performance.now();
+        console.error(`Goto steamcommunity market ${endTime - startTime} ms`);
 
         // const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
@@ -47,7 +50,7 @@ process.stdin.on('data', async chunk => {
 
         $('.market_listing_row').each((i, el) => {
           const listing_id = $(el).attr('id').replace('listing_', '');
-          // all_listings.push(listing_id);
+          all_listings.push(listing_id);
           if (count_listings < 1 && !processed_skins.includes(listing_id)) {
             count_listings++;
             listings[skin_name][""+listing_id+""] = {
@@ -131,7 +134,7 @@ process.stdin.on('data', async chunk => {
         }
       }
 
-      console.log(JSON.stringify({"new_listings": listings})); // output for php
+      console.log(JSON.stringify({"new_listings": listings, "all_listings": all_listings})); // output for php
 
       await browser.close();
     } catch (err) {

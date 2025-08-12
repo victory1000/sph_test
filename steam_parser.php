@@ -49,7 +49,6 @@ class SteamParser {
     }
 
 //    $this->_redis->set($this->sent_key, json_encode(array_merge($this->sent, $sent)), 3600);
-    $this->Debug("Completed", date('d-m-Y-H-i-s'));
   }
 
   protected function ParseSkins(): array {

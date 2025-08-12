@@ -24,18 +24,11 @@ class SteamParserPuppeteer extends SteamParser {
 
   protected function ParseSkins(): array {
     $redis_processed = json_decode($this->_redis->get('processed_listings'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
+    $redis_processed = []; // todo delete
+    array_walk($redis_processed, fn(&$el) => $el = (string)$el);
+    $input = json_encode($redis_processed);
+
     $this->Debug("processed_listings", $redis_processed);
-    $listings = [];
-    $processed_listings = [];
-    foreach (Parser::getSkinsToParse() as $skin) {
-      $processed_listings[$skin] = [];
-    }
-    foreach ($redis_processed as $skin => $ls) {
-      foreach ($ls as $l) {
-        $processed_listings[$skin][] = (string) $l;
-      }
-    }
-    $input = json_encode($processed_listings);
     $this->Debug("input", $input);
 
     $process = proc_open(
@@ -69,22 +62,15 @@ class SteamParserPuppeteer extends SteamParser {
         }
       }
 
-      $this->Debug("output", $output);
-
       $output_listings = json_decode($output, true, flags: JSON_BIGINT_AS_STRING);
       unset($output, $error);
-      $this->Debug("OUTPUT (output_listings)", $output_listings);
-      $listings = $output_listings['new_listings'];
+      $this->_redis->set('processed_listings', json_encode($output_listings['all_listings']), 43200);
 
-      foreach ($processed_listings as $skin => $ls_arr) {
-        $processed_listings[$skin] = array_merge($ls_arr, empty($listings[$skin]) ? [] : array_keys($listings[$skin]));
-      }
-      $this->Debug("INSERT REDIS", json_encode($processed_listings));
-      $this->_redis->set('processed_listings', json_encode($processed_listings), 43200);
-      // TODO мне надо вернуть все листинги, и убрать из редиса листинги ктр уже купили
+      $this->Debug("OUTPUT (output_listings)", $output_listings);
+      $this->Debug("INSERT REDIS", json_encode($output_listings['all_listings']));
     }
 
-    return $listings;
+    return $output_listings['new_listings'] ?? [];
   }
 
   protected function CheckSkins(array $to_check): array {
