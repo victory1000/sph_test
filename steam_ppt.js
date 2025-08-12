@@ -36,8 +36,17 @@ process.stdin.on('data', async chunk => {
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
         // console.log({data});
+        const test = await page.$$eval('.market_listing_row', rows => {
+          return rows.map(row => {
+            const listingId = row.id.replace('listing_', '');
+            const inspectLink = row.querySelector('.market_listing_row_action a')?.getAttribute('href');
+            return { listingId, inspectLink };
+          });
+        });
 
-        let listing_id, asset_id, rungame, pattern = 0;
+        console.log(test);
+
+        let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
 
         Object.values(data.listinginfo).forEach(function (el) {
@@ -50,19 +59,7 @@ process.stdin.on('data', async chunk => {
 
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
           asset_id = _data.assetid;
-          rungame = data.assets[730][2][asset_id]['actions'][0]['link'];
-          console.log({rungame});
-          setTimeout( () => {
-
-          }, 1000);
-          await page.goto("https://api.csfloat.com/?url="+rungame, {
-            waitUntil: 'networkidle2',
-            timeout: 5000
-          });
-          const content = await page.content();
-          console.log({content})
           break;
-
           // data.assets[730][2][asset_id].descriptions.forEach(function (el) {
           //   if (el.value.includes('Charm Template')) {
           //     pattern = parseInt(el.value.split(':')[1].trim());
