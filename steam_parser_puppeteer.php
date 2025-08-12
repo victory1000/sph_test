@@ -23,12 +23,21 @@ class SteamParserPuppeteer extends SteamParser {
   }
 
   protected function ParseSkins(): array {
-    $processed_skins = $this->_redis->get('processed_skins');
-    if (empty($processed_skins)) {
-      $processed_skins = json_encode([]);
-    }
+    $processed_skins = json_decode($this->_redis->get('processed_skins'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
+    $this->Debug("processed_skins", $processed_skins);
     $listings = [];
-    $input = $processed_skins;
+    if (empty($processed_skins)) {
+      foreach (Parser::getSkinsToParse() as $skin) {
+        $processed_skins[$skin] = [];
+      }
+    } else {
+      foreach ($processed_skins as $skin => $_listings) {
+        foreach ($_listings as $l_id => $l_data) {
+          $processed_skins[$skin][(string)$l_id] = $l_data;
+        }
+      }
+    }
+    $input = json_encode($processed_skins);
     $this->Debug("input", $input);
 
     $process = proc_open(
