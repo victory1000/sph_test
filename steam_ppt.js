@@ -66,7 +66,7 @@ process.stdin.on('data', async chunk => {
         if (!res.ok) console.error(`steamcommunity market HTTP error! status: ${res.status}`);
 
         const endTime = performance.now();
-        console.error(`Fetch steamcommunity market ${endTime - startTime} ms`);
+        // console.error(`Fetch steamcommunity market ${endTime - startTime} ms`);
 
         const data = await res.json();
         if (!data.hasOwnProperty('results_html') || !data.hasOwnProperty('listinginfo')) {
@@ -140,7 +140,7 @@ process.stdin.on('data', async chunk => {
             if (!res.ok) console.error(`api.csfloat.com HTTP error! status: ${res.status}`);
 
             const endTime = performance.now();
-            console.error(`Fetch csfloat API ${endTime - startTime} ms`);
+            // console.error(`Fetch csfloat API ${endTime - startTime} ms`);
 
             const json = await res.json();
             listings[skin_name][_listing_id]["pattern"] = json.iteminfo.keychains[0].pattern;
