@@ -38,6 +38,7 @@ process.stdin.on('data', async chunk => {
         // console.log({data});
         const test = await page.$$eval('.market_listing_row', rows => {
           return rows.map(row => {
+            console.log({row});
             const listingId = row.id.replace('listing_', '');
             const inspectLink = row.querySelector('.market_listing_row_action a')?.getAttribute('href');
             return { listingId, inspectLink };
