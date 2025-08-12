@@ -50,7 +50,7 @@ process.stdin.on('data', async chunk => {
           };
         });
 
-        console.log({listings});
+        console.log(JSON.stringify(listings))
 
         Object.values(data.listinginfo).forEach(function (el) {
           listing_id = el.listingid;
@@ -58,10 +58,10 @@ process.stdin.on('data', async chunk => {
           // "assetid": el.asset.id,
         });
 
-        console.log({listings});
+        console.log(JSON.stringify(listings))
 
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
-          asset_id = _data.assetid;
+          console.log(_data.inspect);
           setTimeout(async () => {
             await page.goto("https://api.csfloat.com/?url="+_data.inspect, {
               waitUntil: 'networkidle2',
@@ -80,7 +80,7 @@ process.stdin.on('data', async chunk => {
         }
       }
 
-      console.log(JSON.stringify(listings))
+      // console.log(JSON.stringify(listings))
 
       await browser.close();
     } catch (err) {
