@@ -23,7 +23,7 @@ class SteamParserPuppeteer extends SteamParser {
   }
 
   protected function ParseSkins(): array {
-    $processed_skins = json_decode($this->_redis->get('processed_skins'), true) ?? [];
+    $processed_skins = json_decode($this->_redis->get('processed_skins'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
     $this->Debug("processed_skins", $processed_skins);
     $listings = [];
     $input = json_encode($processed_skins);
@@ -55,7 +55,7 @@ class SteamParserPuppeteer extends SteamParser {
 
       if ($error) $this->Debug("ERRORS", "$error".PHP_EOL);
 
-      $listings = json_decode($output, true);
+      $listings = json_decode($output, true, flags: JSON_BIGINT_AS_STRING);
       unset($output, $error);
       $this->Debug("listings", $listings);
 
