@@ -63,7 +63,7 @@ class SteamParserPuppeteer extends SteamParser {
         $listings_redis[$skin] = empty($listings[$skin]) ? [] : array_keys($listings[$skin]);
       }
       $this->Debug("redis", $listings_redis);
-//      $this->_redis->set('price', json_encode($this->price), 3600);
+      $this->_redis->set('processed_skins', json_encode($listings_redis), 3600);
     }
 
     return $listings;
