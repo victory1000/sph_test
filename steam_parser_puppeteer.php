@@ -32,7 +32,9 @@ class SteamParserPuppeteer extends SteamParser {
       }
     } else {
       foreach ($processed_skins as $skin => $_listings) {
-        $processed_skins[$skin] = array_walk($_listings, fn(&$el) => $el = (string)$el);;
+        foreach ($_listings as $l) {
+          $processed_skins[$skin][] = (string) $l;
+        }
       }
     }
     $input = json_encode($processed_skins);
