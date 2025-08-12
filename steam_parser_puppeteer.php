@@ -27,7 +27,7 @@ class SteamParserPuppeteer extends SteamParser {
     array_walk($redis_processed, fn(&$el) => $el = (string)$el);
     $input = json_encode($redis_processed);
 
-    $this->Debug("processed_listings", $redis_processed);
+//    $this->Debug("processed_listings", $redis_processed); // TODO debug level
     $this->Debug("input", $input);
 
     $process = proc_open(
@@ -66,7 +66,8 @@ class SteamParserPuppeteer extends SteamParser {
       unset($output, $error);
       $this->_redis->set('processed_listings', json_encode($output_listings['all_listings']), 43200);
 
-      $this->Debug("OUTPUT (output_listings)", $output_listings);
+//      $this->Debug("OUTPUT (output_listings)", $output_listings);
+      $this->Debug("OUTPUT (output_listings NEW)", $output_listings['new_listings']);
       $this->Debug("INSERT REDIS", json_encode($output_listings['all_listings']));
     }
 
