@@ -65,7 +65,7 @@ process.stdin.on('data', async chunk => {
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
           try {
             // Задержка перед запросом (чтобы не попасть на лимиты)
-            await new Promise(res => setTimeout(res, 100));
+            // await new Promise(res => setTimeout(res, 100));
 
             if (page.isClosed()) {
               const startTime = performance.now();
