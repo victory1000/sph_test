@@ -1,5 +1,6 @@
 <?php
 include_once "parser.php";
+exit();
 //error_log('start');
 
 $time = 30;
