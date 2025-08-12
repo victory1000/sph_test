@@ -8,7 +8,7 @@ class SteamParser {
   protected string $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
   protected string $sent_key;
-  protected bool $debug_enabled = true;
+  protected bool $debug_enabled = false;
 
   public function __construct() {
     $this->_redis = Cache::get_instance();
@@ -100,6 +100,7 @@ class SteamParser {
         foreach ($to_check[$skin_name] ?? [] as $p_p) {
           if (empty($p_p['pattern'])) {
             $this->Debug("EMPTY PATTERN", $p_p);
+            $this->ErrorTG("EMPTY PATTERN".json_encode($p_p));
             continue;
           }
           $price_diff = round(($p_p['price'] * 100) / $this->price[$skin_name] - 100, 2);
@@ -169,6 +170,15 @@ class SteamParser {
         error_log("Debug ::$caption:: " . print_r($value, true)).PHP_EOL;
       }
     }
+  }
+
+  public function ErrorTG(mixed $message): void {
+    $url = "https://api.telegram.org/bot$this->token/sendMessage?" . http_build_query([
+        'chat_id' => 513209606,
+        'text' => $message,
+        'parse_mode' => 'html',
+      ]);
+    file_get_contents($url);
   }
 
 }

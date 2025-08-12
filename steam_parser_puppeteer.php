@@ -62,7 +62,10 @@ class SteamParserPuppeteer extends SteamParser {
 
       $this->Debug("Exit code", "$exitCode".PHP_EOL.PHP_EOL."JS output: $output".PHP_EOL);
 
-      if ($error) $this->Debug("ERRORS", "$error".PHP_EOL);
+      if ($error) {
+        $this->Debug("ERRORS", "$error".PHP_EOL);
+        $this->ErrorTG($error);
+      }
 
       $this->Debug("output", $output);
 

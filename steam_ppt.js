@@ -42,7 +42,8 @@ process.stdin.on('data', async chunk => {
         const processed_skins = php_input[skin_name] || [];
         let count_listings = 0;
         // console.error({processed_skins});
-
+// посчитать время за которое он открывает страницу и открывает браузер
+//         от этого изменять время задежки
         const $ = cheerio.load(data.results_html);
 
         $('.market_listing_row').each((i, el) => {
@@ -85,6 +86,10 @@ process.stdin.on('data', async chunk => {
             const preText = await page.$eval('pre', el => el.innerText);
             const data2 = JSON.parse(preText);
             listings[skin_name][_listing_id]["pattern"] = data2.iteminfo.keychains[0].pattern;
+
+            if (listings[skin_name][_listing_id]["pattern"].length === 0) {
+              console.error("Empty pattern "+skin_name+" "+_listing_id+" ", listings[skin_name][_listing_id]);
+            }
 
           } catch (err) {
             console.error("Ошибка при переходе:", err.message);
