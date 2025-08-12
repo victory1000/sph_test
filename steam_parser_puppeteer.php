@@ -55,6 +55,8 @@ class SteamParserPuppeteer extends SteamParser {
 
       if ($error) $this->Debug("ERRORS", "$error".PHP_EOL);
 
+      $this->Debug("output", $output);
+
       $listings = json_decode($output, true, flags: JSON_BIGINT_AS_STRING);
       unset($output, $error);
       $this->Debug("listings", $listings);
