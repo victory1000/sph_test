@@ -11,7 +11,7 @@ process.stdin.on('data', async chunk => {
 
   const skins = ["Charm | Disco MAC", "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP"];//, "Charm | Glamour Shot"];
   const items = 100;
-  let url, all_listings;
+  let url;
   let listings = {};
 
   await (async () => {
@@ -47,7 +47,7 @@ process.stdin.on('data', async chunk => {
 
         $('.market_listing_row').each((i, el) => {
           const listing_id = $(el).attr('id').replace('listing_', '');
-          all_listings.push(listing_id);
+          // all_listings.push(listing_id);
           if (count_listings < 1 && !processed_skins.includes(listing_id)) {
             count_listings++;
             listings[skin_name][""+listing_id+""] = {
@@ -131,7 +131,7 @@ process.stdin.on('data', async chunk => {
         }
       }
 
-      console.log(JSON.stringify({"all_listings": all_listings, "new_listings": listings})); // output for php
+      console.log(JSON.stringify({"new_listings": listings})); // output for php
 
       await browser.close();
     } catch (err) {
