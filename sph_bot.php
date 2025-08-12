@@ -1,6 +1,6 @@
 <?php
 include_once "parser.php";
-exit();
+// exit(); // TODO сделать остановку сервера через бота
 //error_log('start');
 
 $time = 30;
