@@ -23,8 +23,8 @@ class SteamParserPuppeteer extends SteamParser {
   }
 
   protected function ParseSkins(): array {
-    $redis_processed = json_decode($this->_redis->get('processed_listings'), true, flags: JSON_BIGINT_AS_STRING) ?? []; // todo test when empty - change key
-    $this->Debug("processed_skins", $redis_processed);
+    $redis_processed = json_decode($this->_redis->get('processed_listings'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
+    $this->Debug("processed_listings", $redis_processed);
     $listings = [];
     $processed_listings = [];
     foreach (Parser::getSkinsToParse() as $skin) {
@@ -60,7 +60,7 @@ class SteamParserPuppeteer extends SteamParser {
 
       $exitCode = proc_close($process);
 
-      $this->Debug("Exit code", "$exitCode".PHP_EOL."JS output: $output".PHP_EOL);
+      $this->Debug("Exit code", "$exitCode".PHP_EOL.PHP_EOL."JS output: $output".PHP_EOL);
 
       if ($error) $this->Debug("ERRORS", "$error".PHP_EOL);
 
@@ -68,13 +68,13 @@ class SteamParserPuppeteer extends SteamParser {
 
       $listings = json_decode($output, true, flags: JSON_BIGINT_AS_STRING);
       unset($output, $error);
-      $this->Debug("listings", $listings);
+      $this->Debug("OUTPUT (parsed skins)", $listings);
 
       foreach ($processed_listings as $skin => $ls_arr) {
         $processed_listings[$skin] = array_merge($ls_arr, empty($listings[$skin]) ? [] : array_keys($listings[$skin]));
       }
-      $this->Debug("insert redis", json_encode($processed_listings));
-      $this->_redis->set('processed_listings', json_encode($processed_listings), 3600);
+      $this->Debug("INSERT REDIS", json_encode($processed_listings));
+      $this->_redis->set('processed_listings', json_encode($processed_listings), 43200);
     }
 
     return $listings;
@@ -85,9 +85,6 @@ class SteamParserPuppeteer extends SteamParser {
     if (empty($to_check)) return $to_send;
 
     foreach (Parser::getSkinsToParse() as $skin) {
-      if (count($to_check[$skin]) != 100) {
-        $this->Debug("!!!!! WARNING !!!!!", "count = ".count($to_check[$skin]));
-      }
       foreach ($to_check[$skin] as $listing_id => $data) {
         if (in_array($listing_id, $this->sent)) {
           unset($to_check[$skin][$listing_id]);

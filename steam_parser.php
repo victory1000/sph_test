@@ -98,6 +98,10 @@ class SteamParser {
     foreach ($this->getChats() as $chat_id => $skins) {
       foreach ($skins as $skin_name => $skin) {
         foreach ($to_check[$skin_name] ?? [] as $p_p) {
+          if (empty($p_p['pattern'])) {
+            $this->Debug("EMPTY PATTERN", $p_p);
+            continue;
+          }
           $price_diff = round(($p_p['price'] * 100) / $this->price[$skin_name] - 100, 2);
           if (!$this->checkPatternPrice($skin_name, $p_p['pattern'], $price_diff)) continue;
           $to_send[$chat_id][] = [
