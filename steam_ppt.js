@@ -6,11 +6,8 @@ puppeteer.use(StealthPlugin());
 
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', async chunk => {
-  console.error({chunk});
   const input = chunk.toString();
-  console.error({input});
   const php_input = JSON.parse(input);
-  console.error({php_input});
 
   const skins = ["Charm | Disco MAC"];//, "Charm | Baby's AK", "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Glamour Shot"];
   const items = 10;
@@ -40,7 +37,6 @@ process.stdin.on('data', async chunk => {
         // const content = await page.content();
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
-        // console.log({data});
 
         listings[`${skin_name}`] = {};
         const processed_skins = php_input[skin_name] || [];
@@ -51,7 +47,6 @@ process.stdin.on('data', async chunk => {
 
         $('.market_listing_row').each((i, el) => {
           const listing_id = $(el).attr('id').replace('listing_', '');
-          console.error("includes "+listing_id+" === "+!processed_skins.includes(listing_id) );
           if (count_listings <= 2 && !processed_skins.includes(listing_id)) {
             count_listings++;
             listings[skin_name][""+listing_id+""] = {

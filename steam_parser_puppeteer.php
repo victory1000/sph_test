@@ -23,7 +23,7 @@ class SteamParserPuppeteer extends SteamParser {
   }
 
   protected function ParseSkins(): array {
-    $redis_processed = json_decode($this->_redis->get('processed_skins'), true, flags: JSON_BIGINT_AS_STRING) ?? []; // todo test when empty - change key
+    $redis_processed = json_decode($this->_redis->get('processed_listings'), true, flags: JSON_BIGINT_AS_STRING) ?? []; // todo test when empty - change key
     $this->Debug("processed_skins", $redis_processed);
     $listings = [];
     $processed_listings = [];
@@ -74,7 +74,7 @@ class SteamParserPuppeteer extends SteamParser {
         $processed_listings[$skin] = array_merge($ls_arr, empty($listings[$skin]) ? [] : array_keys($listings[$skin]));
       }
       $this->Debug("insert redis", json_encode($processed_listings));
-      $this->_redis->set('processed_skins', json_encode($processed_listings), 3600);
+      $this->_redis->set('processed_listings', json_encode($processed_listings), 3600);
     }
 
     return $listings;
