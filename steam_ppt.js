@@ -1,3 +1,4 @@
+import cheerio from 'cheerio';
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(StealthPlugin());
@@ -36,16 +37,16 @@ process.stdin.on('data', async chunk => {
         const preText = await page.$eval('pre', el => el.innerText);
         const data = JSON.parse(preText);
         // console.log({data});
-        const test = await page.$$eval('.market_listing_row', rows => {
-          return rows.map(row => {
-            console.log({row});
-            const listingId = row.id.replace('listing_', '');
-            const inspectLink = row.querySelector('.market_listing_row_action a')?.getAttribute('href');
-            return { listingId, inspectLink };
-          });
+
+        const $ = cheerio.load(data.results_html);
+        const results = [];
+        $('.market_listing_row').each((i, el) => {
+          const listingId = $(el).attr('id').replace('listing_', '');
+          const inspectLink = $(el).find('.market_listing_row_action a').attr('href') || null;
+          results.push({ listingId, inspectLink });
         });
 
-        console.log(test);
+        console.log(results);
 
         let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
