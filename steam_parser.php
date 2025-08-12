@@ -8,7 +8,7 @@ class SteamParser {
   protected string $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
   protected string $sent_key;
-  protected bool $debug_enabled = false;
+  protected bool $debug_enabled = true;
 
   public function __construct() {
     $this->_redis = Cache::get_instance();
@@ -33,11 +33,11 @@ class SteamParser {
   public function Process(): void {
     $to_check = $this->ParseSkins();
     $to_send = $this->CheckSkins($to_check);
-    $sent = [];
+//    $sent = [];
 
     foreach ($to_send as $chat_id => $skins) {
       foreach ($skins as $skin) {
-        $sent[] = $skin['listing_id'];
+//        $sent[] = $skin['listing_id'];
         $text = "$skin[name] Template: <b>$skin[pattern]</b>\nPrice: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> ($skin[price_diff2] руб.) \n$skin[url]";
         $url = "https://api.telegram.org/bot$this->token/sendMessage?" . http_build_query([
             'chat_id' => $chat_id,
@@ -48,8 +48,8 @@ class SteamParser {
       }
     }
 
-    $this->_redis->set($this->sent_key, json_encode(array_merge($this->sent, $sent)), 3600);
-    echo "Completed ".date('d-m-Y-H-i-s').PHP_EOL.PHP_EOL;
+//    $this->_redis->set($this->sent_key, json_encode(array_merge($this->sent, $sent)), 3600);
+    $this->Debug("Completed", date('d-m-Y-H-i-s'));
   }
 
   protected function ParseSkins(): array {

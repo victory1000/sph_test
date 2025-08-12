@@ -8,8 +8,8 @@ class SteamParserPuppeteer extends SteamParser {
   }
 
   protected function init(): void {
-    $this->sent_key = date('H');
-    $this->sent = json_decode($this->_redis->get($this->sent_key), true) ?? [];
+//    $this->sent_key = date('H');
+//    $this->sent = json_decode($this->_redis->get($this->sent_key), true) ?? [];
     $this->price = json_decode($this->_redis->get('price'), true) ?? [];
 
     if (empty($this->price)) {
@@ -87,13 +87,13 @@ class SteamParserPuppeteer extends SteamParser {
     $to_send = [];
     if (empty($to_check)) return $to_send;
 
-    foreach (Parser::getSkinsToParse() as $skin) {
-      foreach ($to_check[$skin] as $listing_id => $data) {
-        if (in_array($listing_id, $this->sent)) {
-          unset($to_check[$skin][$listing_id]);
-        }
-      }
-    }
+//    foreach (Parser::getSkinsToParse() as $skin) {
+//      foreach ($to_check[$skin] as $listing_id => $data) {
+//        if (in_array($listing_id, $this->sent)) {
+//          unset($to_check[$skin][$listing_id]);
+//        }
+//      }
+//    }
 
     foreach ($this->getChats() as $chat_id => $skins) {
       foreach ($skins as $skin_name => $skin) {
