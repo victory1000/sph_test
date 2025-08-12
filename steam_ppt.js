@@ -39,29 +39,37 @@ process.stdin.on('data', async chunk => {
         const data = JSON.parse(preText);
         // console.log({data});
 
-        const $ = cheerio.load(data.results_html);
-        const results = [];
-        $('.market_listing_row').each((i, el) => {
-          const listingId = $(el).attr('id').replace('listing_', '');
-          const inspectLink = $(el).find('.market_listing_row_action a').attr('href') || null;
-          results.push({ listingId, inspectLink });
-        });
-
-        console.log(results);
-
         let listing_id, asset_id, pattern = 0;
         listings[`${skin_name}`] = {};
 
-        Object.values(data.listinginfo).forEach(function (el) {
-          listing_id = el.listingid;
+        const $ = cheerio.load(data.results_html);
+        $('.market_listing_row').each((i, el) => {
+          listing_id = $(el).attr('id').replace('listing_', '');
           listings[skin_name][""+listing_id+""] = {
-            "assetid": el.asset.id,
-            "price": (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100
+            "inspect": $(el).find('.market_listing_row_action a').attr('href') || null
           };
         });
 
+        console.log({listings});
+
+        Object.values(data.listinginfo).forEach(function (el) {
+          listing_id = el.listingid;
+          listings[skin_name][listing_id]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
+          // "assetid": el.asset.id,
+        });
+
+        console.log({listings});
+
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
           asset_id = _data.assetid;
+          setTimeout(async () => {
+            await page.goto("https://api.csfloat.com/?url="+_data.inspect, {
+              waitUntil: 'networkidle2',
+              timeout: 5000
+            });
+            const content = await page.content();
+            console.log({content})
+          }, 1000);
           break;
           // data.assets[730][2][asset_id].descriptions.forEach(function (el) {
           //   if (el.value.includes('Charm Template')) {
