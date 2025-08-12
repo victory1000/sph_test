@@ -94,7 +94,7 @@ process.stdin.on('data', async chunk => {
         }
       }
 
-      // console.log(JSON.stringify(listings))
+      console.log(JSON.stringify(listings)); // output for php
 
       await browser.close();
     } catch (err) {
