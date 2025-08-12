@@ -9,7 +9,7 @@ process.stdin.on('data', async chunk => {
   const input = chunk.toString();
   const php_input = JSON.parse(input);
 
-  const skins = ["Charm | Disco MAC", "Charm | Baby's AK"];//, "Charm | Die-cast AK", "Charm | Titeenium AWP", "Charm | Glamour Shot"];
+  const skins = ["Charm | Disco MAC", "Charm | Baby's AK", "Charm | Die-cast AK"];//, "Charm | Titeenium AWP", "Charm | Glamour Shot"];
   const items = 100;
   let url;
   let listings = {};
@@ -48,7 +48,7 @@ process.stdin.on('data', async chunk => {
 
         $('.market_listing_row').each((i, el) => {
           const listing_id = $(el).attr('id').replace('listing_', '');
-          if (count_listings < 20 && !processed_skins.includes(listing_id)) {
+          if (count_listings < 10 && !processed_skins.includes(listing_id)) {
             count_listings++;
             listings[skin_name][""+listing_id+""] = {
               "inspect": $(el).find('.market_listing_row_action a').attr('href') || null
@@ -69,18 +69,24 @@ process.stdin.on('data', async chunk => {
             await new Promise(res => setTimeout(res, 500));
 
             if (page.isClosed()) {
+              const startTime = performance.now();
               page = await browser.newPage();
               await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
               await page.setExtraHTTPHeaders({
                 'Accept-Language': 'en-US,en;q=0.9',
                 'Origin': "chrome-extension://jjicbefpemnphinccgikpdaagjebbnhg"
               });
+              const endTime = performance.now();
+              console.error(`New browser page ${endTime - startTime} ms`);
             }
 
+            const startTime = performance.now();
             await page.goto("https://api.csfloat.com/?url=" + _data.inspect, {
               waitUntil: 'networkidle2',
               timeout: 5000
             });
+            const endTime = performance.now();
+            console.error(`Goto csfloat page ${endTime - startTime} ms`);
 
             // const content = await page.content();
             const preText = await page.$eval('pre', el => el.innerText);
