@@ -24,7 +24,6 @@ class SteamParserPuppeteer extends SteamParser {
 
   protected function ParseSkins(): array {
     $redis_processed = json_decode($this->_redis->get('processed_listings'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
-    $redis_processed = []; // todo delete
     array_walk($redis_processed, fn(&$el) => $el = (string)$el);
     $input = json_encode($redis_processed);
 
