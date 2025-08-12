@@ -3,7 +3,7 @@ include_once "parser.php";
 
 $start_mem = memory_get_usage();
 $start_time = microtime(true);
-
+exit();
 $_steam = new SteamParserPuppeteer();
 $_steam->Process();
 
