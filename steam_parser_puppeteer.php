@@ -23,19 +23,19 @@ class SteamParserPuppeteer extends SteamParser {
   }
 
   protected function ParseSkins(): array {
-    $processed_skins = json_decode($this->_redis->get('processed_skins'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
-    $this->Debug("processed_skins", $processed_skins);
+    $redis_processed = json_decode($this->_redis->get('processed_skins'), true, flags: JSON_BIGINT_AS_STRING) ?? []; // todo test when empty - change key
+    $this->Debug("processed_skins", $redis_processed);
     $listings = [];
-    $input_arr = [];
+    $processed_listings = [];
     foreach (Parser::getSkinsToParse() as $skin) {
-      $input_arr[$skin] = [];
+      $processed_listings[$skin] = [];
     }
-    foreach ($processed_skins as $skin => $ls) {
+    foreach ($redis_processed as $skin => $ls) {
       foreach ($ls as $l) {
-        $input_arr[$skin][] = (string) $l;
+        $processed_listings[$skin][] = (string) $l;
       }
     }
-    $input = json_encode($input_arr);
+    $input = json_encode($processed_listings);
     $this->Debug("input", $input);
 
     $process = proc_open(
@@ -70,12 +70,11 @@ class SteamParserPuppeteer extends SteamParser {
       unset($output, $error);
       $this->Debug("listings", $listings);
 
-      $listings_redis = [];
-      foreach (Parser::getSkinsToParse() as $skin) {
-        $listings_redis[$skin] = empty($listings[$skin]) ? [] : array_keys($listings[$skin]);
+      foreach ($processed_listings as $skin => $ls_arr) {
+        $processed_listings[$skin] = array_merge($ls_arr, empty($listings[$skin]) ? [] : array_keys($listings[$skin]));
       }
-      $this->Debug("redis", json_encode($listings_redis));
-      $this->_redis->set('processed_skins', json_encode($listings_redis), 3600);
+      $this->Debug("insert redis", json_encode($processed_listings));
+      $this->_redis->set('processed_skins', json_encode($processed_listings), 3600);
     }
 
     return $listings;
