@@ -1,11 +1,16 @@
 <?php
-// TODO сделать остановку сервера через бота
 include_once "parser.php";
 
-$lockFile = fopen(__DIR__ . '/script_bot.lock', 'c');
-if (!flock($lockFile, LOCK_EX | LOCK_NB)) {
+$stop_file = __DIR__ . '/files/stop.flag';
+if (file_exists($stop_file)) {
+  error_log('file exists - exit');
+  exit;
+}
+
+$lock_file = fopen(__DIR__ . '/script_bot.lock', 'c');
+if (!flock($lock_file, LOCK_EX | LOCK_NB)) {
   Parser::ErrorTG("Script already running, exiting");
-  fclose($lockFile);
+  fclose($lock_file);
   exit;
 }
 
@@ -35,10 +40,10 @@ while ($time < 60) {
     $message = "Exception: " . $e->getMessage() . " in file " . $e->getFile() . " on line " . $e->getLine() . PHP_EOL;
     $message .= "Backtrace:" . PHP_EOL . $e->getTraceAsString();
     Parser::ErrorTG($message);
-    fclose($lockFile);
+    fclose($lock_file);
     exit;
   }
 }
 
-flock($lockFile, LOCK_UN);
-fclose($lockFile);
+flock($lock_file, LOCK_UN);
+fclose($lock_file);

@@ -1,9 +1,8 @@
 <?php
 include_once __DIR__ . "/../classes/tg.php";
-$stopFile = __DIR__ . "/../files/stop.flag";
+$stop_file = __DIR__ . "/../files/stop.flag";
 
 $updates = TG::getUpdates();
-error_log("\$updates = ".print_r($updates, true));
 
 if (!empty($updates['result'])) {
   foreach ($updates['result'] as $update) {
@@ -12,10 +11,10 @@ if (!empty($updates['result'])) {
 
     if ($chat_id === TG::OWNER) {
       if ($message === 'stop server') {
-        file_put_contents($stopFile, '1');
+        file_put_contents($stop_file, '1');
         TG::sendMessage('Server stopped ✅');
       } elseif ($message === 'start server') {
-        @unlink($stopFile);
+        @unlink($stop_file);
         TG::sendMessage('Server started 🚀');
       }
     } else {
@@ -24,5 +23,3 @@ if (!empty($updates['result'])) {
     }
   }
 }
-
-
