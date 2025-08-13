@@ -34,7 +34,8 @@ process.stdin.on('data', async chunk => {
 
       for (const skin_name of conf.skins) {
         const Req = new Request({
-          url: 'https://steamcommunity.com/market/listings/730/'+encodeURIComponent(skin_name)+'/render/?query=&start=0&country=RU&currency=5&count=100'
+          url: 'https://steamcommunity.com/market/listings/730/'+encodeURIComponent(skin_name)+'/render/?query=&start=0&country=RU&currency=5&count=100',
+          debug: true,
         });
         const data = await Req.exec();
 
@@ -63,7 +64,8 @@ process.stdin.on('data', async chunk => {
 
         for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
           const Req = new Request({
-            url: "https://api.csfloat.com/?url=" + _data.inspect
+            url: "https://api.csfloat.com/?url=" + _data.inspect,
+            debug: true,
           });
           const json = await Req.exec();
 
