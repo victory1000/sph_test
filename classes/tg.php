@@ -21,7 +21,6 @@ class TG {
   static function getUpdates(): array {
     $offsetFile = __DIR__ . "/../files/offset.txt";
     $offset = is_file($offsetFile) ? (int)file_get_contents($offsetFile) : 0;
-    error_log("\$offset = {$offset} ");
     $url = "https://api.telegram.org/bot".self::TOKEN."/getUpdates?timeout=5&offset={$offset}";
     $updates = json_decode(file_get_contents($url), true);
     if (!empty($updates['result'])) {

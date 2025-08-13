@@ -7,7 +7,7 @@ if (file_exists($stop_file)) {
   exit;
 }
 
-$lock_file = fopen(__DIR__ . '/script_bot.lock', 'c');
+$lock_file = fopen(__DIR__ . '/files/cron_script.lock', 'c');
 if (!flock($lock_file, LOCK_EX | LOCK_NB)) {
   Parser::ErrorTG("Script already running, exiting");
   fclose($lock_file);
