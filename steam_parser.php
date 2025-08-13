@@ -39,6 +39,7 @@ class SteamParser {
       foreach ($skins as $skin) {
 //        $sent[] = $skin['listing_id'];
         $text = "$skin[name] Template: <b>$skin[pattern]</b>\n";
+        // todo color
         $text .= "Price: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> ($skin[price_diff2] руб.)\n";
         $text .= "$skin[url] \n\nListingID <code>$skin[listing_id]</code>\n<code>$skin[url]</code>";
         $url = "https://api.telegram.org/bot$this->token/sendMessage?" . http_build_query([
@@ -46,7 +47,7 @@ class SteamParser {
             'text' => $text,
             'parse_mode' => 'html',
           ]);
-        file_get_contents($url);
+        file_get_contents($url); // todo Failed to open stream: Connection timed out
       }
     }
 

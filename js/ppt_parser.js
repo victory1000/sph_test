@@ -33,11 +33,9 @@ process.stdin.on('data', async chunk => {
     try {
 
       for (const skin_name of conf.skins) {
-console.error('------'+skin_name+' processed '+processed_items)
         if (processed_items >= conf.rate_limit) break;
 
         for (let i = 0; i < 2; i++) {
-console.error(skin_name+' start '+(i*100)+' processed '+processed_items)
           if (processed_items >= conf.rate_limit) break;
 
           const start = i*100;
@@ -45,7 +43,7 @@ console.error(skin_name+' start '+(i*100)+' processed '+processed_items)
             url: 'https://steamcommunity.com/market/listings/730/'
                   + encodeURIComponent(skin_name)
                   + '/render/?query=&start='+start+'&country=RU&currency=5&count=100',
-            debug: true,
+            debug: false,
           });
           const data = await Req.exec();
 
@@ -75,7 +73,7 @@ console.error(skin_name+' start '+(i*100)+' processed '+processed_items)
           for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
             const Req = new Request({
               url: "https://api.csfloat.com/?url=" + _data.inspect,
-              debug: true,
+              debug: false,
             });
             const json = await Req.exec();
 
@@ -85,7 +83,7 @@ console.error(skin_name+' start '+(i*100)+' processed '+processed_items)
               console.error("Empty pattern " + skin_name + " " + _listing_id + " ", listings[skin_name][_listing_id]);
             }
           }
-console.error('total_count = '+data.total_count)
+
           if (start + 100 > data.total_count) break;
         }
       }
