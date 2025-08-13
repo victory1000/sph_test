@@ -12,10 +12,10 @@ if (!empty($updates['result'])) {
     if ($chat_id === TG::OWNER) {
       if ($message === 'stop server') {
         file_put_contents($stop_file, '1');
-        TG::sendMessage('Server stopped ✅');
+        TG::sendMessage('Server has been stopped ✅');
       } elseif ($message === 'start server') {
         @unlink($stop_file);
-        TG::sendMessage('Server started 🚀');
+        TG::sendMessage('Server has been started 🚀');
       }
     } else {
       TG::sendMessage("New message:\n$message");
