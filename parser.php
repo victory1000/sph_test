@@ -2,6 +2,7 @@
 include_once "redis.php";
 include_once "steam_parser.php";
 include_once "steam_parser_puppeteer.php";
+include_once "classes/tg.php";
 
 class Parser {
 

@@ -12,13 +12,22 @@ class SteamParserPuppeteer extends SteamParser {
 //    $this->sent = json_decode($this->_redis->get($this->sent_key), true) ?? [];
     $this->price = json_decode($this->_redis->get('price'), true) ?? [];
 
-    if (empty($this->price) || date('i', strtotime('now')) > 58) {
+    $di = (int)date('i', strtotime('now'));
+    $dH = (int)date('H', strtotime('now'));
+
+    if (empty($this->price) || $di > 58) {
+      TG::sendMessage("Get new price.");
       foreach (Parser::getSkinsToParse() as $skin) {
         $r = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=" . rawurlencode($skin) . "&appid=730&currency=5");
         $priceoverview = json_decode($r, true);
         $this->price[$skin] = Parser::toPrice($priceoverview['lowest_price'] ?? $priceoverview['median_price'] ?? 999);
       }
       $this->_redis->set('price', json_encode($this->price), 3600);
+    }
+
+    if ($di > 58 && ($dH == 9 || $dH == 21)) {
+      $this->_redis->set('processed_listings', json_encode([]), 120);
+      TG::sendMessage("Clear processed_listings redis key.");
     }
   }
 
