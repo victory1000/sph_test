@@ -33,11 +33,11 @@ process.stdin.on('data', async chunk => {
     try {
 
       for (const skin_name of conf.skins) {
-console.error(skin_name+' processed '+processed_items)
+console.error('------'+skin_name+' processed '+processed_items)
         if (processed_items >= conf.rate_limit) break;
 
         for (let i = 0; i < 3; i++) {
-console.error(skin_name+' start '+(i*100))
+console.error(skin_name+' start '+(i*100)+' processed '+processed_items)
           if (processed_items >= conf.rate_limit) break;
 
           const start = i*100;
