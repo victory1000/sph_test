@@ -37,7 +37,7 @@ class SteamParserPuppeteer extends SteamParser {
     $input = json_encode($redis_processed);
 
 //    $this->Debug("processed_listings", $redis_processed); // TODO debug level
-    $this->Debug("input", $input);
+//    $this->Debug("input", $input);
 
     $process = proc_open(
       'node /opt/sph_test/js/ppt_parser.js',
@@ -83,9 +83,9 @@ class SteamParserPuppeteer extends SteamParser {
 
       $this->_redis->set('processed_listings', json_encode($processed_listings), 43200);
 
-//      $this->Debug("OUTPUT (output_listings)", $output_listings);
       $this->Debug("OUTPUT (output_listings NEW)", $output_listings['new_listings']);
-      $this->Debug("INSERT REDIS", json_encode($processed_listings));
+//      $this->Debug("OUTPUT (output_listings)", $output_listings);
+//      $this->Debug("INSERT REDIS", json_encode($processed_listings));
     }
 
     return $output_listings['new_listings'] ?? [];

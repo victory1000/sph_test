@@ -15,7 +15,7 @@ const conf = {
   ],
   rate_limit: 50,
 };
-
+// TODO need to check the price % to avoid calling csfloat
 let listings = {};
 let processed_items = 0;
 
@@ -36,7 +36,7 @@ process.stdin.on('data', async chunk => {
 console.error('------'+skin_name+' processed '+processed_items)
         if (processed_items >= conf.rate_limit) break;
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
 console.error(skin_name+' start '+(i*100)+' processed '+processed_items)
           if (processed_items >= conf.rate_limit) break;
 
