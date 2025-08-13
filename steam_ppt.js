@@ -21,7 +21,6 @@ process.stdin.on('data', async chunk => {
   const render_items = 100;
   const processing_items = 10;
 
-  let all_listings = [];
   let listings = {};
 
   await (async () => {
@@ -79,10 +78,7 @@ process.stdin.on('data', async chunk => {
 
         $('.market_listing_row').each((i, el) => {
           const listing_id = $(el).attr('id').replace('listing_', '');
-          if (php_input.includes(listing_id)) {
-            all_listings.push(listing_id);
-          } else if (count_listings < processing_items) {
-            all_listings.push(listing_id);
+          if (count_listings < processing_items && !php_input.includes(listing_id)) {
             count_listings++;
             listings[skin_name][""+listing_id+""] = {
               "inspect": $(el).find('.market_listing_row_action a').attr('href') || null
@@ -163,7 +159,7 @@ process.stdin.on('data', async chunk => {
         }
       }
 
-      console.log(JSON.stringify({"new_listings": listings, "all_listings": all_listings})); // output for php
+      console.log(JSON.stringify({"new_listings": listings})); // output for php
 
       // await browser.close();
     } catch (err) {

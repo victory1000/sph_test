@@ -64,11 +64,19 @@ class SteamParserPuppeteer extends SteamParser {
 
       $output_listings = json_decode($output, true, flags: JSON_BIGINT_AS_STRING);
       unset($output, $error);
-      $this->_redis->set('processed_listings', json_encode($output_listings['all_listings']), 43200);
+
+      $processed_listings = $redis_processed;
+      foreach ($output_listings['new_listings'] as $ls_arr) {
+        $processed_listings = array_merge($processed_listings, array_keys($ls_arr));
+      }
+      array_walk($processed_listings, fn(&$el) => $el = (string)$el);
+      $processed_listings = array_unique($processed_listings);
+
+      $this->_redis->set('processed_listings', json_encode($processed_listings), 43200);
 
 //      $this->Debug("OUTPUT (output_listings)", $output_listings);
       $this->Debug("OUTPUT (output_listings NEW)", $output_listings['new_listings']);
-      $this->Debug("INSERT REDIS", json_encode($output_listings['all_listings']));
+      $this->Debug("INSERT REDIS", json_encode($processed_listings));
     }
 
     return $output_listings['new_listings'] ?? [];
