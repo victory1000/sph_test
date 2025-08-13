@@ -117,6 +117,7 @@ class SteamParserPuppeteer extends SteamParser {
             'price_diff1' => $price_diff,
             'price_diff2' => $p_p['price'] - $this->price[$skin_name],
             'asset_id' => $p_p['asset_id'],
+            'page' => $p_p['page'],
           ];
         }
       }

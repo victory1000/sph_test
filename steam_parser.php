@@ -8,7 +8,7 @@ class SteamParser {
   protected string $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
   protected string $sent_key;
-  protected bool $debug_enabled = true;
+  protected bool $debug_enabled = false;
 
   public function __construct() {
     $this->_redis = Cache::get_instance();
@@ -42,7 +42,7 @@ class SteamParser {
         // todo color
         // todo page
         $text .= "Price: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> ($skin[price_diff2] руб.)\n";
-        $text .= "$skin[url] \n\nListingID <code>$skin[listing_id]</code>\n<code>$skin[url]</code>";
+        $text .= "$skin[url] \n\nListingID <code>$skin[listing_id]</code>\nPage $skin[page]\n<code>$skin[url]</code>";
         $url = "https://api.telegram.org/bot$this->token/sendMessage?" . http_build_query([
             'chat_id' => $chat_id,
             'text' => $text,
