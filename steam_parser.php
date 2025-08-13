@@ -12,7 +12,6 @@ class SteamParser {
 
   public function __construct() {
     $this->_redis = Cache::get_instance();
-    error_log("SteamParser ".print_r(print_r($this->_redis->info('keyspace'), 1), true));
     $this->init();
   }
 
