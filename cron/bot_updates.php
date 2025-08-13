@@ -20,6 +20,7 @@ try {
           TG::sendMessage('Server has been started 🚀');
         } elseif ($message === 'clear processed listings') {
           $_redis = Cache::get_instance();
+          error_log("bot updates ".print_r(print_r($_redis->info('keyspace'), 1), true));
           $_redis->del('processed_listings');
           TG::sendMessage('The listings have been cleared.');
         }
