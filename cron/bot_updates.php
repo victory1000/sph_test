@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . "/../classes/tg.php";
+include_once __DIR__ . "/../parser.php";
 
 try {
   $stop_file = __DIR__ . "/../files/stop.flag";
@@ -21,6 +21,7 @@ try {
         } elseif ($message === 'clear processed listings') {
           $_redis = Cache::get_instance();
           $_redis->set('processed_listings', json_encode([]), 120);
+          TG::sendMessage('The listings have been cleared.');
         }
       } else {
         TG::sendMessage("New message:\n$message");
