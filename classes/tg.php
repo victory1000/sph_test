@@ -1,7 +1,7 @@
 <?php
 
 class TG {
-  const string TOKEN = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
+  const TOKEN = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
   static function sendMessage(mixed $message, int $chat_id = 513209606): void {
     $url = "https://api.telegram.org/bot".self::TOKEN."/sendMessage?" . http_build_query([
