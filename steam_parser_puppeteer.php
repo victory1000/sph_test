@@ -15,7 +15,7 @@ class SteamParserPuppeteer extends SteamParser {
     $di = (int)date('i', strtotime('now'));
     $dH = (int)date('H', strtotime('now'));
 
-    if (empty($this->price) || $di > 58) {
+    if (empty($this->price)) {
       TG::sendMessage("Get new price.");
       foreach (Parser::getSkinsToParse() as $skin) {
         $r = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=" . rawurlencode($skin) . "&appid=730&currency=5");
@@ -40,7 +40,7 @@ class SteamParserPuppeteer extends SteamParser {
     $this->Debug("input", $input);
 
     $process = proc_open(
-      'node /opt/sph_test/steam_ppt.js',
+      'node /opt/sph_test/js/ppt_parser.js',
       [
         0 => ['pipe', 'r'],  // stdin
         1 => ['pipe', 'w'],  // stdout
