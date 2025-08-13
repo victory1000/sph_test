@@ -26,7 +26,7 @@ class SteamParserPuppeteer extends SteamParser {
     }
 
     if ($di > 58 && ($dH == 9 || $dH == 21)) {
-      $this->_redis->set('processed_listings', json_encode([]), 120);
+      $this->_redis->del('processed_listings');
       TG::sendMessage("Clear processed_listings redis key.");
     }
   }
