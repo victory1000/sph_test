@@ -3,7 +3,6 @@ include_once "parser.php";
 
 $stop_file = __DIR__ . '/files/stop.flag';
 if (file_exists($stop_file)) {
-  error_log('file exists - exit');
   exit;
 }
 
