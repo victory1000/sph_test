@@ -22,7 +22,7 @@ class TG {
 // читаем последний offset, чтобы не читать старые сообщения
 //    $offset = is_file($offsetFile) ? (int)file_get_contents($offsetFile) : 0;
 
-    $offset = 50;
+    $offset = 150;
     $url = "https://api.telegram.org/bot".self::TOKEN."/getUpdates?timeout=5&offset={$offset}";
     return json_decode(file_get_contents($url), true);
   }
