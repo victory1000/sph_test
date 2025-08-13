@@ -19,7 +19,7 @@ class Request {
     const res = await fetch(this.url, { headers: headers });
     const endTime = performance.now();
 
-    if (!res.ok) console.error(`${this.url} HTTP error status: ${res.status}`);
+    if (!res.ok) console.error(`${this.url} HTTP ERROR status: ${res.status}`);
 
     if (this.debug) {
       const url = this.url.replace(/^https:\/\/([^/]+).*$/,"$1")

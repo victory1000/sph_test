@@ -47,6 +47,8 @@ process.stdin.on('data', async chunk => {
           });
           const data = await Req.exec();
 
+          if (data === null) continue;
+
           if (!data.hasOwnProperty('results_html') || !data.hasOwnProperty('listinginfo')) {
             console.error(`Error while getting market page for ${skin_name}`);
             // open page thru browser
@@ -89,11 +91,11 @@ process.stdin.on('data', async chunk => {
         }
       }
 
-      console.log(JSON.stringify({"new_listings": listings})); // output for php
-
     } catch (err) {
-      console.error('❌ Ошибка при запуске Puppeteer:', err);
+      console.error('❌ Javascript ERROR:', err);
     }
+
+    console.log(JSON.stringify({"new_listings": listings})); // output for php
   })();
 
 });
