@@ -18,6 +18,9 @@ try {
         } elseif ($message === 'start server') {
           @unlink($stop_file);
           TG::sendMessage('Server has been started 🚀');
+        } elseif ($message === 'clear processed listings') {
+          $_redis = Cache::get_instance();
+          $_redis->set('processed_listings', json_encode([]), 120);
         }
       } else {
         TG::sendMessage("New message:\n$message");
