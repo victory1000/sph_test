@@ -45,7 +45,7 @@ console.error(skin_name+' start '+(i*100)+' processed '+processed_items)
             url: 'https://steamcommunity.com/market/listings/730/'
                   + encodeURIComponent(skin_name)
                   + '/render/?query=&start='+start+'&country=RU&currency=5&count=100',
-            debug: false,
+            debug: true,
           });
           const data = await Req.exec();
 
@@ -75,7 +75,7 @@ console.error(skin_name+' start '+(i*100)+' processed '+processed_items)
           for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
             const Req = new Request({
               url: "https://api.csfloat.com/?url=" + _data.inspect,
-              debug: false,
+              debug: true,
             });
             const json = await Req.exec();
 
