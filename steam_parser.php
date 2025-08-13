@@ -38,7 +38,7 @@ class SteamParser {
     foreach ($to_send as $chat_id => $skins) {
       foreach ($skins as $skin) {
 //        $sent[] = $skin['listing_id'];
-        $text = "$skin[name] Template: <b>$skin[pattern]</b>\nPrice: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> ($skin[price_diff2] руб.) \nListingID $skin[listing_id] \nAssetID $skin[asset_id]  \n$skin[url]";
+        $text = "$skin[name] Template: <b>$skin[pattern]</b>\nPrice: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> ($skin[price_diff2] руб.) \nListingID <code>$skin[listing_id]<code> \nAssetID $skin[asset_id]  \n$skin[url]";
         $url = "https://api.telegram.org/bot$this->token/sendMessage?" . http_build_query([
             'chat_id' => $chat_id,
             'text' => $text,
