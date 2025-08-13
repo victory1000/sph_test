@@ -20,7 +20,7 @@ try {
           TG::sendMessage('Server has been started 🚀');
         } elseif ($message === 'clear processed listings') {
           $_redis = Cache::get_instance();
-          $_redis->set('processed_listings', json_encode([]), 120);
+          $_redis->del('processed_listings');
           TG::sendMessage('The listings have been cleared.');
         }
       } else {
