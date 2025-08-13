@@ -33,47 +33,60 @@ process.stdin.on('data', async chunk => {
     try {
 
       for (const skin_name of conf.skins) {
-        const Req = new Request({
-          url: 'https://steamcommunity.com/market/listings/730/'+encodeURIComponent(skin_name)+'/render/?query=&start=0&country=RU&currency=5&count=100',
-          debug: true,
-        });
-        const data = await Req.exec();
+console.error(skin_name+' processed '+processed_items)
+        if (processed_items >= conf.rate_limit) break;
 
-        if (!data.hasOwnProperty('results_html') || !data.hasOwnProperty('listinginfo')) {
-          console.error(`Error while getting market page for ${skin_name}`);
-          // open page thru browser
-          continue;
-        }
+        for (let i = 0; i < 3; i++) {
+console.error(skin_name+' start '+(i*100))
+          if (processed_items >= conf.rate_limit) break;
 
-        const $ = cheerio.load(data.results_html);
-
-        $('.market_listing_row').each((i, el) => {
-          const listing_id = $(el).attr('id').replace('listing_', '');
-          if (processed_items < conf.rate_limit && !php_input.includes(listing_id)) {
-            listings[skin_name][""+listing_id+""] = { "inspect": $(el).find('.market_listing_row_action a').attr('href') || null };
-            processed_items++;
-          }
-        });
-
-        Object.values(data.listinginfo).forEach(function (el) {
-          if (listings[skin_name].hasOwnProperty(el.listingid)) {
-            listings[skin_name][el.listingid]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
-            listings[skin_name][el.listingid]["asset_id"] = el.asset.id;
-          }
-        });
-
-        for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
+          const start = i*100;
           const Req = new Request({
-            url: "https://api.csfloat.com/?url=" + _data.inspect,
-            debug: true,
+            url: 'https://steamcommunity.com/market/listings/730/'
+                  + encodeURIComponent(skin_name)
+                  + '/render/?query=&start='+start+'&country=RU&currency=5&count=100',
+            debug: false,
           });
-          const json = await Req.exec();
+          const data = await Req.exec();
 
-          listings[skin_name][_listing_id]["pattern"] = json.iteminfo.keychains[0].pattern;
-
-          if (listings[skin_name][_listing_id]["pattern"].length === 0) {
-            console.error("Empty pattern " + skin_name + " " + _listing_id + " ", listings[skin_name][_listing_id]);
+          if (!data.hasOwnProperty('results_html') || !data.hasOwnProperty('listinginfo')) {
+            console.error(`Error while getting market page for ${skin_name}`);
+            // open page thru browser
+            continue;
           }
+
+          const $ = cheerio.load(data.results_html);
+
+          $('.market_listing_row').each((i, el) => {
+            const listing_id = $(el).attr('id').replace('listing_', '');
+            if (processed_items < conf.rate_limit && !php_input.includes(listing_id)) {
+              listings[skin_name]["" + listing_id + ""] = {"inspect": $(el).find('.market_listing_row_action a').attr('href') || null};
+              processed_items++;
+            }
+          });
+
+          Object.values(data.listinginfo).forEach(function (el) {
+            if (listings[skin_name].hasOwnProperty(el.listingid)) {
+              listings[skin_name][el.listingid]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
+              listings[skin_name][el.listingid]["asset_id"] = el.asset.id;
+            }
+          });
+
+          for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
+            const Req = new Request({
+              url: "https://api.csfloat.com/?url=" + _data.inspect,
+              debug: false,
+            });
+            const json = await Req.exec();
+
+            listings[skin_name][_listing_id]["pattern"] = json.iteminfo.keychains[0].pattern;
+
+            if (listings[skin_name][_listing_id]["pattern"].length === 0) {
+              console.error("Empty pattern " + skin_name + " " + _listing_id + " ", listings[skin_name][_listing_id]);
+            }
+          }
+console.error('total_count = '+data.total_count)
+          if (start + 100 > data.total_count) break;
         }
       }
 
