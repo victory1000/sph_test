@@ -83,7 +83,6 @@ class SteamParserPuppeteer extends SteamParser {
 
   private function getPrice(): void {
     $this->price = json_decode($this->_redis->get('price'), true) ?? [];
-    error_log("\$this->price = ".print_r($this->price, true));
 
     if (empty($this->price)) {
 
