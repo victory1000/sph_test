@@ -22,8 +22,6 @@ class Parser {
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    error_log('$http_code = '.$http_code.PHP_EOL); // TODO delete
-
     if ($http_code === 429) {
       echo "Too Many Requests\n";
       return "";
