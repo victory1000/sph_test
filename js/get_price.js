@@ -32,10 +32,10 @@ process.stdin.on('data', async chunk => {
 
         console.error('listinginfo', data.listinginfo);
 
-        Object.values(data.listinginfo).forEach(function (el) {
+        for (const info of data.listinginfo) {
           result[`${skin_name}`] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
           break;
-        });
+        }
       }
 
     } catch (err) {
