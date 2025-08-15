@@ -16,6 +16,8 @@ class Request {
       headers.Origin = 'chrome-extension://jjicbefpemnphinccgikpdaagjebbnhg';
     }
 
+    console.error({"url":this.url, "headers": headers}); // TODO delete
+
     const res = await fetch(this.url, { headers: headers });
     const endTime = performance.now();
 
