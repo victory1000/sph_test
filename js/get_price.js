@@ -32,7 +32,10 @@ process.stdin.on('data', async chunk => {
 
         for (const info of Object.values(data.listinginfo)) {
           result[`${skin_name}`] = (parseInt(info.converted_price) + parseInt(info.converted_fee)) / 100;
-          break;
+          console.error(result[`${skin_name}`]);
+          if (result[`${skin_name}`] !== null && result[`${skin_name}`] > 0) {
+            break;
+          }
         }
       }
 
