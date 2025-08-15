@@ -28,7 +28,7 @@ process.stdin.on('data', async chunk => {
     });
 
     try {
-      for (const skin_name of conf.skins) {
+      // for (const skin_name of conf.skins) {
         await new Promise(res => setTimeout(res, 1000));
         if (page.isClosed()) {
           page = await browser.newPage();
@@ -36,16 +36,17 @@ process.stdin.on('data', async chunk => {
           await page.setExtraHTTPHeaders({'Accept-Language': 'en-US,en;q=0.9',});
         }
 
-        await page.goto("https://steamcommunity.com/market/priceoverview/?market_hash_name="+encodeURIComponent(skin_name)+"&appid=730&currency=5", {
+        await page.goto("https://steamcommunity.com/market/priceoverview/?market_hash_name=Charm%20%7C%20Die-cast%20AK&appid=730&currency=5", {
           waitUntil: 'networkidle2',
           timeout: 5000
         });
 
 const content = await page.content();
-//         const preText = await page.$eval('pre', el => el.innerText);
+        const preText = await page.$eval('pre', el => el.innerText);
 //         const data2 = JSON.parse(preText);
-        console.error(content);
-      }
+        console.error({content});
+        console.error({preText});
+      // }
     } catch (err) {
       console.error('❌ Javascript ERROR:', err);
     }
