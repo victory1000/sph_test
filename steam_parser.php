@@ -38,11 +38,15 @@ class SteamParser {
     foreach ($to_send as $chat_id => $skins) {
       foreach ($skins as $skin) {
 //        $sent[] = $skin['listing_id'];
-        $text = "$skin[name] Template: <b>$skin[pattern]</b>\n";
-        // todo color
-        // todo page
-        $text .= "Price: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> ($skin[price_diff2] руб.)\n";
-        $text .= "$skin[url] \n\nListingID <code>$skin[listing_id]</code>\nPage $skin[page]\n<code>$skin[url]</code>";
+        $page = 'Page: ' . match ($skin['page']) {
+          1 => '1️⃣',
+          2 => '2️⃣',
+          3 => '3️⃣',
+        };
+        $diff_emodji = $skin['price_diff1'] > 5 ? '⚠️' : '✅';
+        $text = "$skin[name] Pattern: <b>$skin[pattern]</b>\n";
+        $text .= "Price: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> $diff_emodji ($skin[price_diff2] руб.)\n";
+        $text .= "$skin[url]\n\n$page\nListingID: <code>$skin[listing_id]</code>\n<code>$skin[url]</code>";
         $url = "https://api.telegram.org/bot$this->token/sendMessage?" . http_build_query([
             'chat_id' => $chat_id,
             'text' => $text,
