@@ -12,7 +12,7 @@ class SteamParserPuppeteer extends SteamParser {
 //    $this->sent = json_decode($this->_redis->get($this->sent_key), true) ?? [];
     $this->price = json_decode($this->_redis->get('price'), true) ?? [];
 
-    if (empty($this->price)) {
+    if (true || empty($this->price)) {
       foreach (Parser::getSkinsToParse() as $skin) {
         $r = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=" . rawurlencode($skin) . "&appid=730&currency=5");
         $priceoverview = json_decode($r, true);
