@@ -1,9 +1,7 @@
 const Request = require("./request");
 try {
   const Req = new Request({
-    url: 'https://steamcommunity.com/market/listings/730/'
-    + encodeURIComponent(skin_name)
-    + '/render/?query=&start='+start+'&country=RU&currency=5&count=100',
+    url: "https://steamcommunity.com/market/priceoverview/?market_hash_name="+encodeURIComponent("Charm | Die-cast AK")+"&appid=730&currency=5",
     debug: false,
   });
   const data = Req.exec();
