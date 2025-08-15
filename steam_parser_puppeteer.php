@@ -154,6 +154,41 @@ class SteamParserPuppeteer extends SteamParser {
             error_log("\$exitCode = " . print_r($exitCode, true));
           }
 
+          error_log("next");
+
+          $process = proc_open(
+            'node /opt/sph_test/js/ppt_parser.js',
+            [
+              0 => ['pipe', 'r'],  // stdin
+              1 => ['pipe', 'w'],  // stdout
+              2 => ['pipe', 'w'],  // stderr
+            ],
+            $pipes
+          );
+
+          if (is_resource($process)) {
+            fwrite($pipes[0], json_encode([]));
+            fclose($pipes[0]);
+
+            $output = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+
+            $error = stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
+
+            $exitCode = proc_close($process);
+
+            $this->Debug("Exit code", "$exitCode" . PHP_EOL . PHP_EOL . "JS output: $output" . PHP_EOL);
+
+            if ($error) {
+              $this->Debug("ERRORS", "\n$error" . PHP_EOL);
+              if (!$this->debug_enabled) {
+                TG::sendError($error);
+                exit();
+              }
+            }
+          }
+
           exit();
         }
         $priceoverview = json_decode($res, true);
