@@ -5,7 +5,7 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const Request = require("./request");
 puppeteer.use(StealthPlugin());
 
-const conf = {
+const conf = { // todo take from php
   skins: [
     "Charm | Disco MAC",
     "Charm | Baby's AK",
@@ -16,7 +16,7 @@ const conf = {
   ],
   rate_limit: 50,
 };
-// TODO need to check the price % to avoid calling csfloat
+
 let listings = {};
 let processed_count = 0;
 
@@ -30,18 +30,14 @@ process.stdin.on('data', async chunk => {
 
   const php_input = JSON.parse(chunk.toString());
 
-  console.error(php_input.max_price); // TODO delete
-
   await (async () => {
     try {
 
       for (const skin_name of conf.skins) {
-        console.error(skin_name+' processed_count='+processed_count); // TODO delete
         let max_price_met = false;
         if (processed_count >= conf.rate_limit) break;
 
         for (let i = 0; i < 3; i++) {
-          console.error('FOR i='+i+' processed_count='+processed_count+' max_price_met='+max_price_met); // TODO delete
           if (processed_count >= conf.rate_limit) break;
           if (max_price_met) break;
 
@@ -49,7 +45,7 @@ process.stdin.on('data', async chunk => {
           const Req = new Request({
             url: 'https://steamcommunity.com/market/listings/730/'
                   + encodeURIComponent(skin_name)
-                  + '/render/?query=&start='+start+'&country=RU&currency=5&count=10', // TODO 100
+                  + '/render/?query=&start='+start+'&country=RU&currency=5&count=100',
             debug: false,
           });
           const data = await Req.exec();
@@ -72,28 +68,18 @@ process.stdin.on('data', async chunk => {
             }
           });
 
-          const to_test = Object.keys(listings[skin_name]); // TODO delete
-
           Object.values(data.listinginfo).forEach(function (el) {
             if (listings[skin_name].hasOwnProperty(el.listingid)) {
               listings[skin_name][el.listingid]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
               listings[skin_name][el.listingid]["asset_id"] = el.asset.id;
               listings[skin_name][el.listingid]["page"] = i+1;
-              console.error(el.listingid+' price='+listings[skin_name][el.listingid]["price"]+' page='+(i+1)+' max_price='+php_input['max_price'][skin_name]); // TODO delete
               if (listings[skin_name][el.listingid]["price"] > php_input['max_price'][skin_name]) {
-                console.error('break MAX price'); // TODO delete
                 delete listings[skin_name][el.listingid];
                 max_price_met = true;
                 conf.rate_limit++;
               }
             }
           });
-
-          // TODO delete
-          if(max_price_met){
-            console.error({'before':to_test, 'after': Object.keys(listings[skin_name])});
-          }
-
 
           for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
             const Req = new Request({
