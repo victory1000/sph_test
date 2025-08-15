@@ -72,7 +72,7 @@ process.stdin.on('data', async chunk => {
             }
           });
 
-          const to_test = listings[skin_name].length; // TODO delete
+          const to_test = Object.keys(listings[skin_name]).length; // TODO delete
 
           Object.values(data.listinginfo).forEach(function (el) {
             if (listings[skin_name].hasOwnProperty(el.listingid)) {
@@ -91,7 +91,7 @@ process.stdin.on('data', async chunk => {
 
           // TODO delete
           if(max_price_met){
-            console.error({'before':to_test, 'after': listings[skin_name].length});
+            console.error({'before':to_test, 'after': Object.keys(listings[skin_name]).length});
           }
 
 
