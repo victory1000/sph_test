@@ -160,6 +160,7 @@ class SteamParser {
         "Charm | Disco MAC" => [
           ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 40],
           ['pattern_m' => 1, 'pattern_l' => 5_000, 'price_percent' => 40],
+          ['pattern_m' => 19500, 'pattern_l' => 20500, 'price_percent' => 40],
         ],
         "Charm | Glamour Shot" => [
           ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 80],
@@ -167,7 +168,7 @@ class SteamParser {
         ],
         "Charm | Hot Hands" => [
           ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-          ['pattern_m' => 1, 'pattern_l' => 5000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 30],
         ],
       ]
     ];
