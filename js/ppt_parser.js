@@ -53,8 +53,6 @@ process.stdin.on('data', async chunk => {
             debug: false,
           });
           const data = await Req.exec();
-          console.log(JSON.stringify({"new_listings": data})); // output for php // TODO delete
-          return;
 
           if (data === null) continue;
 

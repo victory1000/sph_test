@@ -129,7 +129,7 @@ class SteamParserPuppeteer extends SteamParser {
       $exitCode = proc_close($process);
 
       $this->Debug("EXIT CODE", $exitCode);
-      $this->Debug("INPUT", $input, 1);
+      $this->Debug("INPUT", json_encode($input), 2);
       $this->Debug("OUTPUT", $output, 1);
 
       if ($error) {
