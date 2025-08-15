@@ -25,6 +25,7 @@ try {
         } elseif ($message === 'update price') {
           $_redis = Cache::get_instance();
           $_redis->del('price');
+          TG::sendMessage('The price has been cleared.');
         }
       } else {
         TG::sendMessage("New message:\n$message");
