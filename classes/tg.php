@@ -20,7 +20,7 @@ class TG {
         'parse_mode' => 'MarkdownV2'
       ]);
     $t = file_get_contents($url);
-    error_log("sendError = {info} ");
+    error_log("sendError = {$t} ");
   }
 
   static function getUpdates(): array {

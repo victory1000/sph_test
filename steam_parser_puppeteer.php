@@ -85,15 +85,22 @@ class SteamParserPuppeteer extends SteamParser {
     $this->price = json_decode($this->_redis->get('price'), true) ?? [];
 
     if (true || empty($this->price)) {
+
       foreach (Parser::getSkinsToParse() as $skin) {
         $res = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=" . rawurlencode($skin) . "&appid=730&currency=5");
-        if (empty($res)) {
-          $output = $this->execJSFile('get_price', ['skins' => Parser::getSkinsToParse()]);
-          exit();
-        }
-        $priceoverview = json_decode($res, true);
-        $this->price[$skin] = Parser::toPrice($priceoverview['lowest_price'] ?? $priceoverview['median_price'] ?? 100);
+        if (empty($res)) break;
+        $price = json_decode($res, true);
+        $this->price[$skin] = Parser::toPrice($price['lowest_price'] ?? $price['median_price'] ?? 100);
       }
+
+      if (empty($this->price)) {
+        $this->price = $this->execJSFile('get_price', ['skins' => Parser::getSkinsToParse()])['price'] ?? [];
+      }
+
+      if (empty($this->price)) {
+        throw new Exception("Unable to get price.");
+      }
+
       $this->_redis->set('price', json_encode($this->price), 3600);
     }
   }
