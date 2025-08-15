@@ -1,6 +1,48 @@
 <?php
 include_once "parser.php";
 
+
+
+
+
+
+
+$process = proc_open(
+  'node /opt/sph_test/js/get_price.js',
+  [
+    0 => ['pipe', 'r'],  // stdin
+    1 => ['pipe', 'w'],  // stdout
+    2 => ['pipe', 'w'],  // stderr
+  ],
+  $pipes
+);
+
+if (is_resource($process)) {
+  fwrite($pipes[0], '');
+  fclose($pipes[0]);
+
+  $output = stream_get_contents($pipes[1]);
+  fclose($pipes[1]);
+
+  $error = stream_get_contents($pipes[2]);
+  fclose($pipes[2]);
+
+  $exitCode = proc_close($process);
+
+  error_log("\$output = " . print_r($output, true));
+  error_log("\$error = " . print_r($error, true));
+  error_log("\$exitCode = " . print_r($exitCode, true));
+}
+
+exit();
+
+
+
+
+
+
+
+
 $start_mem = memory_get_usage();
 $start_time = microtime(true);
 
