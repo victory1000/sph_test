@@ -32,7 +32,7 @@ try {
             TG::sendMessage('The price has been cleared.');
             break;
           case 'commands':
-            TG::sendMessage("<code>start server</code><br/><code>stop server</code><br/><code>clear processed listings</code><br/>update price");
+            TG::sendMessage("<code>start server</code>\n<code>stop server</code>\n<code>clear processed listings</code>\nupdate price");
             break;
         }
       } else {
