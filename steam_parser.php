@@ -102,12 +102,12 @@ class SteamParser {
     $to_send = [];
     if (empty($to_check)) return $to_send;
 
-    foreach ($this->getChats() as $chat_id => $skins) {
+    foreach (Parser::getChats() as $chat_id => $skins) {
       foreach ($skins as $skin_name => $skin) {
         foreach ($to_check[$skin_name] ?? [] as $p_p) {
           if (empty($p_p['pattern'])) {
             $this->Debug("EMPTY PATTERN", $p_p);
-            Parser::ErrorTG("EMPTY PATTERN".json_encode($p_p));
+            TG::sendError("EMPTY PATTERN".json_encode($p_p));
             continue;
           }
           $price_diff = round(($p_p['price'] * 100) / $this->price[$skin_name] - 100, 2);
@@ -132,7 +132,7 @@ class SteamParser {
     if (Parser::isRarePattern($pattern)) {
       return true;
     }
-    foreach ($this->getChats() as $skins) {
+    foreach (Parser::getChats() as $skins) {
       foreach ($skins[$skin_name] as $data) {
         if ($pattern >= $data['pattern_m'] && $pattern <= $data['pattern_l'] && $price <= $data['price_percent']) {
           return true;
@@ -140,38 +140,6 @@ class SteamParser {
       }
     }
     return false;
-  }
-
-  protected function getChats(): array {
-    return [
-      513209606 => [
-        "Charm | Baby's AK" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 30],
-        ],
-        "Charm | Die-cast AK" => [
-          ['pattern_m' => 87_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-          ['pattern_m' => 1, 'pattern_l' => 24_000, 'price_percent' => 30],
-        ],
-        "Charm | Titeenium AWP" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 60],
-          ['pattern_m' => 1, 'pattern_l' => 1_000, 'price_percent' => 60],
-        ],
-        "Charm | Disco MAC" => [
-          ['pattern_m' => 1, 'pattern_l' => 15_000, 'price_percent' => 40],
-          ['pattern_m' => 49500, 'pattern_l' => 50500, 'price_percent' => 40],
-          ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 40],
-        ],
-        "Charm | Glamour Shot" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 80],
-          ['pattern_m' => 1, 'pattern_l' => 4000, 'price_percent' => 80],
-        ],
-        "Charm | Hot Hands" => [
-          ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-          ['pattern_m' => 1, 'pattern_l' => 5000, 'price_percent' => 30],
-        ],
-      ]
-    ];
   }
 
   public function Debug(string $caption, mixed $value): void {

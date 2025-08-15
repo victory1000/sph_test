@@ -8,7 +8,7 @@ if (file_exists($stop_file)) {
 
 $lock_file = fopen(__DIR__ . '/files/cron_script.lock', 'c');
 if (!flock($lock_file, LOCK_EX | LOCK_NB)) {
-  Parser::ErrorTG("Script already running, exiting");
+  TG::sendError("Script already running, exiting");
   fclose($lock_file);
   exit;
 }
@@ -38,7 +38,7 @@ while ($time < 60) {
   } catch (Throwable $e) {
     $message = "Exception: " . $e->getMessage() . " in file " . $e->getFile() . " on line " . $e->getLine() . PHP_EOL;
     $message .= "Backtrace:" . PHP_EOL . $e->getTraceAsString();
-    Parser::ErrorTG($message);
+    TG::sendError($message);
     fclose($lock_file);
     exit;
   }

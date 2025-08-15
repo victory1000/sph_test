@@ -22,6 +22,9 @@ try {
           $_redis = Cache::get_instance();
           $_redis->del('processed_listings');
           TG::sendMessage('The listings have been cleared.');
+        } elseif ($message === 'update price') {
+          $_redis = Cache::get_instance();
+          $_redis->del('price');
         }
       } else {
         TG::sendMessage("New message:\n$message");

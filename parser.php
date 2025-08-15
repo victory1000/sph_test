@@ -65,13 +65,36 @@ class Parser {
     ];
   }
 
-  static function ErrorTG(mixed $message): void {
-    $url = "https://api.telegram.org/bot7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4/sendMessage?" . http_build_query([
-        'chat_id' => 513209606,
-        'text' => "❌" . urlencode($message),
-        'parse_mode' => 'html'
-      ]);
-    file_get_contents($url);
+  static function getChats(): array {
+    return [
+      513209606 => [
+        "Charm | Baby's AK" => [
+          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 30],
+        ],
+        "Charm | Die-cast AK" => [
+          ['pattern_m' => 87_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 24_000, 'price_percent' => 30],
+        ],
+        "Charm | Titeenium AWP" => [
+          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 60],
+          ['pattern_m' => 1, 'pattern_l' => 1_000, 'price_percent' => 60],
+        ],
+        "Charm | Disco MAC" => [
+          ['pattern_m' => 1, 'pattern_l' => 15_000, 'price_percent' => 40],
+          ['pattern_m' => 49500, 'pattern_l' => 50500, 'price_percent' => 40],
+          ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 40],
+        ],
+        "Charm | Glamour Shot" => [
+          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 80],
+          ['pattern_m' => 1, 'pattern_l' => 4000, 'price_percent' => 80],
+        ],
+        "Charm | Hot Hands" => [
+          ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 5000, 'price_percent' => 30],
+        ],
+      ]
+    ];
   }
 
 }

@@ -27,11 +27,7 @@ class SteamParserPuppeteer extends SteamParser {
   }
 
   protected function ParseSkins(): array {
-    $redis_processed = json_decode($this->_redis->get('processed_listings'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
-    array_walk($redis_processed, fn(&$el) => $el = (string)$el);
-    $input = json_encode($redis_processed);
-
-//    $this->Debug("processed_listings", $redis_processed); // TODO debug level
+    $input = $this->get_input_for_js();
 //    $this->Debug("input", $input);
 
     $process = proc_open(
@@ -45,7 +41,7 @@ class SteamParserPuppeteer extends SteamParser {
     );
 
     if (is_resource($process)) {
-      fwrite($pipes[0], $input);
+      fwrite($pipes[0], json_encode($input));
       fclose($pipes[0]);
 
       $output = stream_get_contents($pipes[1]);
@@ -61,7 +57,7 @@ class SteamParserPuppeteer extends SteamParser {
       if ($error) {
         $this->Debug("ERRORS", "\n$error".PHP_EOL);
         if (!$this->debug_enabled) {
-          Parser::ErrorTG($error);
+          TG::sendError($error);
           exit();
         }
       }
@@ -69,7 +65,7 @@ class SteamParserPuppeteer extends SteamParser {
       $output_listings = json_decode($output, true, flags: JSON_BIGINT_AS_STRING);
       unset($output, $error);
 
-      $processed_listings = $redis_processed;
+      $processed_listings = $input['processed_listings'];
       foreach ($output_listings['new_listings'] as $ls_arr) {
         $processed_listings = array_merge($processed_listings, array_keys($ls_arr));
       }
@@ -86,6 +82,29 @@ class SteamParserPuppeteer extends SteamParser {
     return $output_listings['new_listings'] ?? [];
   }
 
+  private function get_input_for_js(): array {
+    $redis_processed = json_decode($this->_redis->get('processed_listings'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
+    array_walk($redis_processed, fn(&$el) => $el = (string)$el);
+
+    foreach (Parser::getChats() as $skins) {
+      foreach ($skins as $skin => $conf) {
+        foreach ($conf as $_conf) {
+          $prices[$skin][] = $_conf['price_percent'] ?? 1;
+        }
+      }
+    }
+
+    foreach ($prices as $skin => $prs) {
+      $prices[$skin] = max($prs);
+    }
+
+    foreach (Parser::getSkinsToParse() as $skin) {
+      $max_price[$skin] = $this->price[$skin] + ($this->price[$skin] * $prices[$skin] / 100);
+    }
+
+    return ['max_price' => $max_price, 'processed_listings' => $redis_processed];
+  }
+
   protected function CheckSkins(array $to_check): array {
     $to_send = [];
     if (empty($to_check)) return $to_send;
@@ -98,7 +117,7 @@ class SteamParserPuppeteer extends SteamParser {
 //      }
 //    }
 
-    foreach ($this->getChats() as $chat_id => $skins) {
+    foreach (Parser::getChats() as $chat_id => $skins) {
       foreach ($skins as $skin_name => $skin) {
         foreach ($to_check[$skin_name] ?? [] as $listing_id => $p_p) {
           $price_diff = round(($p_p['price'] * 100) / $this->price[$skin_name] - 100, 2);

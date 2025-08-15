@@ -10,7 +10,7 @@ try {
 } catch (Throwable $e) {
   $message = "Exception: " . $e->getMessage() . " in file " . $e->getFile() . " on line " . $e->getLine() . PHP_EOL;
   $message .= "Backtrace:" . PHP_EOL . $e->getTraceAsString();
-  Parser::ErrorTG($message);
+  TG::sendError($message);
 }
 
 $_steam->Debug("Execution", [
