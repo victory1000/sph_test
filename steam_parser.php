@@ -9,6 +9,7 @@ class SteamParser {
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
   protected string $sent_key;
   protected bool $debug_enabled = true;
+  protected int $debug_level = 1;
 
   public function __construct() {
     $this->_redis = Cache::get_instance();
@@ -142,12 +143,12 @@ class SteamParser {
     return false;
   }
 
-  public function Debug(string $caption, mixed $value): void {
-    if ($this->debug_enabled) {
+  public function Debug(string $caption, mixed $value, int $level = 1): void {
+    if ($this->debug_enabled && $this->debug_level >= $level) {
       if (is_string($value)) {
-        error_log("Debug ::$caption:: $value".PHP_EOL);
+        error_log("Debug __{$caption}__ $value".PHP_EOL);
       } else {
-        error_log("Debug ::$caption:: " . print_r($value, true)).PHP_EOL;
+        error_log("Debug __{$caption}__ " . print_r($value, true)).PHP_EOL;
       }
     }
   }

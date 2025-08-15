@@ -15,62 +15,23 @@ class SteamParserPuppeteer extends SteamParser {
   }
 
   protected function ParseSkins(): array {
-    $input = $this->get_input_for_js();
-//    $this->Debug("input", $input);
+    $input = $this->getInputForJS();
+    $output_listings = $this->execJSFile('ppt_parser', $input);
 
-    $process = proc_open(
-      'node /opt/sph_test/js/ppt_parser.js',
-      [
-        0 => ['pipe', 'r'],  // stdin
-        1 => ['pipe', 'w'],  // stdout
-        2 => ['pipe', 'w'],  // stderr
-      ],
-      $pipes
-    );
-
-    if (is_resource($process)) {
-      fwrite($pipes[0], json_encode($input));
-      fclose($pipes[0]);
-
-      $output = stream_get_contents($pipes[1]);
-      fclose($pipes[1]);
-
-      $error = stream_get_contents($pipes[2]);
-      fclose($pipes[2]);
-
-      $exitCode = proc_close($process);
-
-      $this->Debug("Exit code", "$exitCode".PHP_EOL.PHP_EOL."JS output: $output".PHP_EOL);
-
-      if ($error) {
-        $this->Debug("ERRORS", "\n$error".PHP_EOL);
-        if (!$this->debug_enabled) {
-          TG::sendError($error);
-          exit();
-        }
-      }
-
-      $output_listings = json_decode($output, true, flags: JSON_BIGINT_AS_STRING);
-      unset($output, $error);
-
-      $processed_listings = $input['processed_listings'];
-      foreach ($output_listings['new_listings'] as $ls_arr) {
-        $processed_listings = array_merge($processed_listings, array_keys($ls_arr));
-      }
-      array_walk($processed_listings, fn(&$el) => $el = (string)$el);
-      $processed_listings = array_unique($processed_listings);
-
-      $this->_redis->set('processed_listings', json_encode($processed_listings), 43200);
-
-      $this->Debug("OUTPUT (output_listings NEW)", $output_listings['new_listings']);
-//      $this->Debug("OUTPUT (output_listings)", $output_listings);
-//      $this->Debug("INSERT REDIS", json_encode($processed_listings));
+    $processed_listings = $input['processed_listings'];
+    foreach ($output_listings['new_listings'] as $ls_arr) {
+      $processed_listings = array_merge($processed_listings, array_keys($ls_arr));
     }
+    array_walk($processed_listings, fn(&$el) => $el = (string)$el);
+    $processed_listings = array_unique($processed_listings);
+
+    $this->_redis->set('processed_listings', json_encode($processed_listings), 43200);
+    $this->Debug("INSERT REDIS", json_encode($processed_listings), 2);
 
     return $output_listings['new_listings'] ?? [];
   }
 
-  private function get_input_for_js(): array {
+  private function getInputForJS(): array {
     $redis_processed = json_decode($this->_redis->get('processed_listings'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
     array_walk($redis_processed, fn(&$el) => $el = (string)$el);
 
@@ -127,68 +88,7 @@ class SteamParserPuppeteer extends SteamParser {
       foreach (Parser::getSkinsToParse() as $skin) {
         $res = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=" . rawurlencode($skin) . "&appid=730&currency=5");
         if (empty($res)) {
-          $process = proc_open(
-            'node /opt/sph_test/js/get_price.js',
-            [
-              0 => ['pipe', 'r'],  // stdin
-              1 => ['pipe', 'w'],  // stdout
-              2 => ['pipe', 'w'],  // stderr
-            ],
-            $pipes
-          );
-
-          if (is_resource($process)) {
-            fwrite($pipes[0], '123');
-            fclose($pipes[0]);
-
-            $output = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-
-            $error = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-
-            $exitCode = proc_close($process);
-
-            error_log("\$output = " . print_r($output, true));
-            error_log("\$error = " . print_r($error, true));
-            error_log("\$exitCode = " . print_r($exitCode, true));
-          }
-
-          error_log("next");
-
-          $process = proc_open(
-            'node /opt/sph_test/js/ppt_parser.js',
-            [
-              0 => ['pipe', 'r'],  // stdin
-              1 => ['pipe', 'w'],  // stdout
-              2 => ['pipe', 'w'],  // stderr
-            ],
-            $pipes
-          );
-
-          if (is_resource($process)) {
-            fwrite($pipes[0], json_encode([]));
-            fclose($pipes[0]);
-
-            $output = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-
-            $error = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-
-            $exitCode = proc_close($process);
-
-            $this->Debug("Exit code", "$exitCode" . PHP_EOL . PHP_EOL . "JS output: $output" . PHP_EOL);
-
-            if ($error) {
-              $this->Debug("ERRORS", "\n$error" . PHP_EOL);
-              if (!$this->debug_enabled) {
-                TG::sendError($error);
-                exit();
-              }
-            }
-          }
-
+          $output = $this->execJSFile('get_price', Parser::getSkinsToParse());
           exit();
         }
         $priceoverview = json_decode($res, true);
@@ -196,6 +96,45 @@ class SteamParserPuppeteer extends SteamParser {
       }
       $this->_redis->set('price', json_encode($this->price), 3600);
     }
+  }
+
+  private function execJSFile(string $file_name, array $input): array {
+    $process = proc_open(
+      "node /opt/sph_test/js/$file_name.js",
+      [
+        0 => ['pipe', 'r'],  // stdin
+        1 => ['pipe', 'w'],  // stdout
+        2 => ['pipe', 'w'],  // stderr
+      ],
+      $pipes
+    );
+
+    if (is_resource($process)) {
+      fwrite($pipes[0], json_encode($input));
+      fclose($pipes[0]);
+
+      $output = stream_get_contents($pipes[1]);
+      fclose($pipes[1]);
+
+      $error = stream_get_contents($pipes[2]);
+      fclose($pipes[2]);
+
+      $exitCode = proc_close($process);
+
+      $this->Debug("EXIT CODE", $exitCode);
+      $this->Debug("INPUT", $input, 1);
+      $this->Debug("OUTPUT", $output, 1);
+
+      if ($error) {
+        $this->Debug("ERRORS", "\n$error" . PHP_EOL);
+        if (!$this->debug_enabled) {
+          TG::sendError($error);
+          throw new Exception($error);
+        }
+      }
+    }
+
+    return json_decode($output ?? '{}', true, flags: JSON_BIGINT_AS_STRING);
   }
 
 }
