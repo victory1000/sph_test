@@ -18,7 +18,7 @@ $process = proc_open(
 );
 
 if (is_resource($process)) {
-  fwrite($pipes[0], '');
+  fwrite($pipes[0], '123');
   fclose($pipes[0]);
 
   $output = stream_get_contents($pipes[1]);
