@@ -34,10 +34,7 @@ if (is_resource($process)) {
   error_log("\$exitCode = " . print_r($exitCode, true));
 }
 
-exit();
-
-
-
+//exit();
 
 
 
