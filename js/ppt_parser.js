@@ -72,7 +72,7 @@ process.stdin.on('data', async chunk => {
             }
           });
 
-          const to_test = listings[skin_name]; // TODO delete
+          const to_test = listings[skin_name].length; // TODO delete
 
           Object.values(data.listinginfo).forEach(function (el) {
             if (listings[skin_name].hasOwnProperty(el.listingid)) {
@@ -84,13 +84,14 @@ process.stdin.on('data', async chunk => {
                 console.error('break MAX price'); // TODO delete
                 delete listings[skin_name][el.listingid];
                 max_price_met = true;
+                conf.rate_limit++;
               }
             }
           });
 
           // TODO delete
           if(max_price_met){
-            console.error({'before':to_test, 'after': listings[skin_name]});
+            console.error({'before':to_test, 'after': listings[skin_name].length});
           }
 
 
