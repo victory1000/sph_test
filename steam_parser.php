@@ -165,6 +165,10 @@ class SteamParser {
           ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 80],
           ['pattern_m' => 1, 'pattern_l' => 4000, 'price_percent' => 80],
         ],
+        "Charm | Hot Hands" => [
+          ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 5000, 'price_percent' => 30],
+        ],
       ]
     ];
   }

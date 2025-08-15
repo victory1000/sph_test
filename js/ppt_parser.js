@@ -11,7 +11,8 @@ const conf = {
     "Charm | Baby's AK",
     "Charm | Die-cast AK",
     "Charm | Titeenium AWP",
-    "Charm | Glamour Shot"
+    "Charm | Glamour Shot",
+    "Charm | Hot Hands",
   ],
   rate_limit: 50,
 };
