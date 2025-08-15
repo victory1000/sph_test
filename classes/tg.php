@@ -14,7 +14,7 @@ class TG {
   }
 
   static function sendError(mixed $message): void {
-    $message = "❌" . htmlspecialchars($message);
+    $message = "❌" . urlencode($message);
     self::sendMessage($message);
   }
 
