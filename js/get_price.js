@@ -30,10 +30,8 @@ process.stdin.on('data', async chunk => {
           continue;
         }
 
-        console.error('listinginfo', data.listinginfo);
-
         for (const info of Object.values(data.listinginfo)) {
-          result[`${skin_name}`] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
+          result[`${skin_name}`] = (parseInt(info.converted_price) + parseInt(info.converted_fee)) / 100;
           break;
         }
       }

@@ -19,7 +19,8 @@ class TG {
         'text' => "❌$message",
         'parse_mode' => 'MarkdownV2'
       ]);
-    file_get_contents($url);
+    $t = file_get_contents($url);
+    error_log("sendError = {info} ");
   }
 
   static function getUpdates(): array {
