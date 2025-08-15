@@ -12,7 +12,7 @@ javascript:(function(){
         alert("Listing not found");
       }
       window.g_oSearchResults.OnAJAXComplete = originalComplete;
-    }, 2000);
+    }, 1500);
   };
 
   window.g_oSearchResults.m_cPageSize = 100;
