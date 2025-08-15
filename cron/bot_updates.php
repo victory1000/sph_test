@@ -12,20 +12,28 @@ try {
       $chat_id = $update['message']['chat']['id'] ?? '';
 
       if ($chat_id === TG::OWNER) {
-        if ($message === 'stop server') {
-          file_put_contents($stop_file, '1');
-          TG::sendMessage('Server has been stopped ✅');
-        } elseif ($message === 'start server') {
-          @unlink($stop_file);
-          TG::sendMessage('Server has been started 🚀');
-        } elseif ($message === 'clear processed listings') {
-          $_redis = Cache::get_instance();
-          $_redis->del('processed_listings');
-          TG::sendMessage('The listings have been cleared.');
-        } elseif ($message === 'update price') {
-          $_redis = Cache::get_instance();
-          $_redis->del('price');
-          TG::sendMessage('The price has been cleared.');
+        switch ($message) {
+          case 'stop server':
+            file_put_contents($stop_file, '1');
+            TG::sendMessage('Server has been stopped ✅');
+            break;
+          case 'start server':
+            @unlink($stop_file);
+            TG::sendMessage('Server has been started 🚀');
+            break;
+          case 'clear processed listings':
+            $_redis = Cache::get_instance();
+            $_redis->del('processed_listings');
+            TG::sendMessage('The listings have been cleared.');
+            break;
+          case 'update price':
+            $_redis = Cache::get_instance();
+            $_redis->del('price');
+            TG::sendMessage('The price has been cleared.');
+            break;
+          case 'commands':
+            TG::sendMessage('start server\n stop server\n clear processed listings\n update price');
+            break;
         }
       } else {
         TG::sendMessage("New message:\n$message");
