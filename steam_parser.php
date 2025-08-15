@@ -8,7 +8,7 @@ class SteamParser {
   protected string $url_render = "/render/?query=&start=0&country=RU&count=100&currency=5";
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
   protected string $sent_key;
-  protected bool $debug_enabled = true;
+  protected bool $debug_enabled = false;
   protected int $debug_level = 1;
 
   public function __construct() {
