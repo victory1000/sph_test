@@ -146,12 +146,12 @@ class SteamParser {
     return [
       513209606 => [
         "Charm | Baby's AK" => [
-          ['pattern_m' => 98_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-          ['pattern_m' => 1, 'pattern_l' => 2000, 'price_percent' => 30],
+          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 30],
         ],
         "Charm | Die-cast AK" => [
-          ['pattern_m' => 87_000, 'pattern_l' => 100_000, 'price_percent' => 60],
-          ['pattern_m' => 1, 'pattern_l' => 24_000, 'price_percent' => 60],
+          ['pattern_m' => 87_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+          ['pattern_m' => 1, 'pattern_l' => 24_000, 'price_percent' => 30],
         ],
         "Charm | Titeenium AWP" => [
           ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 60],
@@ -162,8 +162,8 @@ class SteamParser {
           ['pattern_m' => 1, 'pattern_l' => 5_000, 'price_percent' => 40],
         ],
         "Charm | Glamour Shot" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 50],
-          ['pattern_m' => 1, 'pattern_l' => 4000, 'price_percent' => 50],
+          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 80],
+          ['pattern_m' => 1, 'pattern_l' => 4000, 'price_percent' => 80],
         ],
       ]
     ];
