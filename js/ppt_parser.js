@@ -9,9 +9,9 @@ const conf = { // todo take from php
   skins: [
     "Charm | Disco MAC",
     "Charm | Baby's AK",
-    "Charm | Die-cast AK",
-    "Charm | Titeenium AWP",
-    "Charm | Glamour Shot",
+    // "Charm | Die-cast AK",
+    // "Charm | Titeenium AWP",
+    // "Charm | Glamour Shot",
     "Charm | Hot Hands",
   ],
   rate_limit: 50,
@@ -37,7 +37,7 @@ process.stdin.on('data', async chunk => {
         let max_price_met = false;
         if (processed_count >= conf.rate_limit) break;
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 1; i++) {
           if (processed_count >= conf.rate_limit) break;
           if (max_price_met) break;
 
