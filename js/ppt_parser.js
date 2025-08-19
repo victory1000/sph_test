@@ -40,6 +40,7 @@ process.stdin.on('data', async chunk => {
         for (let i = 0; i < 2; i++) {
           if (processed_count >= conf.rate_limit) break;
           if (max_price_met) break;
+          if (i > 0) await new Promise(res => setTimeout(res, 1000));
 
           const start = i*100;
           const Req = new Request({
