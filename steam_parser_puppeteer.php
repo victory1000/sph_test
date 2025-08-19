@@ -89,7 +89,7 @@ class SteamParserPuppeteer extends SteamParser {
       foreach (Parser::getSkinsToParse() as $skin) {
         $res = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=" . rawurlencode($skin) . "&appid=730&currency=5");
         $price = json_decode($res, true);
-        if (!key_exists('lowest_price', $price) || !key_exists('median_price', $price)) break;
+        if (is_null($price) || !key_exists('lowest_price', $price) || !key_exists('median_price', $price)) break;
         $this->price[$skin] = Parser::toPrice($price['lowest_price'] ?? $price['median_price']);
         sleep(1);
       }
