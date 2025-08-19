@@ -37,7 +37,7 @@ process.stdin.on('data', async chunk => {
         let max_price_met = false;
         if (processed_count >= conf.rate_limit) break;
 
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 2; i++) {
           if (processed_count >= conf.rate_limit) break;
           if (max_price_met) break;
 
