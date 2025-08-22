@@ -54,7 +54,7 @@ class SteamParserPuppeteer extends SteamParser {
       $max_price[$skin] = $this->price[$skin] + ($this->price[$skin] * $prices[$skin] / 100);
     }
 
-    return ['max_price' => $max_price, 'processed_listings' => $redis_processed, 'skins' => Parser::getChats()];
+    return ['max_price' => $max_price, 'processed_listings' => $redis_processed, 'skins' => Parser::getSkinsToParse()];
   }
 
   protected function CheckSkins(array $to_check): array {
