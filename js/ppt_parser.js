@@ -8,7 +8,7 @@ puppeteer.use(StealthPlugin());
 let rate_limit = 50;
 let listings = {};
 let processed_count, processed_count_local = 0;
-let stat = {steam: 0};
+let stat = {steam: 0, csfloat: 0};
 
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', async chunk => {
@@ -76,6 +76,7 @@ process.stdin.on('data', async chunk => {
           });
 
           for (const [_listing_id, _data] of Object.entries(listings[skin_name])) {
+            stat.csfloat++;
             const Req = new Request({
               url: "https://api.csfloat.com/?url=" + _data.inspect,
               debug: false,
