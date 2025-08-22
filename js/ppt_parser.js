@@ -13,6 +13,10 @@ const conf = { // todo take from php
     // "Charm | Titeenium AWP",
     "Charm | Glamour Shot",
     "Charm | Hot Hands",
+    "Charm | POP Art",
+    "Charm | Whittle Knife",
+    "Charm | Pocket AWP",
+    "Charm | Lil' Cap Gun"
   ],
   rate_limit: 50,
 };
