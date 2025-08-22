@@ -92,7 +92,8 @@ class Parser {
         ],
         "Charm | POP Art" => [
           ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 20],
-          ['pattern_m' => 500, 'pattern_l' => 1000, 'price_percent' => 20],
+          ['pattern_m' => 500, 'pattern_l' => 30000, 'price_percent' => 20],
+//          ['pattern_m' => 500, 'pattern_l' => 1000, 'price_percent' => 20],
           ['pattern_m' => 0, 'pattern_l' => 500, 'price_percent' => 30],
         ],
         "Charm | Whittle Knife" => [
