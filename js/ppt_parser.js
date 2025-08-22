@@ -22,7 +22,7 @@ const conf = { // todo take from php
 };
 
 let listings = {};
-let processed_count = 0;
+let processed_count, processed_count_local = 0;
 
 for (const skin_name of conf.skins) {
   listings[`${skin_name}`] = {};
@@ -45,7 +45,9 @@ process.stdin.on('data', async chunk => {
           if (processed_count >= conf.rate_limit) break;
           if (max_price_met) break;
           if (i > 0) await new Promise(res => setTimeout(res, 1000));
+          if (i > 0 && processed_count_local === 0) await new Promise(res => setTimeout(res, 2000));
 
+          processed_count_local = 0;
           const start = i*100;
           const Req = new Request({
             url: 'https://steamcommunity.com/market/listings/730/'
@@ -70,6 +72,7 @@ process.stdin.on('data', async chunk => {
             if (processed_count < conf.rate_limit && !php_input['processed_listings'].includes(listing_id)) {
               listings[skin_name]["" + listing_id + ""] = {"inspect": $(el).find('.market_listing_row_action a').attr('href') || null};
               processed_count++;
+              processed_count_local++;
             }
           });
 
