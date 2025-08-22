@@ -3,6 +3,9 @@ include_once "steam_parser.php";
 
 class SteamParserPuppeteer extends SteamParser {
 
+  protected bool $debug_enabled = true;
+  protected int $debug_level = 1;
+
   public function __construct() {
     parent::__construct();
   }
@@ -51,7 +54,7 @@ class SteamParserPuppeteer extends SteamParser {
       $max_price[$skin] = $this->price[$skin] + ($this->price[$skin] * $prices[$skin] / 100);
     }
 
-    return ['max_price' => $max_price, 'processed_listings' => $redis_processed];
+    return ['max_price' => $max_price, 'processed_listings' => $redis_processed, 'skins' => Parser::getChats()];
   }
 
   protected function CheckSkins(array $to_check): array {
@@ -68,7 +71,7 @@ class SteamParserPuppeteer extends SteamParser {
             'listing_id' => $listing_id,
             'pattern' => $p_p['pattern'],
             'price' => $p_p['price'],
-            'url' => $this->url_listings . rawurlencode($skin_name), // . "?filter=" . $p_p['pattern'],
+            'url' => $this->url_listings . rawurlencode($skin_name),
             'price_diff1' => $price_diff,
             'price_diff2' => round($p_p['price'] - $this->price[$skin_name], 2),
             'asset_id' => $p_p['asset_id'],

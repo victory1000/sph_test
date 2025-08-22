@@ -5,55 +5,41 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const Request = require("./request");
 puppeteer.use(StealthPlugin());
 
-const conf = { // todo take from php
-  skins: [
-    "Charm | Disco MAC",
-    "Charm | Baby's AK",
-    // "Charm | Die-cast AK",
-    // "Charm | Titeenium AWP",
-    "Charm | Glamour Shot",
-    "Charm | Hot Hands",
-    "Charm | POP Art",
-    "Charm | Whittle Knife",
-    "Charm | Pocket AWP",
-    "Charm | Lil' Cap Gun"
-  ],
-  rate_limit: 50,
-};
-
+let rate_limit = 50;
 let listings = {};
 let processed_count, processed_count_local = 0;
-
-for (const skin_name of conf.skins) {
-  listings[`${skin_name}`] = {};
-}
-
+let stat = {steam: 0};
 
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', async chunk => {
 
   const php_input = JSON.parse(chunk.toString());
 
+  for (const skin_name of php_input.skins) {
+    listings[`${skin_name}`] = {};
+  }
+
   await (async () => {
     try {
 
-      for (const skin_name of conf.skins) {
+      for (const skin_name of php_input.skins) {
         let max_price_met = false;
-        if (processed_count >= conf.rate_limit) break;
+        if (processed_count >= rate_limit) break;
 
         for (let i = 0; i < 3; i++) {
-          if (processed_count >= conf.rate_limit) break;
+          if (processed_count >= rate_limit) break;
           if (max_price_met) break;
           if (i > 0) await new Promise(res => setTimeout(res, 1000));
           if (i > 0 && processed_count_local === 0) await new Promise(res => setTimeout(res, 2000));
 
+          stat.steam++;
           processed_count_local = 0;
           const start = i*100;
           const Req = new Request({
             url: 'https://steamcommunity.com/market/listings/730/'
                   + encodeURIComponent(skin_name)
                   + '/render/?query=&start='+start+'&country=RU&currency=5&count=100',
-            debug: false,
+            debug: true,
           });
           const data = await Req.exec();
 
@@ -69,7 +55,7 @@ process.stdin.on('data', async chunk => {
 
           $('.market_listing_row').each((i, el) => {
             const listing_id = $(el).attr('id').replace('listing_', '');
-            if (processed_count < conf.rate_limit && !php_input['processed_listings'].includes(listing_id)) {
+            if (processed_count < rate_limit && !php_input['processed_listings'].includes(listing_id)) {
               listings[skin_name]["" + listing_id + ""] = {"inspect": $(el).find('.market_listing_row_action a').attr('href') || null};
               processed_count++;
               processed_count_local++;
@@ -84,7 +70,7 @@ process.stdin.on('data', async chunk => {
               if (listings[skin_name][el.listingid]["price"] > php_input['max_price'][skin_name]) {
                 delete listings[skin_name][el.listingid];
                 max_price_met = true;
-                conf.rate_limit++;
+                rate_limit++;
               }
             }
           });
@@ -111,7 +97,7 @@ process.stdin.on('data', async chunk => {
       console.error('❌ Javascript ERROR:', err);
     }
 
-    console.log(JSON.stringify({"new_listings": listings})); // output for php
+    console.log(JSON.stringify({"new_listings": listings, 'stat': stat})); // output for php
   })();
 
 });
