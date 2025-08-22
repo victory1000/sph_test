@@ -7,7 +7,8 @@ puppeteer.use(StealthPlugin());
 
 let rate_limit = 50;
 let listings = {};
-let processed_count, processed_count_local = 0;
+let processed_count = 0;
+let processed_count_local = 0;
 let stat = {steam: 0, csfloat: 0};
 
 process.stdin.setEncoding('utf8');
