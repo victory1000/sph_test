@@ -65,11 +65,11 @@ class SteamParserPuppeteer {
     $this->Debug("INSERT REDIS", json_encode($processed_listings), 2);
 
     // stat
-    $stat = json_decode($this->_redis->get('stat'), true) ?? ['steam'=>0,'csfloat'=>0];
-    $stat['steam'] = $stat['steam'] + $output_listings['stat']['steam'];
-    $stat['csfloat'] = $stat['csfloat'] + $output_listings['stat']['csfloat'];
-    error_log("Time: ".date("d/m/Y H:i:s", strtotime('now'))." \$stat = ".json_encode($stat));
-    $this->_redis->set('stat', json_encode($stat), 3600);
+//    $stat = json_decode($this->_redis->get('stat'), true) ?? ['steam'=>0,'csfloat'=>0];
+//    $stat['steam'] = $stat['steam'] + $output_listings['stat']['steam'];
+//    $stat['csfloat'] = $stat['csfloat'] + $output_listings['stat']['csfloat'];
+//    error_log("Time: ".date("d/m/Y H:i:s", strtotime('now'))." \$stat = ".json_encode($stat));
+//    $this->_redis->set('stat', json_encode($stat), 3600);
     // stat
 
     return $output_listings['new_listings'] ?? [];
