@@ -68,7 +68,9 @@ class SteamParserPuppeteer {
     $stat = json_decode($this->_redis->get('stat'), true) ?? ['steam'=>0,'csfloat'=>0];
     $stat['steam'] = $stat['steam'] + $output_listings['stat']['steam'];
     $stat['csfloat'] = $stat['csfloat'] + $output_listings['stat']['csfloat'];
+    error_log("Time: ".date("d-m-Y-H-i-s", strtotime('now'))." \$stat = ".print_r($stat, true));
     $this->_redis->set('stat', json_encode($stat), 3600);
+    // stat
 
     return $output_listings['new_listings'] ?? [];
   }
@@ -110,7 +112,7 @@ class SteamParserPuppeteer {
             'listing_id' => $listing_id,
             'pattern' => $p_p['pattern'],
             'price' => $p_p['price'],
-            'url' => $this->url_listings . rawurlencode($skin_name),
+            'url' => "https://steamcommunity.com/market/listings/730/" . rawurlencode($skin_name),
             'price_diff1' => $price_diff,
             'price_diff2' => round($p_p['price'] - $this->price[$skin_name], 2),
             'asset_id' => $p_p['asset_id'],
