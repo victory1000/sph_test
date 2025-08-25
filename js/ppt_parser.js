@@ -41,7 +41,7 @@ process.stdin.on('data', async chunk => {
             url: 'https://steamcommunity.com/market/listings/730/'
                   + encodeURIComponent(skin_name)
                   + '/render/?query=&start='+start+'&country=RU&currency=5&count=100',
-            debug: true,
+            debug: false,
           });
           const data = await Req.exec();
 

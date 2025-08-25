@@ -6,7 +6,7 @@ class SteamParserPuppeteer {
   protected array $price = [];
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
-  protected bool $debug_enabled = true;
+  protected bool $debug_enabled = false;
   protected int $debug_level = 1;
 
   public function __construct() {
@@ -68,7 +68,7 @@ class SteamParserPuppeteer {
     $stat = json_decode($this->_redis->get('stat'), true) ?? ['steam'=>0,'csfloat'=>0];
     $stat['steam'] = $stat['steam'] + $output_listings['stat']['steam'];
     $stat['csfloat'] = $stat['csfloat'] + $output_listings['stat']['csfloat'];
-    error_log("Time: ".date("d-m-Y-H-i-s", strtotime('now'))." \$stat = ".print_r($stat, true));
+    error_log("Time: ".date("d/m/Y H:i:s", strtotime('now'))." \$stat = ".json_encode($stat));
     $this->_redis->set('stat', json_encode($stat), 3600);
     // stat
 
