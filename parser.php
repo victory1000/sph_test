@@ -81,14 +81,14 @@ class Parser {
           ['pattern_m' => 49500, 'pattern_l' => 50500, 'price_percent' => 10],
           ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 10],
         ],
-        "Charm | Glamour Shot" => [
-          ['pattern_m' => 95_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-          ['pattern_m' => 1, 'pattern_l' => 5000, 'price_percent' => 30],
-        ],
-        "Charm | Hot Hands" => [
-          ['pattern_m' => 95_000, 'pattern_l' => 100_000, 'price_percent' => 10],
-          ['pattern_m' => 1, 'pattern_l' => 3000, 'price_percent' => 10],
-        ],
+//        "Charm | Glamour Shot" => [
+//          ['pattern_m' => 95_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+//          ['pattern_m' => 1, 'pattern_l' => 5000, 'price_percent' => 30],
+//        ],
+//        "Charm | Hot Hands" => [
+//          ['pattern_m' => 95_000, 'pattern_l' => 100_000, 'price_percent' => 10],
+//          ['pattern_m' => 1, 'pattern_l' => 3000, 'price_percent' => 10],
+//        ],
         "Charm | POP Art" => [
           ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 20],
           ['pattern_m' => 500, 'pattern_l' => 1000, 'price_percent' => 20],
