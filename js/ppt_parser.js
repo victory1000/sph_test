@@ -28,7 +28,6 @@ process.stdin.on('data', async chunk => {
         if (processed_count >= rate_limit) break;
 
         for (let i = 0; i < 3; i++) {
-          console.error(skin_name, i, processed_count, processed_count_local);
           if (processed_count >= rate_limit) break;
           if (max_price_met) break;
           if (i > 0) await new Promise(res => setTimeout(res, 1000));
