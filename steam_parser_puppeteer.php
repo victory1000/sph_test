@@ -64,6 +64,12 @@ class SteamParserPuppeteer {
     $this->_redis->set('processed_listings', json_encode($processed_listings), 43200);
     $this->Debug("INSERT REDIS", json_encode($processed_listings), 2);
 
+    // stat
+    $stat = json_decode($this->_redis->get('stat'), true) ?? ['steam'=>0,'csfloat'=>0];
+    $stat['steam'] = $stat['steam'] + $output_listings['stat']['steam'];
+    $stat['csfloat'] = $stat['csfloat'] + $output_listings['stat']['csfloat'];
+    $this->_redis->set('stat', json_encode($stat), 3600);
+
     return $output_listings['new_listings'] ?? [];
   }
 
