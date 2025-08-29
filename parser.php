@@ -99,7 +99,7 @@ class Parser {
           ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 5],
         ],
         "Charm | Pocket AWP" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 5],
+//          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 5],
           ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 5],
         ],
         "Charm | Lil' Cap Gun" => [
