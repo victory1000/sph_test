@@ -77,9 +77,9 @@ class Parser {
 //          ['pattern_m' => 1, 'pattern_l' => 1_000, 'price_percent' => 60],
 //        ],
         "Charm | Disco MAC" => [
-          ['pattern_m' => 1, 'pattern_l' => 15_000, 'price_percent' => 10],
-          ['pattern_m' => 49500, 'pattern_l' => 50500, 'price_percent' => 10],
-          ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 10],
+          ['pattern_m' => 1, 'pattern_l' => 15_000, 'price_percent' => 5],
+          ['pattern_m' => 49500, 'pattern_l' => 50500, 'price_percent' => 5],
+          ['pattern_m' => 95_000, 'pattern_l' => 100_000, 'price_percent' => 5],
         ],
 //        "Charm | Glamour Shot" => [
 //          ['pattern_m' => 95_000, 'pattern_l' => 100_000, 'price_percent' => 30],
@@ -89,22 +89,22 @@ class Parser {
 //          ['pattern_m' => 95_000, 'pattern_l' => 100_000, 'price_percent' => 10],
 //          ['pattern_m' => 1, 'pattern_l' => 3000, 'price_percent' => 10],
 //        ],
-        "Charm | POP Art" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 20],
-          ['pattern_m' => 500, 'pattern_l' => 1000, 'price_percent' => 20],
-          ['pattern_m' => 0, 'pattern_l' => 500, 'price_percent' => 30],
-        ],
+//        "Charm | POP Art" => [
+//          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 20],
+//          ['pattern_m' => 500, 'pattern_l' => 1000, 'price_percent' => 20],
+//          ['pattern_m' => 0, 'pattern_l' => 500, 'price_percent' => 30],
+//        ],
         "Charm | Whittle Knife" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 10],
-          ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 10],
+          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 5],
+          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 5],
         ],
         "Charm | Pocket AWP" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 10],
-          ['pattern_m' => 1, 'pattern_l' => 5000, 'price_percent' => 10],
+          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 5],
+          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 5],
         ],
         "Charm | Lil' Cap Gun" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 10],
-          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 10],
+          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 5],
+          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 5],
         ],
       ]
     ];
