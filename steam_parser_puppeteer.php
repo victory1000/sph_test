@@ -33,6 +33,9 @@ class SteamParserPuppeteer {
             1 => '1️⃣',
             2 => '2️⃣',
             3 => '3️⃣',
+            4 => '4️⃣',
+            5 => '5️⃣',
+            6 => '6️⃣',
           };
         $diff_emodji = $skin['price_diff1'] > 5 ? '⚠️' : '✅';
         $text = "$skin[name] Pattern: <b>$skin[pattern]</b>\n";
