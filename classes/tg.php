@@ -14,8 +14,12 @@ class TG {
   }
 
   static function sendError(mixed $message): void {
-    $message = "❌" . urlencode($message);
-    self::sendMessage($message);
+    file_get_contents("https://api.telegram.org/bot" . self::TOKEN . "/sendMessage?" . http_build_query([
+      'chat_id' => self::OWNER,
+      'text' => "❌" . urlencode($message),
+      'parse_mode' => 'html',
+      'disable_notification' => true
+    ]));
   }
 
   static function getUpdates(): array {

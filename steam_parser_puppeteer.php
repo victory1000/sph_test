@@ -64,13 +64,13 @@ class SteamParserPuppeteer {
     $this->_redis->set('processed_listings', json_encode($processed_listings), 43200);
     $this->Debug("INSERT REDIS", json_encode($processed_listings), 2);
 
-    // stat
+// stat
 //    $stat = json_decode($this->_redis->get('stat'), true) ?? ['steam'=>0,'csfloat'=>0];
 //    $stat['steam'] = $stat['steam'] + $output_listings['stat']['steam'];
 //    $stat['csfloat'] = $stat['csfloat'] + $output_listings['stat']['csfloat'];
 //    error_log("Time: ".date("d/m/Y H:i:s", strtotime('now'))." \$stat = ".json_encode($stat));
 //    $this->_redis->set('stat', json_encode($stat), 3600);
-    // stat
+// stat
 
     return $output_listings['new_listings'] ?? [];
   }
@@ -194,7 +194,7 @@ class SteamParserPuppeteer {
       if ($error) {
         $this->Debug("ERRORS", "\n$error" . PHP_EOL);
         if (!$this->debug_enabled) {
-          TG::sendError($error);
+//          TG::sendError($error);
           throw new Exception($error);
         }
       }
