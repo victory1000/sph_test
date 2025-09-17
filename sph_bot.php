@@ -8,7 +8,6 @@ if (file_exists($stop_file)) {
 
 $lock_file = fopen(__DIR__ . '/files/cron_script.lock', 'c');
 if (!flock($lock_file, LOCK_EX | LOCK_NB)) {
-//  TG::sendError("Script already running, exiting");
   fclose($lock_file);
   exit;
 }
