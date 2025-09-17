@@ -107,7 +107,7 @@ class Parser {
           ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 5],
         ],
         "Charm | Lil' SAS" => [
-          ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 10],
+          ['pattern_m' => 98_000, 'pattern_l' => 100_000, 'price_percent' => 10],
           ['pattern_m' => 1, 'pattern_l' => 2000, 'price_percent' => 10],
         ],
         "Charm | Pinch O' Salt" => [
