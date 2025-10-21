@@ -64,10 +64,10 @@ class Parser {
   static function getChats(): array {
     return [
       513209606 => [
-        "Charm | Baby's AK" => [
-          ['pattern_m' => 99_500, 'pattern_l' => 100_000, 'price_percent' => 20],
-          ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 20],
-        ],
+//        "Charm | Baby's AK" => [
+//          ['pattern_m' => 99_500, 'pattern_l' => 100_000, 'price_percent' => 20],
+//          ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 20],
+//        ],
 //        "Charm | Die-cast AK" => [
 //          ['pattern_m' => 87_000, 'pattern_l' => 100_000, 'price_percent' => 30],
 //          ['pattern_m' => 1, 'pattern_l' => 24_000, 'price_percent' => 30],
@@ -76,15 +76,15 @@ class Parser {
 //          ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 10],
 //          ['pattern_m' => 1, 'pattern_l' => 10_000, 'price_percent' => 10],
 //        ],
-        "Charm | Disco MAC" => [
-          ['pattern_m' => 1, 'pattern_l' => 15_000, 'price_percent' => 5],
-          ['pattern_m' => 49500, 'pattern_l' => 50500, 'price_percent' => 5],
-          ['pattern_m' => 95_000, 'pattern_l' => 100_000, 'price_percent' => 5],
-        ],
-        "Charm | Glamour Shot" => [
-          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
-          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 30],
-        ],
+//        "Charm | Disco MAC" => [
+//          ['pattern_m' => 1, 'pattern_l' => 15_000, 'price_percent' => 5],
+//          ['pattern_m' => 49500, 'pattern_l' => 50500, 'price_percent' => 5],
+//          ['pattern_m' => 95_000, 'pattern_l' => 100_000, 'price_percent' => 5],
+//        ],
+//        "Charm | Glamour Shot" => [
+//          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 30],
+//          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 30],
+//        ],
         "Charm | Hot Hands" => [
           ['pattern_m' => 99_500, 'pattern_l' => 100_000, 'price_percent' => 5],
           ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 5],
@@ -94,14 +94,14 @@ class Parser {
 //          ['pattern_m' => 500, 'pattern_l' => 1000, 'price_percent' => 20],
 //          ['pattern_m' => 0, 'pattern_l' => 500, 'price_percent' => 30],
 //        ],
-        "Charm | Whittle Knife" => [
-          ['pattern_m' => 99_500, 'pattern_l' => 100_000, 'price_percent' => 20],
-          ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 20],
-        ],
-        "Charm | Pocket AWP" => [
-//          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 5],
-          ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 20],
-        ],
+//        "Charm | Whittle Knife" => [
+//          ['pattern_m' => 99_500, 'pattern_l' => 100_000, 'price_percent' => 20],
+//          ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 20],
+//        ],
+//        "Charm | Pocket AWP" => [
+////          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 5],
+//          ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 20],
+//        ],
 //        "Charm | Lil' Cap Gun" => [
 //          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 5],
 //          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 5],
@@ -118,10 +118,10 @@ class Parser {
 //          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 10],
 //          ['pattern_m' => 1, 'pattern_l' => 5_000, 'price_percent' => 10],
 //        ],
-//        "Charm | Diamond Dog" => [
-//          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 10],
-//          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 10],
-//        ],
+        "Charm | Diamond Dog" => [
+          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 10],
+          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 10],
+        ],
       ]
     ];
   }
