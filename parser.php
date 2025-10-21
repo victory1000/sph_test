@@ -86,8 +86,8 @@ class Parser {
 //          ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 30],
 //        ],
         "Charm | Hot Hands" => [
-          ['pattern_m' => 99_500, 'pattern_l' => 100_000, 'price_percent' => 5],
-          ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 5],
+          ['pattern_m' => 99_500, 'pattern_l' => 100_000, 'price_percent' => 10],
+          ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 10],
         ],
 //        "Charm | POP Art" => [
 //          ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 20],
