@@ -37,7 +37,7 @@ try {
         }
       } else {
         TG::sendMessage("New message:\n$message");
-        TG::sendMessage("ГДЕ МОЙ БРЕЛОК", $chat_id);
+        TG::sendMessage("Bot under development", $chat_id);
       }
     }
   }
