@@ -168,23 +168,30 @@ class SteamParserPuppeteer {
     if ($need_price) {
 
       foreach (Parser::getSkinsToParse($this->item_type) as $skin) {
+        $need_price = false;
         $res = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=" . rawurlencode($skin) . "&appid=730&currency=5");
         $price = json_decode($res, true);
-        $this->Debug('173', [$price, $skin]);
-        if (is_null($price) || !key_exists('lowest_price', $price) || !key_exists('median_price', $price)) break;
+        $this->Debug('174', [$price, $skin]);
+        if (is_null($price) || !key_exists('lowest_price', $price) || !key_exists('median_price', $price)) {
+          $need_price = true;
+          break;
+        }
         $this->price[$skin] = Parser::toPrice($price['lowest_price'] ?? $price['median_price']);
-        $this->Debug('price1', $this->price);
+        $this->Debug('180', $this->price);
         sleep(1);
       }
-      $this->Debug('179', $this->price);
+      $this->Debug('183', $this->price);
 
-      if (empty($this->price)) {
-        $this->price = $this->execJSFile('get_price', ['skins' => Parser::getSkinsToParse($this->item_type)])['price'] ?? [];
-        $this->Debug('price2', $this->price);
+      if ($need_price) {
+        $new_price = $this->execJSFile('get_price', ['skins' => Parser::getSkinsToParse($this->item_type)])['price'] ?? [];
+        $this->price = array_merge($this->price, $new_price);
+        $this->Debug('188', $this->price);
       }
 
-      if (empty($this->price)) {
-        throw new Exception("Unable to get price.");
+      foreach (Parser::getSkinsToParse($this->item_type) as $skin) {
+        if (!key_exists($skin, $this->price)) {
+          throw new Exception("Unable to get price for $skin.");
+        }
       }
 
       $this->_redis->set('price', json_encode($this->price), 3600);
