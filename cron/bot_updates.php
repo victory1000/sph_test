@@ -29,7 +29,8 @@ try {
             break;
           case 'clear processed listings':
             $_redis = Cache::get_instance();
-            $_redis->del('processed_listings');
+            $_redis->del('processed_listings_charm');
+            $_redis->del('processed_listings_skin');
             TG::sendMessage('The listings have been cleared.');
             break;
           case 'update price':
