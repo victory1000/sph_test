@@ -188,6 +188,7 @@ class SteamParserPuppeteer {
   }
 
   private function execJSFile(string $file_name, array $input): array {
+    $this->Debug('test', $input);
     $process = proc_open(
       "node /opt/sph_test/js/$file_name.js",
       [
