@@ -52,6 +52,42 @@ class Parser {
   }
 
   static function isRareFloat(float $float): bool {
+    $minLen = 4;
+    // Убираем "0." и оставляем только цифры
+    $s = ltrim($float, '0.');
+    if (strlen($s) < $minLen) return false;
+
+    // 1. Повторяющиеся цифры: 55555, 01111, 00001 (но не 07000)
+    if (preg_match('/^(\d)\1{' . ($minLen - 1) . ',}$/', $s)) {
+      $digit = $s[0];
+      $len = strlen($s);
+      return true;
+    }
+
+    // 2. Возрастающая последовательность: 12345, 01234, 00123
+    $incPatterns = ['0123456789', '1234567890', '2345678901', '3456789012', '4567890123',
+                    '5678901234', '6789012345', '7890123456', '8901234567', '9012345678'];
+    foreach ($incPatterns as $pattern) {
+      if (str_starts_with($s, substr($pattern, 0, $minLen))) {
+        $matched = substr($s, 0, strlen($pattern));
+        if (strlen($matched) >= $minLen && $s === $matched . substr($s, strlen($matched))) {
+          return true;
+        }
+      }
+    }
+
+    // 3. Убывающая последовательность: 98765, 09876, 00987
+    $decPatterns = ['9876543210', '8765432109', '7654321098', '6543210987', '5432109876',
+                    '4321098765', '3210987654', '2109876543', '1098765432', '0987654321'];
+    foreach ($decPatterns as $pattern) {
+      if (str_starts_with($s, substr($pattern, 0, $minLen))) {
+        $matched = substr($s, 0, strlen($pattern));
+        if (strlen($matched) >= $minLen && $s === $matched . substr($s, strlen($matched))) {
+          return true;
+        }
+      }
+    }
+
     return false;
   }
   

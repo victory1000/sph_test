@@ -6,7 +6,7 @@ class SteamParserPuppeteer {
   protected array $price = [];
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
-  protected bool $debug_enabled = true;
+  protected bool $debug_enabled = false;
   protected int $debug_level = 2;
 
   public function __construct(private readonly string $item_type = "charm") {
@@ -98,7 +98,7 @@ class SteamParserPuppeteer {
             'skin' => $this->isRareSkin($skin_name, $p_p, $price_diff_percent),
           };
 
-          if (!$rare_skin) continue;
+          if (empty($rare_skin)) continue;
 
           $to_send[$chat_id][] = [
             'name' => $skin_name,
@@ -106,6 +106,7 @@ class SteamParserPuppeteer {
             'pattern' => $p_p['pattern'] ?? null,
             'paintseed' => $p_p['paintseed'] ?? null,
             'float' => $p_p['float'] ?? null,
+            'rare' => $rare_skin,
             'price' => $p_p['price'],
             'url' => "https://steamcommunity.com/market/listings/730/" . rawurlencode($skin_name),
             'price_diff1' => $price_diff_percent,
@@ -120,32 +121,32 @@ class SteamParserPuppeteer {
     return $to_send;
   }
 
-  protected function isRareCharm($skin_name, $pattern, $price_percent): bool {
+  protected function isRareCharm($skin_name, $pattern, $price_percent): string {
     if (Parser::isRareCharm($pattern)) {
-      return true;
+      return 'pattern';
     }
     foreach (Parser::getChats() as $skins) {
       foreach ($skins[$this->item_type][$skin_name] as $data) {
         if ($pattern >= $data['pattern_m'] && $pattern <= $data['pattern_l'] && $price_percent <= $data['price_percent']) {
-          return true;
+          return 'pattern';
         }
       }
     }
-    return false;
+    return '';
   }
 
-  protected function isRareSkin(string $skin_name, array $skin_params, float $price_percent): bool {
+  protected function isRareSkin(string $skin_name, array $skin_params, float $price_percent): string {
     if (Parser::isRareFloat($skin_params['float'])) {
-      return true;
+      return 'float';
     }
     foreach (Parser::getChats() as $skins) {
       foreach ($skins[$this->item_type][$skin_name] as $data) {
         if (in_array($skin_params['paintseed'], $data['paintseed']) && $price_percent <= $data['price_percent']) {
-          return true;
+          return 'paintseed';
         }
       }
     }
-    return false;
+    return '';
   }
 
   private function sendSkins(array $to_send): void {
@@ -166,7 +167,7 @@ class SteamParserPuppeteer {
           };
         $text = match ($this->item_type) {
           'charm' => "$skin[name] Pattern: <b>$skin[pattern]</b>\n",
-          'skin' => "$skin[name] PaintSeed: <b>$skin[paintseed]</b> Float: <b>$skin[float]</b>\n"
+          'skin' => "$skin[name] ($skin[rare])\nPaintSeed: <b>$skin[paintseed]</b> Float: <b>$skin[float]</b>\n",
         };
         $text .= "Price: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> $diff_emodji ($skin[price_diff2] руб.)\n";
         $text .= "$skin[url]\n\n$page\nListingID: <code>$skin[listing_id]</code>\n<code>$skin[url]</code>";
