@@ -53,6 +53,7 @@ process.stdin.on('data', async chunk => {
             continue;
           }
           console.error(data);
+          processed_count = 1000;
           continue;
 
           const $ = cheerio.load(data.results_html);
