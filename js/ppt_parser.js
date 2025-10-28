@@ -16,6 +16,7 @@ process.stdin.setEncoding('utf8');
 process.stdin.on('data', async chunk => {
 
   const php_input = JSON.parse(chunk.toString());
+  console.log(php_input);
 
   for (const skin_name of php_input.skins) {
     listings[`${skin_name}`] = {};
@@ -54,7 +55,7 @@ process.stdin.on('data', async chunk => {
           }
           console.error(data);
           processed_count = 1000;
-          continue;
+          break;
 
           const $ = cheerio.load(data.results_html);
 
