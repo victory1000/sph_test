@@ -166,7 +166,7 @@ class SteamParserPuppeteer {
           };
         $text = match ($this->item_type) {
           'charm' => "$skin[name] Pattern: <b>$skin[pattern]</b>\n",
-          'skin' => "$skin[name] PainSeed: <b>$skin[paintseed]</b> Float: <b>$skin[float]</b>\n"
+          'skin' => "$skin[name] PaintSeed: <b>$skin[paintseed]</b> Float: <b>$skin[float]</b>\n"
         };
         $text .= "Price: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> $diff_emodji ($skin[price_diff2] руб.)\n";
         $text .= "$skin[url]\n\n$page\nListingID: <code>$skin[listing_id]</code>\n<code>$skin[url]</code>";
