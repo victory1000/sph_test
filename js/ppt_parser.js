@@ -27,15 +27,15 @@ process.stdin.on('data', async chunk => {
         let max_price_met = false;
         if (processed_count >= rate_limit) break;
 
-        for (let i = 0; i < 2; i++) {
+        for (let page_i = 0; page_i < 1; page_i++) {
           if (processed_count >= rate_limit) break;
           if (max_price_met) break;
-          if (i > 0) await new Promise(res => setTimeout(res, 1000));
-          if (i > 0 && processed_count_local === 0) await new Promise(res => setTimeout(res, 2000));
+          if (page_i > 0) await new Promise(res => setTimeout(res, 1000));
+          if (page_i > 0 && processed_count_local === 0) await new Promise(res => setTimeout(res, 2000));
 
           stat.steam++;
           processed_count_local = 0;
-          const start = i*100;
+          const start = page_i*100;
           const Req = new Request({
             url: 'https://steamcommunity.com/market/listings/730/'
                   + encodeURIComponent(skin_name)
@@ -67,7 +67,7 @@ process.stdin.on('data', async chunk => {
             if (listings[skin_name].hasOwnProperty(el.listingid)) {
               listings[skin_name][el.listingid]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
               listings[skin_name][el.listingid]["asset_id"] = el.asset.id;
-              listings[skin_name][el.listingid]["page"] = i+1;
+              listings[skin_name][el.listingid]["page"] = page_i+1;
               if (listings[skin_name][el.listingid]["price"] > php_input['max_price'][skin_name]) {
                 delete listings[skin_name][el.listingid];
                 max_price_met = true;

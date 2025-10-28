@@ -9,7 +9,7 @@ class SteamParserPuppeteer {
   protected bool $debug_enabled = false;
   protected int $debug_level = 1;
 
-  public function __construct() {
+  public function __construct(private readonly string $item_type = "charm") {
     $this->_redis = Cache::get_instance();
     $this->init();
   }
@@ -81,7 +81,7 @@ class SteamParserPuppeteer {
     $redis_processed = json_decode($this->_redis->get('processed_listings'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
     array_walk($redis_processed, fn(&$el) => $el = (string)$el);
 
-    foreach (Parser::getChats() as $skins) {
+    foreach (Parser::getChats()[$this->item_type] as $skins) {
       foreach ($skins as $skin => $conf) {
         foreach ($conf as $_conf) {
           $prices[$skin][] = $_conf['price_percent'] ?? 1;
@@ -93,18 +93,22 @@ class SteamParserPuppeteer {
       $prices[$skin] = max($prs);
     }
 
-    foreach (Parser::getSkinsToParse() as $skin) {
+    foreach (Parser::getSkinsToParse($this->item_type) as $skin) {
       $max_price[$skin] = $this->price[$skin] + ($this->price[$skin] * $prices[$skin] / 100);
     }
 
-    return ['max_price' => $max_price, 'processed_listings' => $redis_processed, 'skins' => Parser::getSkinsToParse()];
+    return [
+      'max_price' => $max_price,
+      'processed_listings' => $redis_processed,
+      'skins' => Parser::getSkinsToParse($this->item_type)
+    ];
   }
 
   protected function CheckSkins(array $to_check): array {
     $to_send = [];
     if (empty($to_check)) return $to_send;
 
-    foreach (Parser::getChats() as $chat_id => $skins) {
+    foreach (Parser::getChats()[$this->item_type] as $chat_id => $skins) {
       foreach ($skins as $skin_name => $skin) {
         foreach ($to_check[$skin_name] ?? [] as $listing_id => $p_p) {
           $price_diff = round(($p_p['price'] * 100) / $this->price[$skin_name] - 100, 2);
@@ -133,7 +137,7 @@ class SteamParserPuppeteer {
     if (Parser::isRarePattern($pattern)) {
       return true;
     }
-    foreach (Parser::getChats() as $skins) {
+    foreach (Parser::getChats()[$this->item_type] as $skins) {
       foreach ($skins[$skin_name] as $data) {
         if ($pattern >= $data['pattern_m'] && $pattern <= $data['pattern_l'] && $price <= $data['price_percent']) {
           return true;
@@ -148,7 +152,7 @@ class SteamParserPuppeteer {
 
     if (empty($this->price)) {
 
-      foreach (Parser::getSkinsToParse() as $skin) {
+      foreach (Parser::getSkinsToParse($this->item_type) as $skin) {
         $res = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=" . rawurlencode($skin) . "&appid=730&currency=5");
         $price = json_decode($res, true);
         if (is_null($price) || !key_exists('lowest_price', $price) || !key_exists('median_price', $price)) break;
@@ -157,7 +161,7 @@ class SteamParserPuppeteer {
       }
 
       if (empty($this->price)) {
-        $this->price = $this->execJSFile('get_price', ['skins' => Parser::getSkinsToParse()])['price'] ?? [];
+        $this->price = $this->execJSFile('get_price', ['skins' => Parser::getSkinsToParse($this->item_type)])['price'] ?? [];
       }
 
       if (empty($this->price)) {
