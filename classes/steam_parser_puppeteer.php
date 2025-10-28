@@ -9,7 +9,7 @@ class SteamParserPuppeteer {
   protected bool $debug_enabled = false;
   protected int $debug_level = 2;
 
-  public function __construct(private readonly string $item_type = "charm") {
+  public function __construct(private readonly string $item_type) {
     $this->_redis = Cache::get_instance();
     $this->init();
   }

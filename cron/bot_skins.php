@@ -1,12 +1,12 @@
 <?php
-include_once "parser.php";
+include_once "../classes/parser.php";
 
-$stop_file = __DIR__ . '/files/stop.flag';
+$stop_file = __DIR__ . '/../files/stop_skins.flag';
 if (file_exists($stop_file)) {
   exit;
 }
 
-$lock_file = fopen(__DIR__ . '/files/cron_script.lock', 'c');
+$lock_file = fopen(__DIR__ . '/../files/cron_script_skins.lock', 'c');
 if (!flock($lock_file, LOCK_EX | LOCK_NB)) {
   fclose($lock_file);
   exit;
@@ -18,7 +18,7 @@ while ($time < 60) {
   $start_time = microtime(true);
 
   try {
-    $_steam = new SteamParserPuppeteer();
+    $_steam = new SteamParserPuppeteer('skin');
     $_steam->Process();
 
     $processing_time = microtime(true) - $start_time;
