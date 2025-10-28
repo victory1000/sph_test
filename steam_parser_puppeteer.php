@@ -172,11 +172,13 @@ class SteamParserPuppeteer {
         $price = json_decode($res, true);
         if (is_null($price) || !key_exists('lowest_price', $price) || !key_exists('median_price', $price)) break;
         $this->price[$skin] = Parser::toPrice($price['lowest_price'] ?? $price['median_price']);
+        $this->Debug('price1', $this->price);
         sleep(1);
       }
 
       if (empty($this->price)) {
         $this->price = $this->execJSFile('get_price', ['skins' => Parser::getSkinsToParse($this->item_type)])['price'] ?? [];
+        $this->Debug('price2', $this->price);
       }
 
       if (empty($this->price)) {
