@@ -188,7 +188,6 @@ class SteamParserPuppeteer {
     if (!$need_price) {
       foreach (Parser::getSkinsToParse($this->item_type) as $skin) {
         if (!key_exists($skin, $this->price)) {
-          $this->Debug('need price', 'YES');
           $need_price = true;
           break;
         }

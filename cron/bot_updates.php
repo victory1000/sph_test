@@ -11,11 +11,11 @@ try {
 
       if ($chat_id === TG::OWNER) {
         switch ($message) {
-          case 'stop server charm':
+          case 'stop server charms':
             file_put_contents(__DIR__ . "/../files/stop_charms.flag", '1');
             TG::sendMessage('Server Charms has been stopped ✅');
             break;
-          case 'start server charm':
+          case 'start server charms':
             @unlink(__DIR__ . "/../files/stop_charms.flag");
             TG::sendMessage('Server Charms has been started 🚀');
             break;
@@ -39,7 +39,7 @@ try {
             TG::sendMessage('The price has been cleared.');
             break;
           case 'commands':
-            TG::sendMessage("<code>start server charm</code>\n<code>stop server charm</code>\n<code>clear processed listings</code>\n<code>update price</code>");
+            TG::sendMessage("<code>start server charms</code>\n<code>stop server charms</code>\n<code>clear processed listings</code>\n<code>update price</code>");
             break;
         }
       } else {
