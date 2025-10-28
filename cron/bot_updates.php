@@ -41,6 +41,8 @@ try {
           case 'commands':
             TG::sendMessage("<code>start server charms</code>\n<code>stop server charms</code>\n<code>clear processed listings</code>\n<code>update price</code>");
             break;
+          default:
+            TG::sendMessage("Unknown command");
         }
       } else {
         TG::sendMessage("New message:\n$message");
