@@ -7,7 +7,7 @@ class SteamParserPuppeteer {
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
   protected bool $debug_enabled = true;
-  protected int $debug_level = 2;
+  protected int $debug_level = 1;
 
   public function __construct(private readonly string $item_type) {
     $this->_redis = Cache::get_instance();
