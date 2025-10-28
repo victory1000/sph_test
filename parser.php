@@ -33,7 +33,7 @@ class Parser {
     }
   }
 
-  static function isRarePattern(int $seed): bool {
+  static function isRareCharm(int $seed): bool {
     $s = strval($seed);
 
     // 1. Повторяющиеся цифры (11, 2222, 55555 и т.п.)
@@ -48,6 +48,10 @@ class Parser {
     // 5. Убывающая последовательность (9876, 54321)
     if (strpos('9876543210', $s) !== false) return true;
 
+    return false;
+  }
+
+  static function isRareFloat(float $float): bool {
     return false;
   }
   
@@ -128,7 +132,7 @@ class Parser {
 
         "skin" => [
           "SSG 08 | Acid Fade (Factory New)" => [
-            ['price_percent' => 10, 'paint_seed' => [260]],
+            ['price_percent' => 30, 'paintseed' => [576,575,449,897,468,961,550,107,807,80,648,278,849,236,690,345,182,522,230,761,803,178,206,773]],
           ],
         ]
       ]
@@ -136,4 +140,3 @@ class Parser {
   }
 
 }
-

@@ -28,32 +28,7 @@ class SteamParserPuppeteer {
   public function Process(): void {
     $to_check = $this->ParseSkins();
     $to_send = $this->CheckSkins($to_check);
-
-    foreach ($to_send as $chat_id => $skins) {
-      foreach ($skins as $skin) {
-//        $sent[] = $skin['listing_id'];
-        $page = 'Page: ' . match ($skin['page']) {
-            1 => '1️⃣',
-            2 => '2️⃣',
-            3 => '3️⃣',
-            4 => '4️⃣',
-            5 => '5️⃣',
-            6 => '6️⃣',
-            default => 'more 6'
-          };
-        $diff_emodji = $skin['price_diff1'] > 5 ? '⚠️' : '✅';
-        $text = "$skin[name] Pattern: <b>$skin[pattern]</b>\n";
-        $text .= "Price: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> $diff_emodji ($skin[price_diff2] руб.)\n";
-        $text .= "$skin[url]\n\n$page\nListingID: <code>$skin[listing_id]</code>\n<code>$skin[url]</code>";
-        $url = "https://api.telegram.org/bot$this->token/sendMessage?" . http_build_query([
-            'chat_id' => $chat_id,
-            'text' => $text,
-            'parse_mode' => 'html',
-          ]);
-        file_get_contents($url); // todo Failed to open stream: Connection timed out
-      }
-    }
-
+    $this->sendSkins($to_send);
   }
 
   protected function ParseSkins(): array {
@@ -104,7 +79,8 @@ class SteamParserPuppeteer {
     return [
       'max_price' => $max_price,
       'processed_listings' => $redis_processed,
-      'skins' => Parser::getSkinsToParse($this->item_type)
+      'skins' => Parser::getSkinsToParse($this->item_type),
+      'item_type' => $this->item_type,
     ];
   }
 
@@ -115,19 +91,26 @@ class SteamParserPuppeteer {
     foreach (Parser::getChats() as $chat_id => $skins) {
       foreach ($skins[$this->item_type] as $skin_name => $skin) {
         foreach ($to_check[$skin_name] ?? [] as $listing_id => $p_p) {
-          $price_diff = round(($p_p['price'] * 100) / $this->price[$skin_name] - 100, 2);
+          $price_diff_percent = round(($p_p['price'] * 100) / $this->price[$skin_name] - 100, 2);
 
-          if (!$this->checkPatternPrice($skin_name, $p_p['pattern'], $price_diff)) continue;
+          $rare_skin = match ($this->item_type) {
+            'charm' => $this->isRareCharm($skin_name, $p_p['pattern'], $price_diff_percent),
+            'skin' => $this->isRareSkin($skin_name, $p_p, $price_diff_percent),
+          };
+
+          if (!$rare_skin) continue;
 
           $to_send[$chat_id][] = [
             'name' => $skin_name,
             'listing_id' => $listing_id,
-            'pattern' => $p_p['pattern'],
+            'pattern' => $p_p['pattern'] ?? null,
+            'paintseed' => $p_p['paintseed'] ?? null,
+            'float' => $p_p['float'] ?? null,
             'price' => $p_p['price'],
             'url' => "https://steamcommunity.com/market/listings/730/" . rawurlencode($skin_name),
-            'price_diff1' => $price_diff,
+            'price_diff1' => $price_diff_percent,
             'price_diff2' => round($p_p['price'] - $this->price[$skin_name], 2),
-            'asset_id' => $p_p['asset_id'],
+             //'asset_id' => $p_p['asset_id'],
             'page' => $p_p['page'],
           ];
         }
@@ -137,18 +120,64 @@ class SteamParserPuppeteer {
     return $to_send;
   }
 
-  protected function checkPatternPrice($skin_name, $pattern, $price): bool {
-    if (Parser::isRarePattern($pattern)) {
+  protected function isRareCharm($skin_name, $pattern, $price_percent): bool {
+    if (Parser::isRareCharm($pattern)) {
       return true;
     }
     foreach (Parser::getChats() as $skins) {
       foreach ($skins[$this->item_type][$skin_name] as $data) {
-        if ($pattern >= $data['pattern_m'] && $pattern <= $data['pattern_l'] && $price <= $data['price_percent']) {
+        if ($pattern >= $data['pattern_m'] && $pattern <= $data['pattern_l'] && $price_percent <= $data['price_percent']) {
           return true;
         }
       }
     }
     return false;
+  }
+
+  protected function isRareSkin(string $skin_name, array $skin_params, float $price_percent): bool {
+    if (Parser::isRareFloat($skin_params['float'])) {
+      return true;
+    }
+    foreach (Parser::getChats() as $skins) {
+      foreach ($skins[$this->item_type][$skin_name] as $data) {
+        if (in_array($skin_params['paintseed'], $data['paintseed']) && $price_percent <= $data['price_percent']) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private function sendSkins(array $to_send): void {
+    if (empty($to_send)) return;
+
+    foreach ($to_send as $chat_id => $skins) {
+      foreach ($skins as $skin) {
+//        $sent[] = $skin['listing_id'];
+        $diff_emodji = $skin['price_diff1'] > 5 ? '⚠️' : '✅';
+        $page = 'Page: ' . match ($skin['page']) {
+            1 => '1️⃣',
+            2 => '2️⃣',
+            3 => '3️⃣',
+            4 => '4️⃣',
+            5 => '5️⃣',
+            6 => '6️⃣',
+            default => 'more 6'
+          };
+        $text = match ($this->item_type) {
+          'charm' => "$skin[name] Pattern: <b>$skin[pattern]</b>\n",
+          'skin' => "$skin[name] PainSeed: <b>$skin[paintseed]</b> Float: <b>$skin[float]</b>\n"
+        };
+        $text .= "Price: $skin[price] руб. ({$this->price[$skin['name']]} руб.) Diff: <b>$skin[price_diff1]%</b> $diff_emodji ($skin[price_diff2] руб.)\n";
+        $text .= "$skin[url]\n\n$page\nListingID: <code>$skin[listing_id]</code>\n<code>$skin[url]</code>";
+        $url = "https://api.telegram.org/bot$this->token/sendMessage?" . http_build_query([
+            'chat_id' => $chat_id,
+            'text' => $text,
+            'parse_mode' => 'html',
+          ]);
+        file_get_contents($url); // todo Failed to open stream: Connection timed out
+      }
+    }
   }
 
   private function getPrice(): void {

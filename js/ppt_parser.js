@@ -66,7 +66,7 @@ process.stdin.on('data', async chunk => {
           Object.values(data.listinginfo).forEach(function (el) {
             if (listings[skin_name].hasOwnProperty(el.listingid)) {
               listings[skin_name][el.listingid]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
-              listings[skin_name][el.listingid]["asset_id"] = el.asset.id;
+              // listings[skin_name][el.listingid]["asset_id"] = el.asset.id;
               listings[skin_name][el.listingid]["page"] = i+1;
               if (listings[skin_name][el.listingid]["price"] > php_input['max_price'][skin_name]) {
                 delete listings[skin_name][el.listingid];
@@ -84,10 +84,14 @@ process.stdin.on('data', async chunk => {
             });
             const json = await Req.exec();
 
-            listings[skin_name][_listing_id]["pattern"] = json.iteminfo.keychains[0].pattern;
-
-            if (listings[skin_name][_listing_id]["pattern"].length === 0) {
-              console.error("Empty pattern " + skin_name + " " + _listing_id + " ", listings[skin_name][_listing_id]);
+            if (php_input.item_type === 'charm') {
+              listings[skin_name][_listing_id]["pattern"] = json.iteminfo.keychains[0].pattern;
+              if (listings[skin_name][_listing_id]["pattern"].length === 0) {
+                console.error("Empty pattern " + skin_name + " " + _listing_id + " ", listings[skin_name][_listing_id]);
+              }
+            } else if (php_input.item_type === 'skin') {
+              listings[skin_name][_listing_id]["paintseed"] = json.iteminfo.paintseed;
+              listings[skin_name][_listing_id]["float"] = json.iteminfo.floatvalue;
             }
           }
 
