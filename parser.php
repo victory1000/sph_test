@@ -66,7 +66,7 @@ class Parser {
       513209606 => [
         "charm" => [
           "Charm | Baby's AK" => [
-            ['pattern_m' => 59_500, 'pattern_l' => 100_000, 'price_percent' => 20],
+            ['pattern_m' => 79_500, 'pattern_l' => 100_000, 'price_percent' => 20],
             ['pattern_m' => 1, 'pattern_l' => 500, 'price_percent' => 20],
           ],
 //          "Charm | Die-cast AK" => [
