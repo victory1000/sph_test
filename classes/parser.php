@@ -105,10 +105,10 @@ class Parser {
     return [
       513209606 => [
         "charm" => [
-          "Charm | Baby's AK" => [
-            ['pattern_m' => 99990, 'pattern_l' => 100_000, 'price_percent' => 5],
-            ['pattern_m' => 1, 'pattern_l' => 10, 'price_percent' => 5],
-          ],
+//          "Charm | Baby's AK" => [
+//            ['pattern_m' => 99990, 'pattern_l' => 100_000, 'price_percent' => 5],
+//            ['pattern_m' => 1, 'pattern_l' => 10, 'price_percent' => 5],
+//          ],
 //          "Charm | Die-cast AK" => [
 //            ['pattern_m' => 87_000, 'pattern_l' => 100_000, 'price_percent' => 30],
 //            ['pattern_m' => 1, 'pattern_l' => 5_000, 'price_percent' => 30],
