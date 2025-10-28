@@ -5,8 +5,7 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const Request = require("./request");
 puppeteer.use(StealthPlugin());
 
-let parse_pages = 1;
-let rate_limit = 10;
+let rate_limit = 50;
 let listings = {};
 let processed_count = 0;
 let processed_count_local = 0;
@@ -16,7 +15,6 @@ process.stdin.setEncoding('utf8');
 process.stdin.on('data', async chunk => {
 
   const php_input = JSON.parse(chunk.toString());
-  console.log(php_input);
 
   for (const skin_name of php_input.skins) {
     listings[`${skin_name}`] = {};
@@ -29,15 +27,15 @@ process.stdin.on('data', async chunk => {
         let max_price_met = false;
         if (processed_count >= rate_limit) break;
 
-        for (let page_i = 0; page_i < parse_pages; page_i++) {
+        for (let i = 0; i < 2; i++) {
           if (processed_count >= rate_limit) break;
           if (max_price_met) break;
-          if (page_i > 0) await new Promise(res => setTimeout(res, 1000));
-          if (page_i > 0 && processed_count_local === 0) await new Promise(res => setTimeout(res, 2000));
+          if (i > 0) await new Promise(res => setTimeout(res, 1000));
+          if (i > 0 && processed_count_local === 0) await new Promise(res => setTimeout(res, 2000));
 
           stat.steam++;
           processed_count_local = 0;
-          const start = page_i*100;
+          const start = i*100;
           const Req = new Request({
             url: 'https://steamcommunity.com/market/listings/730/'
                   + encodeURIComponent(skin_name)
@@ -53,9 +51,8 @@ process.stdin.on('data', async chunk => {
             // open page thru browser
             continue;
           }
+
           console.error(data);
-          processed_count = 1000;
-          break;
 
           const $ = cheerio.load(data.results_html);
 
@@ -72,7 +69,7 @@ process.stdin.on('data', async chunk => {
             if (listings[skin_name].hasOwnProperty(el.listingid)) {
               listings[skin_name][el.listingid]["price"] = (parseInt(el.converted_price) + parseInt(el.converted_fee)) / 100;
               listings[skin_name][el.listingid]["asset_id"] = el.asset.id;
-              listings[skin_name][el.listingid]["page"] = page_i+1;
+              listings[skin_name][el.listingid]["page"] = i+1;
               if (listings[skin_name][el.listingid]["price"] > php_input['max_price'][skin_name]) {
                 delete listings[skin_name][el.listingid];
                 max_price_met = true;
