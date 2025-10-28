@@ -176,6 +176,7 @@ class SteamParserPuppeteer {
         $this->Debug('price1', $this->price);
         sleep(1);
       }
+      $this->Debug('179', $this->price);
 
       if (empty($this->price)) {
         $this->price = $this->execJSFile('get_price', ['skins' => Parser::getSkinsToParse($this->item_type)])['price'] ?? [];
