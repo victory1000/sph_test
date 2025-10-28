@@ -5,7 +5,8 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const Request = require("./request");
 puppeteer.use(StealthPlugin());
 
-let rate_limit = 50;
+let parse_pages = 1;
+let rate_limit = 10;
 let listings = {};
 let processed_count = 0;
 let processed_count_local = 0;
@@ -27,7 +28,7 @@ process.stdin.on('data', async chunk => {
         let max_price_met = false;
         if (processed_count >= rate_limit) break;
 
-        for (let page_i = 0; page_i < 1; page_i++) {
+        for (let page_i = 0; page_i < parse_pages; page_i++) {
           if (processed_count >= rate_limit) break;
           if (max_price_met) break;
           if (page_i > 0) await new Promise(res => setTimeout(res, 1000));
@@ -51,6 +52,8 @@ process.stdin.on('data', async chunk => {
             // open page thru browser
             continue;
           }
+          console.error(data);
+          break;
 
           const $ = cheerio.load(data.results_html);
 

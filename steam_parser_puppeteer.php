@@ -7,7 +7,7 @@ class SteamParserPuppeteer {
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
   protected bool $debug_enabled = true;
-  protected int $debug_level = 1;
+  protected int $debug_level = 2;
 
   public function __construct(private readonly string $item_type = "charm") {
     $this->_redis = Cache::get_instance();
@@ -18,7 +18,11 @@ class SteamParserPuppeteer {
     $this->getPrice();
     $di = (int)date('i', strtotime('now'));
     $dH = (int)date('H', strtotime('now'));
-    if ($di > 58 && ($dH == 9 || $dH == 21)) $this->_redis->del('processed_listings');
+    if ($di > 58 && ($dH == 9 || $dH == 21)) {
+      foreach (['charm', 'skin'] as $item_type) {
+        $this->_redis->del('processed_listings_'.$item_type);
+      }
+    }
   }
 
   public function Process(): void {
@@ -63,7 +67,7 @@ class SteamParserPuppeteer {
     array_walk($processed_listings, fn(&$el) => $el = (string)$el);
     $processed_listings = array_unique($processed_listings);
 
-    $this->_redis->set('processed_listings', json_encode($processed_listings), 43200);
+    $this->_redis->set('processed_listings_'.$this->item_type, json_encode($processed_listings), 43200);
     $this->Debug("INSERT REDIS", json_encode($processed_listings), 2);
 
 // stat
@@ -78,7 +82,7 @@ class SteamParserPuppeteer {
   }
 
   private function getInputForJS(): array {
-    $redis_processed = json_decode($this->_redis->get('processed_listings'), true, flags: JSON_BIGINT_AS_STRING) ?? [];
+    $redis_processed = json_decode($this->_redis->get('processed_listings_'.$this->item_type), true, flags: JSON_BIGINT_AS_STRING) ?? [];
     array_walk($redis_processed, fn(&$el) => $el = (string)$el);
 
     foreach (Parser::getChats() as $skins) {
@@ -149,8 +153,19 @@ class SteamParserPuppeteer {
 
   private function getPrice(): void {
     $this->price = json_decode($this->_redis->get('price'), true) ?? [];
+    $need_price = empty($this->price);
 
-    if (empty($this->price)) {
+    if (!$need_price) {
+      foreach (Parser::getSkinsToParse($this->item_type) as $skin) {
+        if (!key_exists($skin, $this->price)) {
+          $this->Debug('need price', 'YES');
+          $need_price = true;
+          break;
+        }
+      }
+    }
+
+    if ($need_price) {
 
       foreach (Parser::getSkinsToParse($this->item_type) as $skin) {
         $res = Parser::curl_exec("https://steamcommunity.com/market/priceoverview/?market_hash_name=" . rawurlencode($skin) . "&appid=730&currency=5");

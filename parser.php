@@ -128,7 +128,7 @@ class Parser {
 
         "skin" => [
           "SSG 08 | Acid Fade (Factory New)" => [
-
+            ['price_percent' => 10, 'paint_seed' => [260]],
           ],
         ]
       ]

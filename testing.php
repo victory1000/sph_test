@@ -5,7 +5,7 @@ $start_mem = memory_get_usage();
 $start_time = microtime(true);
 
 try {
-  $_steam = new SteamParserPuppeteer();
+  $_steam = new SteamParserPuppeteer('skin');
   $_steam->Process();
 
   $_steam->Debug("Execution", [
