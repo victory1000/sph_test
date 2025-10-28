@@ -1,5 +1,5 @@
 <?php
-include_once "../classes/parser.php";
+include_once __DIR__."/../classes/parser.php";
 
 $stop_file = __DIR__ . '/../files/stop_charms.flag';
 if (file_exists($stop_file)) {
