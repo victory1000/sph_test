@@ -6,7 +6,7 @@ class SteamParserPuppeteer {
   protected array $price = [];
   protected string $token = "7143696549:AAFEf9cpwTBx77q1ASheg3RbHbem9STBYl4";
 
-  protected bool $debug_enabled = false;
+  protected bool $debug_enabled = true;
   protected int $debug_level = 1;
 
   public function __construct(private readonly string $item_type = "charm") {
