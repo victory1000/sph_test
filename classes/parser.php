@@ -106,13 +106,13 @@ class Parser {
       513209606 => [
         "charm" => [
           "Charm | Baby's AK" => [
-            ['pattern_m' => 99900, 'pattern_l' => 100_000, 'price_percent' => 20],
-            ['pattern_m' => 1, 'pattern_l' => 100, 'price_percent' => 20],
+            ['pattern_m' => 99990, 'pattern_l' => 100_000, 'price_percent' => 100],
+            ['pattern_m' => 1, 'pattern_l' => 10, 'price_percent' => 100],
           ],
           "Charm | Die-cast AK" => [
-            ['pattern_m' => 87_000, 'pattern_l' => 100_000, 'price_percent' => 10],
-            ['pattern_m' => 1, 'pattern_l' => 5_000, 'price_percent' => 10],
-            ['pattern_m' => 21000, 'pattern_l' => 29_000, 'price_percent' => 10],
+            ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 50],
+            ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 50],
+            ['pattern_m' => 21000, 'pattern_l' => 24_000, 'price_percent' => 50],
           ],
 //          "Charm | Titeenium AWP" => [
 //            ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 10],
@@ -136,14 +136,14 @@ class Parser {
 ////            ['pattern_m' => 500, 'pattern_l' => 1000, 'price_percent' => 20],
 //            ['pattern_m' => 1, 'pattern_l' => 100, 'price_percent' => 20],
 //          ],
-//          "Charm | Whittle Knife" => [
-//            ['pattern_m' => 99900, 'pattern_l' => 100_000, 'price_percent' => 20],
-//            ['pattern_m' => 1, 'pattern_l' => 100, 'price_percent' => 20],
-//          ],
-          "Charm | Pocket AWP" => [
-             ['pattern_m' => 99900, 'pattern_l' => 100_000, 'price_percent' => 5],
-            ['pattern_m' => 1, 'pattern_l' => 100, 'price_percent' => 5],
+          "Charm | Whittle Knife" => [
+            ['pattern_m' => 99990, 'pattern_l' => 100_000, 'price_percent' => 100],
+            ['pattern_m' => 1, 'pattern_l' => 10, 'price_percent' => 100],
           ],
+//          "Charm | Pocket AWP" => [
+//             ['pattern_m' => 99900, 'pattern_l' => 100_000, 'price_percent' => 5],
+//            ['pattern_m' => 1, 'pattern_l' => 100, 'price_percent' => 5],
+//          ],
 //          "Charm | Lil' Cap Gun" => [
 //            ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 5],
 //            ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 5],
