@@ -109,11 +109,11 @@ class Parser {
             ['pattern_m' => 99990, 'pattern_l' => 100_000, 'price_percent' => 100],
             ['pattern_m' => 1, 'pattern_l' => 10, 'price_percent' => 100],
           ],
-          "Charm | Die-cast AK" => [
-            ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 50],
-            ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 50],
-            ['pattern_m' => 21000, 'pattern_l' => 24_000, 'price_percent' => 50],
-          ],
+//          "Charm | Die-cast AK" => [
+//            ['pattern_m' => 99_000, 'pattern_l' => 100_000, 'price_percent' => 50],
+//            ['pattern_m' => 1, 'pattern_l' => 1000, 'price_percent' => 50],
+//            ['pattern_m' => 21000, 'pattern_l' => 24_000, 'price_percent' => 50],
+//          ],
 //          "Charm | Titeenium AWP" => [
 //            ['pattern_m' => 90_000, 'pattern_l' => 100_000, 'price_percent' => 10],
 //            ['pattern_m' => 1, 'pattern_l' => 10_000, 'price_percent' => 10],
