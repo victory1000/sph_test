@@ -136,10 +136,10 @@ class Parser {
 ////            ['pattern_m' => 500, 'pattern_l' => 1000, 'price_percent' => 20],
 //            ['pattern_m' => 1, 'pattern_l' => 100, 'price_percent' => 20],
 //          ],
-          "Charm | Whittle Knife" => [
-            ['pattern_m' => 99990, 'pattern_l' => 100_000, 'price_percent' => 100],
-            ['pattern_m' => 1, 'pattern_l' => 10, 'price_percent' => 100],
-          ],
+//          "Charm | Whittle Knife" => [
+//            ['pattern_m' => 99990, 'pattern_l' => 100_000, 'price_percent' => 100],
+//            ['pattern_m' => 1, 'pattern_l' => 10, 'price_percent' => 100],
+//          ],
 //          "Charm | Pocket AWP" => [
 //             ['pattern_m' => 99900, 'pattern_l' => 100_000, 'price_percent' => 5],
 //            ['pattern_m' => 1, 'pattern_l' => 100, 'price_percent' => 5],
